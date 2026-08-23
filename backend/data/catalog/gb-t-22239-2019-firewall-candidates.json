@@ -1,0 +1,697 @@
+{
+  "catalog_id": "gb-t-22239-2019-firewall-candidates",
+  "catalog_version": "0.1.0",
+  "review_status": "Candidate",
+  "generated_on": "2026-08-23",
+  "source": {
+    "standard_code": "GB/T 22239—2019",
+    "title": "信息安全技术 网络安全等级保护基本要求",
+    "source_pdf": "标准文档/核心标准/GB-T-22239-2019-网络安全等级保护基本要求.pdf",
+    "pdf_sha256": "254ddd75cac3dec755fd1216f7ef4d3fb8552399b376a1590efd060c537298a4",
+    "pdf_pages": 91,
+    "printed_to_pdf_page_offset": 6,
+    "page_number_note": "正文印刷页码加 6 等于 PDF 物理页序号；前置页使用罗马页码，不适用该换算。"
+  },
+  "scope": {
+    "statement": "仅整理可由防火墙配置、设备运行状态或设备日志直接或部分验证的要求，不代表覆盖 GB/T 22239—2019 全部要求。",
+    "included_contexts": [
+      "general",
+      "cloud-conditional",
+      "mobile-conditional",
+      "iot-conditional",
+      "industrial-control-conditional"
+    ],
+    "default_context": "general",
+    "missing_evidence_result": "NeedsReview",
+    "not_applicable_rule": "仅当部署场景或适用等级存在可验证的不适用条件时使用 NotApplicable。"
+  },
+  "scan_method": {
+    "full_text": "使用同版 DOCX 完整抽取正文并按条款号扫描。",
+    "source_verification": "以 PDF 为标准来源，人工核对通用要求核心页的条款号、条目和印刷页码。",
+    "normalization": "跨等级重复要求归并为逻辑控制族，保留每一级对应的原始条款引用。"
+  },
+  "recommended_p0_control_ids": [
+    "GB22239-FW-001",
+    "GB22239-FW-002",
+    "GB22239-FW-003",
+    "GB22239-FW-004",
+    "GB22239-FW-005",
+    "GB22239-FW-009",
+    "GB22239-FW-010",
+    "GB22239-FW-012",
+    "GB22239-FW-013",
+    "GB22239-FW-014",
+    "GB22239-FW-016",
+    "GB22239-FW-017",
+    "GB22239-FW-018",
+    "GB22239-FW-019",
+    "GB22239-FW-020",
+    "GB22239-FW-021",
+    "GB22239-FW-022",
+    "GB22239-FW-023"
+  ],
+  "general_control_families": [
+    {
+      "control_id": "GB22239-FW-001",
+      "title": "跨边界流量经受控接口通信",
+      "topic": "boundary-protection",
+      "assessment_mode": "mixed",
+      "priority": "P0",
+      "requirement_summary": "跨越网络或区域边界的访问和数据流应通过边界设备提供的受控接口。",
+      "references": [
+        {"level": 1, "clause_id": "6.1.3.1", "item": null, "printed_page": 5, "pdf_page_index": 11},
+        {"level": 2, "clause_id": "7.1.3.1", "item": null, "printed_page": 13, "pdf_page_index": 19},
+        {"level": 3, "clause_id": "8.1.3.1", "item": "a", "printed_page": 27, "pdf_page_index": 33},
+        {"level": 4, "clause_id": "9.1.3.1", "item": "a", "printed_page": 47, "pdf_page_index": 53}
+      ],
+      "evidence_selectors": ["interfaces[*].zone", "routing", "security_zones", "topology"],
+      "automation_note": "单台防火墙配置可证明接口和安全域关系，是否所有跨边界流量均经过该设备通常仍需拓扑证据。"
+    },
+    {
+      "control_id": "GB22239-FW-002",
+      "title": "边界访问控制默认拒绝",
+      "topic": "access-control",
+      "assessment_mode": "automatic",
+      "priority": "P0",
+      "requirement_summary": "边界或区域间访问控制规则应采用默认拒绝，仅放行明确允许的通信。",
+      "references": [
+        {"level": 1, "clause_id": "6.1.3.2", "item": "a", "printed_page": 5, "pdf_page_index": 11},
+        {"level": 2, "clause_id": "7.1.3.2", "item": "a", "printed_page": 13, "pdf_page_index": 19},
+        {"level": 3, "clause_id": "8.1.3.2", "item": "a", "printed_page": 28, "pdf_page_index": 34},
+        {"level": 4, "clause_id": "9.1.3.2", "item": "a", "printed_page": 47, "pdf_page_index": 53}
+      ],
+      "evidence_selectors": ["access_control.default_action", "access_control.policies[*]"],
+      "suggested_operator": "equals",
+      "suggested_expected_value": "deny"
+    },
+    {
+      "control_id": "GB22239-FW-003",
+      "title": "删除多余或无效访问控制规则",
+      "topic": "access-control",
+      "assessment_mode": "mixed",
+      "priority": "P0",
+      "requirement_summary": "应删除多余或无效规则并优化访问控制列表，使规则数量最小化。",
+      "references": [
+        {"level": 1, "clause_id": "6.1.3.2", "item": "b", "printed_page": 5, "pdf_page_index": 11},
+        {"level": 2, "clause_id": "7.1.3.2", "item": "b", "printed_page": 13, "pdf_page_index": 19},
+        {"level": 3, "clause_id": "8.1.3.2", "item": "b", "printed_page": 28, "pdf_page_index": 34},
+        {"level": 4, "clause_id": "9.1.3.2", "item": "b", "printed_page": 47, "pdf_page_index": 53}
+      ],
+      "evidence_selectors": ["access_control.policies[*].enabled", "access_control.policies[*].expires_at", "access_control.policies[*].hit_count"],
+      "automation_note": "可自动发现禁用、过期、阴影和明显冗余规则；业务必要性仍需人工确认。"
+    },
+    {
+      "control_id": "GB22239-FW-004",
+      "title": "基于五元组检查数据包",
+      "topic": "packet-filtering",
+      "assessment_mode": "automatic",
+      "priority": "P0",
+      "requirement_summary": "访问控制应检查源地址、目的地址、源端口、目的端口和协议。",
+      "references": [
+        {"level": 1, "clause_id": "6.1.3.2", "item": "c", "printed_page": 5, "pdf_page_index": 11},
+        {"level": 2, "clause_id": "7.1.3.2", "item": "c", "printed_page": 13, "pdf_page_index": 19},
+        {"level": 3, "clause_id": "8.1.3.2", "item": "c", "printed_page": 28, "pdf_page_index": 34},
+        {"level": 4, "clause_id": "9.1.3.2", "item": "c", "printed_page": 47, "pdf_page_index": 53}
+      ],
+      "evidence_selectors": ["access_control.policies[*].source_cidrs", "access_control.policies[*].destination_cidrs", "access_control.policies[*].services"]
+    },
+    {
+      "control_id": "GB22239-FW-005",
+      "title": "基于会话状态进行访问控制",
+      "topic": "stateful-inspection",
+      "assessment_mode": "automatic",
+      "priority": "P0",
+      "requirement_summary": "应根据会话状态对进出数据流作出明确允许或拒绝。",
+      "references": [
+        {"level": 2, "clause_id": "7.1.3.2", "item": "d", "printed_page": 13, "pdf_page_index": 19},
+        {"level": 3, "clause_id": "8.1.3.2", "item": "d", "printed_page": 28, "pdf_page_index": 34},
+        {"level": 4, "clause_id": "9.1.3.2", "item": "d", "printed_page": 47, "pdf_page_index": 53}
+      ],
+      "evidence_selectors": ["access_control.stateful_inspection_enabled"]
+    },
+    {
+      "control_id": "GB22239-FW-006",
+      "title": "应用协议、应用内容或协议隔离控制",
+      "topic": "application-control",
+      "assessment_mode": "mixed",
+      "priority": "P1",
+      "requirement_summary": "第三级要求基于应用协议和内容控制，第四级要求通过协议转换或协议隔离交换数据。",
+      "references": [
+        {"level": 3, "clause_id": "8.1.3.2", "item": "e", "printed_page": 28, "pdf_page_index": 34},
+        {"level": 4, "clause_id": "9.1.3.2", "item": "e", "printed_page": 47, "pdf_page_index": 53}
+      ],
+      "evidence_selectors": ["application_control.enabled", "application_control.profiles", "protocol_isolation"],
+      "automation_note": "第三级和第四级要求语义不同，应使用不同 rule_id，不得仅按等级继承同一 expected_value。"
+    },
+    {
+      "control_id": "GB22239-FW-007",
+      "title": "网络分区与重要区域隔离",
+      "topic": "network-segmentation",
+      "assessment_mode": "mixed",
+      "priority": "P1",
+      "requirement_summary": "应划分网络区域，并对重要区域与其他区域采取可靠技术隔离。",
+      "references": [
+        {"level": 2, "clause_id": "7.1.2.1", "item": "a-b", "printed_page": 13, "pdf_page_index": 19},
+        {"level": 3, "clause_id": "8.1.2.1", "item": "c-d", "printed_page": 27, "pdf_page_index": 33},
+        {"level": 4, "clause_id": "9.1.2.1", "item": "c-d", "printed_page": 46, "pdf_page_index": 52}
+      ],
+      "evidence_selectors": ["interfaces[*].zone", "security_zones", "routing", "topology"],
+      "automation_note": "配置可验证区域和接口，重要区域的位置及整体隔离效果需要拓扑和业务分区证据。"
+    },
+    {
+      "control_id": "GB22239-FW-008",
+      "title": "关键网络设备容量与硬件冗余",
+      "topic": "availability",
+      "assessment_mode": "mixed",
+      "priority": "P1",
+      "requirement_summary": "网络设备处理能力应满足高峰需要，关键网络设备应具备硬件冗余。",
+      "references": [
+        {"level": 3, "clause_id": "8.1.2.1", "item": "a,e", "printed_page": 27, "pdf_page_index": 33},
+        {"level": 4, "clause_id": "9.1.2.1", "item": "a,e", "printed_page": 46, "pdf_page_index": 52}
+      ],
+      "evidence_selectors": ["capacity", "high_availability.enabled", "high_availability.state", "high_availability.configuration_synchronized"],
+      "automation_note": "HA 配置可自动检查；是否满足业务高峰需要还需容量基线和监控数据。"
+    },
+    {
+      "control_id": "GB22239-FW-009",
+      "title": "网络攻击检测、防止或限制",
+      "topic": "intrusion-prevention",
+      "assessment_mode": "automatic",
+      "priority": "P0",
+      "requirement_summary": "关键网络节点应监视或检测、防止、限制来自外部和内部的网络攻击。",
+      "references": [
+        {"level": 2, "clause_id": "7.1.3.3", "item": null, "printed_page": 13, "pdf_page_index": 19},
+        {"level": 3, "clause_id": "8.1.3.3", "item": "a-c", "printed_page": 28, "pdf_page_index": 34},
+        {"level": 4, "clause_id": "9.1.3.3", "item": "a-c", "printed_page": 47, "pdf_page_index": 53}
+      ],
+      "evidence_selectors": ["threat_prevention.ips_enabled", "threat_prevention.attack_analysis_enabled"]
+    },
+    {
+      "control_id": "GB22239-FW-010",
+      "title": "攻击事件记录与严重事件告警",
+      "topic": "intrusion-alerting",
+      "assessment_mode": "automatic",
+      "priority": "P0",
+      "requirement_summary": "检测到攻击时应记录攻击源、类型、目标和时间，严重事件应告警。",
+      "references": [
+        {"level": 3, "clause_id": "8.1.3.3", "item": "d", "printed_page": 28, "pdf_page_index": 34},
+        {"level": 4, "clause_id": "9.1.3.3", "item": "d", "printed_page": 47, "pdf_page_index": 53}
+      ],
+      "evidence_selectors": ["threat_prevention.attack_logging_enabled", "threat_prevention.severe_event_alerting_enabled", "threat_log_fields"]
+    },
+    {
+      "control_id": "GB22239-FW-011",
+      "title": "网络恶意代码检测、清除和更新",
+      "topic": "anti-malware",
+      "assessment_mode": "conditional",
+      "priority": "P1",
+      "requirement_summary": "关键网络节点应检测和清除恶意代码，并维护防护机制升级更新。",
+      "references": [
+        {"level": 2, "clause_id": "7.1.3.4", "item": null, "printed_page": 13, "pdf_page_index": 19},
+        {"level": 3, "clause_id": "8.1.3.4", "item": "a", "printed_page": 28, "pdf_page_index": 34},
+        {"level": 4, "clause_id": "9.1.3.4", "item": "a", "printed_page": 47, "pdf_page_index": 53}
+      ],
+      "applicability_condition": "设备承担网络恶意代码检测能力或启用了 UTM/反病毒能力。",
+      "evidence_selectors": ["threat_prevention.antivirus_enabled", "threat_prevention.signature_version", "threat_prevention.last_update_at"]
+    },
+    {
+      "control_id": "GB22239-FW-012",
+      "title": "网络边界安全审计覆盖",
+      "topic": "boundary-audit",
+      "assessment_mode": "mixed",
+      "priority": "P0",
+      "requirement_summary": "应在网络边界和重要网络节点审计重要用户行为和安全事件。",
+      "references": [
+        {"level": 2, "clause_id": "7.1.3.5", "item": "a", "printed_page": 13, "pdf_page_index": 19},
+        {"level": 3, "clause_id": "8.1.3.5", "item": "a", "printed_page": 28, "pdf_page_index": 34},
+        {"level": 4, "clause_id": "9.1.3.5", "item": "a", "printed_page": 48, "pdf_page_index": 54}
+      ],
+      "evidence_selectors": ["logging.policy_log_enabled", "logging.threat_log_enabled", "access_control.policies[*].logging_enabled"],
+      "automation_note": "配置可以检查日志开关和策略覆盖率，是否覆盖每个用户需结合身份映射能力。"
+    },
+    {
+      "control_id": "GB22239-FW-013",
+      "title": "审计记录字段完整",
+      "topic": "audit-record",
+      "assessment_mode": "automatic",
+      "priority": "P0",
+      "requirement_summary": "审计记录应包含日期时间、用户或主体、事件类型、结果及相关信息。",
+      "references": [
+        {"level": 2, "clause_id": "7.1.3.5", "item": "b", "printed_page": 14, "pdf_page_index": 20},
+        {"level": 3, "clause_id": "8.1.3.5", "item": "b", "printed_page": 28, "pdf_page_index": 34},
+        {"level": 4, "clause_id": "9.1.3.5", "item": "b", "printed_page": 48, "pdf_page_index": 54}
+      ],
+      "evidence_selectors": ["logging.audit_record_fields", "sample_logs"]
+    },
+    {
+      "control_id": "GB22239-FW-014",
+      "title": "审计记录保护与定期备份",
+      "topic": "audit-protection",
+      "assessment_mode": "mixed",
+      "priority": "P0",
+      "requirement_summary": "审计记录应受到保护并定期备份，避免非预期删除、修改或覆盖。",
+      "references": [
+        {"level": 2, "clause_id": "7.1.3.5", "item": "c", "printed_page": 14, "pdf_page_index": 20},
+        {"level": 3, "clause_id": "8.1.3.5", "item": "c", "printed_page": 28, "pdf_page_index": 34},
+        {"level": 4, "clause_id": "9.1.3.5", "item": "c", "printed_page": 48, "pdf_page_index": 54}
+      ],
+      "evidence_selectors": ["logging.local_retention_days", "logging.remote_logging.enabled", "logging.remote_logging.servers", "logging.audit_log_protection_enabled"],
+      "automation_note": "可验证远程发送、留存和防篡改配置；定期备份是否真实执行需要运行或样本证据。"
+    },
+    {
+      "control_id": "GB22239-FW-015",
+      "title": "远程访问及互联网访问行为单独审计",
+      "topic": "user-behavior-audit",
+      "assessment_mode": "conditional",
+      "priority": "P1",
+      "requirement_summary": "第三级要求对远程访问用户和互联网访问用户行为单独审计分析。",
+      "references": [
+        {"level": 3, "clause_id": "8.1.3.5", "item": "d", "printed_page": 28, "pdf_page_index": 34}
+      ],
+      "applicability_condition": "防火墙承担远程接入或互联网出口用户行为审计。",
+      "evidence_selectors": ["vpn.enabled", "user_behavior_audit.remote_access_enabled", "user_behavior_audit.internet_access_enabled"]
+    },
+    {
+      "control_id": "GB22239-FW-016",
+      "title": "管理登录身份唯一、鉴别信息复杂并定期更换",
+      "topic": "identity-authentication",
+      "assessment_mode": "automatic",
+      "priority": "P0",
+      "requirement_summary": "登录用户应具有唯一身份标识，鉴别信息满足复杂度要求并定期更换。",
+      "references": [
+        {"level": 1, "clause_id": "6.1.4.1", "item": "a", "printed_page": 6, "pdf_page_index": 12},
+        {"level": 2, "clause_id": "7.1.4.1", "item": "a", "printed_page": 14, "pdf_page_index": 20},
+        {"level": 3, "clause_id": "8.1.4.1", "item": "a", "printed_page": 29, "pdf_page_index": 35},
+        {"level": 4, "clause_id": "9.1.4.1", "item": "a", "printed_page": 48, "pdf_page_index": 54}
+      ],
+      "evidence_selectors": ["management.accounts", "management.password_policy.complexity", "management.password_policy.max_age_days"]
+    },
+    {
+      "control_id": "GB22239-FW-017",
+      "title": "登录失败处理和会话超时",
+      "topic": "login-protection",
+      "assessment_mode": "automatic",
+      "priority": "P0",
+      "requirement_summary": "应限制非法登录次数，并在登录连接超时后自动退出或结束会话。",
+      "references": [
+        {"level": 1, "clause_id": "6.1.4.1", "item": "b", "printed_page": 6, "pdf_page_index": 12},
+        {"level": 2, "clause_id": "7.1.4.1", "item": "b", "printed_page": 14, "pdf_page_index": 20},
+        {"level": 3, "clause_id": "8.1.4.1", "item": "b", "printed_page": 29, "pdf_page_index": 35},
+        {"level": 4, "clause_id": "9.1.4.1", "item": "b", "printed_page": 48, "pdf_page_index": 54}
+      ],
+      "evidence_selectors": ["management.login_policy.max_failures", "management.login_policy.lockout", "management.session_timeout_minutes"]
+    },
+    {
+      "control_id": "GB22239-FW-018",
+      "title": "管理用户多因素身份鉴别",
+      "topic": "mfa",
+      "assessment_mode": "automatic",
+      "priority": "P0",
+      "requirement_summary": "第三级及第四级应采用两种或以上组合鉴别技术，且至少一种使用密码技术。",
+      "references": [
+        {"level": 3, "clause_id": "8.1.4.1", "item": "d", "printed_page": 29, "pdf_page_index": 35},
+        {"level": 4, "clause_id": "9.1.4.1", "item": "d", "printed_page": 48, "pdf_page_index": 54}
+      ],
+      "evidence_selectors": ["management.mfa_enabled", "management.accounts[*].mfa_bound", "management.authentication_factors"],
+      "automation_note": "仅有 mfa_enabled 布尔值不足以证明采用了标准要求的密码技术，应记录实际因子。"
+    },
+    {
+      "control_id": "GB22239-FW-019",
+      "title": "远程管理鉴别信息传输保护",
+      "topic": "secure-remote-management",
+      "assessment_mode": "automatic",
+      "priority": "P0",
+      "requirement_summary": "远程管理时应防止鉴别信息在网络传输中被窃听。",
+      "references": [
+        {"level": 2, "clause_id": "7.1.4.1", "item": "c", "printed_page": 14, "pdf_page_index": 20},
+        {"level": 3, "clause_id": "8.1.4.1", "item": "c", "printed_page": 29, "pdf_page_index": 35},
+        {"level": 4, "clause_id": "9.1.4.1", "item": "c", "printed_page": 48, "pdf_page_index": 54}
+      ],
+      "evidence_selectors": ["management.protocols.ssh.enabled", "management.protocols.https.enabled", "management.protocols.telnet.enabled", "management.protocols.http.enabled"],
+      "suggested_logic": "ssh_or_https_enabled AND telnet_disabled AND http_disabled"
+    },
+    {
+      "control_id": "GB22239-FW-020",
+      "title": "默认、过期、多余和共享账户治理",
+      "topic": "account-management",
+      "assessment_mode": "mixed",
+      "priority": "P0",
+      "requirement_summary": "应重命名或删除默认账户，及时停用多余和过期账户并避免共享账户。",
+      "references": [
+        {"level": 1, "clause_id": "6.1.4.2", "item": "b-c", "printed_page": 6, "pdf_page_index": 12},
+        {"level": 2, "clause_id": "7.1.4.2", "item": "b-c", "printed_page": 14, "pdf_page_index": 20},
+        {"level": 3, "clause_id": "8.1.4.2", "item": "b-c", "printed_page": 29, "pdf_page_index": 35},
+        {"level": 4, "clause_id": "9.1.4.2", "item": "b-c", "printed_page": 48, "pdf_page_index": 54}
+      ],
+      "evidence_selectors": ["management.accounts[*].account_id", "management.accounts[*].enabled", "management.accounts[*].expires_at", "management.accounts[*].shared", "management.default_accounts"]
+    },
+    {
+      "control_id": "GB22239-FW-021",
+      "title": "管理用户最小权限和权限分离",
+      "topic": "least-privilege",
+      "assessment_mode": "mixed",
+      "priority": "P0",
+      "requirement_summary": "应授予管理用户所需最小权限并实现管理用户权限分离。",
+      "references": [
+        {"level": 2, "clause_id": "7.1.4.2", "item": "d", "printed_page": 14, "pdf_page_index": 20},
+        {"level": 3, "clause_id": "8.1.4.2", "item": "d", "printed_page": 29, "pdf_page_index": 35},
+        {"level": 4, "clause_id": "9.1.4.2", "item": "d", "printed_page": 48, "pdf_page_index": 54}
+      ],
+      "evidence_selectors": ["management.accounts[*].role", "management.roles", "management.role_permissions"],
+      "automation_note": "角色是否分离可自动检查；权限是否业务必需仍需授权基线。"
+    },
+    {
+      "control_id": "GB22239-FW-022",
+      "title": "限制远程管理终端来源",
+      "topic": "management-source-restriction",
+      "assessment_mode": "automatic",
+      "priority": "P0",
+      "requirement_summary": "应通过终端接入方式或网络地址范围限制通过网络管理设备的终端。",
+      "references": [
+        {"level": 2, "clause_id": "7.1.4.4", "item": "c", "printed_page": 14, "pdf_page_index": 20},
+        {"level": 3, "clause_id": "8.1.4.4", "item": "c", "printed_page": 29, "pdf_page_index": 35},
+        {"level": 4, "clause_id": "9.1.4.4", "item": "c", "printed_page": 49, "pdf_page_index": 55}
+      ],
+      "evidence_selectors": ["management.allowed_source_cidrs", "management.source_interface"]
+    },
+    {
+      "control_id": "GB22239-FW-023",
+      "title": "关闭不需要的服务和高危端口",
+      "topic": "system-hardening",
+      "assessment_mode": "automatic",
+      "priority": "P0",
+      "requirement_summary": "应遵循最小安装原则并关闭不需要的系统服务、默认共享和高危端口。",
+      "references": [
+        {"level": 1, "clause_id": "6.1.4.3", "item": "a-b", "printed_page": 6, "pdf_page_index": 12},
+        {"level": 2, "clause_id": "7.1.4.4", "item": "a-b", "printed_page": 14, "pdf_page_index": 20},
+        {"level": 3, "clause_id": "8.1.4.4", "item": "a-b", "printed_page": 29, "pdf_page_index": 35},
+        {"level": 4, "clause_id": "9.1.4.4", "item": "a-b", "printed_page": 49, "pdf_page_index": 55}
+      ],
+      "evidence_selectors": ["management.protocols", "interfaces[*].management_services", "system_services", "installed_components"]
+    },
+    {
+      "control_id": "GB22239-FW-024",
+      "title": "已知漏洞发现和修补",
+      "topic": "vulnerability-management",
+      "assessment_mode": "mixed",
+      "priority": "P1",
+      "requirement_summary": "应发现已知漏洞，并在充分测试评估后及时修补。",
+      "references": [
+        {"level": 2, "clause_id": "7.1.4.4", "item": "e", "printed_page": 14, "pdf_page_index": 20},
+        {"level": 3, "clause_id": "8.1.4.4", "item": "e", "printed_page": 29, "pdf_page_index": 35},
+        {"level": 4, "clause_id": "9.1.4.4", "item": "e", "printed_page": 49, "pdf_page_index": 55}
+      ],
+      "evidence_selectors": ["target.software_version", "vulnerability_scan", "patch_level"],
+      "automation_note": "设备版本可用于匹配漏洞基线，但补丁测试和审批过程需要外部证据。"
+    },
+    {
+      "control_id": "GB22239-FW-025",
+      "title": "重要配置和数据备份恢复",
+      "topic": "configuration-backup",
+      "assessment_mode": "mixed",
+      "priority": "P1",
+      "requirement_summary": "应提供重要数据本地备份恢复；较高级别还要求异地或实时备份。",
+      "references": [
+        {"level": 1, "clause_id": "6.1.4.7", "item": null, "printed_page": 6, "pdf_page_index": 12},
+        {"level": 2, "clause_id": "7.1.4.8", "item": "a-b", "printed_page": 15, "pdf_page_index": 21},
+        {"level": 3, "clause_id": "8.1.4.9", "item": "a-b", "printed_page": 30, "pdf_page_index": 36},
+        {"level": 4, "clause_id": "9.1.4.9", "item": "a-b", "printed_page": 49, "pdf_page_index": 55}
+      ],
+      "evidence_selectors": ["configuration_backup.enabled", "configuration_backup.last_success_at", "configuration_backup.remote_destination", "configuration_backup.restore_tested_at"]
+    },
+    {
+      "control_id": "GB22239-FW-026",
+      "title": "设备安全审计功能及审计进程保护",
+      "topic": "device-audit",
+      "assessment_mode": "mixed",
+      "priority": "P1",
+      "requirement_summary": "设备应启用安全审计，记录重要用户行为和安全事件；较高级别还应保护审计进程。",
+      "references": [
+        {"level": 2, "clause_id": "7.1.4.3", "item": "a-c", "printed_page": 14, "pdf_page_index": 20},
+        {"level": 3, "clause_id": "8.1.4.3", "item": "a-d", "printed_page": 29, "pdf_page_index": 35},
+        {"level": 4, "clause_id": "9.1.4.3", "item": "a-d", "printed_page": 48, "pdf_page_index": 54}
+      ],
+      "evidence_selectors": ["logging.audit_log_enabled", "logging.admin_operation_log_enabled", "logging.audit_process_protection_enabled"]
+    },
+    {
+      "control_id": "GB22239-FW-027",
+      "title": "系统管理员身份鉴别、受限操作界面和操作审计",
+      "topic": "system-administration",
+      "assessment_mode": "mixed",
+      "priority": "P1",
+      "requirement_summary": "系统管理员只能经特定命令或界面管理系统，并对其操作进行审计。",
+      "references": [
+        {"level": 2, "clause_id": "7.1.5.1", "item": "a", "printed_page": 15, "pdf_page_index": 21},
+        {"level": 3, "clause_id": "8.1.5.1", "item": "a", "printed_page": 30, "pdf_page_index": 36},
+        {"level": 4, "clause_id": "9.1.5.1", "item": "a", "printed_page": 50, "pdf_page_index": 56}
+      ],
+      "evidence_selectors": ["management.accounts[role=system_admin]", "management.command_authorization", "logging.admin_operation_log_enabled"]
+    },
+    {
+      "control_id": "GB22239-FW-028",
+      "title": "审计管理员身份鉴别、受限操作界面和操作审计",
+      "topic": "audit-administration",
+      "assessment_mode": "mixed",
+      "priority": "P1",
+      "requirement_summary": "审计管理员只能经特定命令或界面执行审计操作，并对其操作进行审计。",
+      "references": [
+        {"level": 2, "clause_id": "7.1.5.2", "item": "a", "printed_page": 15, "pdf_page_index": 21},
+        {"level": 3, "clause_id": "8.1.5.2", "item": "a", "printed_page": 31, "pdf_page_index": 37},
+        {"level": 4, "clause_id": "9.1.5.2", "item": "a", "printed_page": 50, "pdf_page_index": 56}
+      ],
+      "evidence_selectors": ["management.accounts[role=auditor]", "management.command_authorization", "logging.auditor_operation_log_enabled"],
+      "manual_component": "审计管理员实际分析记录和根据结果处理属于人工或外部系统证据，不由设备配置单独判定。"
+    },
+    {
+      "control_id": "GB22239-FW-029",
+      "title": "安全管理员身份鉴别、受限操作界面和操作审计",
+      "topic": "security-administration",
+      "assessment_mode": "mixed",
+      "priority": "P1",
+      "requirement_summary": "安全管理员只能经特定命令或界面配置安全策略，并对其操作进行审计。",
+      "references": [
+        {"level": 3, "clause_id": "8.1.5.3", "item": "a-b", "printed_page": 31, "pdf_page_index": 37},
+        {"level": 4, "clause_id": "9.1.5.3", "item": "a-b", "printed_page": 50, "pdf_page_index": 56}
+      ],
+      "evidence_selectors": ["management.accounts[role=security_admin]", "management.command_authorization", "logging.security_admin_operation_log_enabled"]
+    },
+    {
+      "control_id": "GB22239-FW-030",
+      "title": "安全设备集中管控区域和安全管理路径",
+      "topic": "centralized-management",
+      "assessment_mode": "mixed",
+      "priority": "P1",
+      "requirement_summary": "应划分特定管理区域，并通过安全的信息传输路径管理安全设备或组件。",
+      "references": [
+        {"level": 3, "clause_id": "8.1.5.4", "item": "a-b", "printed_page": 31, "pdf_page_index": 37},
+        {"level": 4, "clause_id": "9.1.5.4", "item": "a-b", "printed_page": 50, "pdf_page_index": 56}
+      ],
+      "evidence_selectors": ["management.source_interface", "management.allowed_source_cidrs", "management.protocols", "management_zone"]
+    },
+    {
+      "control_id": "GB22239-FW-031",
+      "title": "设备运行状态集中监测",
+      "topic": "central-monitoring",
+      "assessment_mode": "mixed",
+      "priority": "P1",
+      "requirement_summary": "应集中监测网络链路、安全设备、网络设备和服务器运行状况。",
+      "references": [
+        {"level": 3, "clause_id": "8.1.5.4", "item": "c", "printed_page": 31, "pdf_page_index": 37},
+        {"level": 4, "clause_id": "9.1.5.4", "item": "c", "printed_page": 50, "pdf_page_index": 56}
+      ],
+      "evidence_selectors": ["monitoring.enabled", "monitoring.protocol", "monitoring.destinations"]
+    },
+    {
+      "control_id": "GB22239-FW-032",
+      "title": "审计数据集中收集和留存",
+      "topic": "centralized-logging",
+      "assessment_mode": "mixed",
+      "priority": "P1",
+      "requirement_summary": "应集中收集、汇总和分析设备审计数据，并使留存时间符合法律法规要求。",
+      "references": [
+        {"level": 3, "clause_id": "8.1.5.4", "item": "d", "printed_page": 31, "pdf_page_index": 37},
+        {"level": 4, "clause_id": "9.1.5.4", "item": "d", "printed_page": 50, "pdf_page_index": 56}
+      ],
+      "evidence_selectors": ["logging.remote_logging.enabled", "logging.remote_logging.servers", "logging.local_retention_days"],
+      "automation_note": "是否达到法定留存期必须由版本化政策或法律基线提供 expected_value，不能硬编码为任意天数。"
+    },
+    {
+      "control_id": "GB22239-FW-033",
+      "title": "安全策略、恶意代码和补丁升级集中管理",
+      "topic": "central-policy-management",
+      "assessment_mode": "mixed",
+      "priority": "P1",
+      "requirement_summary": "应集中管理安全策略、恶意代码防护和补丁升级等事项。",
+      "references": [
+        {"level": 3, "clause_id": "8.1.5.4", "item": "e", "printed_page": 31, "pdf_page_index": 37},
+        {"level": 4, "clause_id": "9.1.5.4", "item": "e", "printed_page": 50, "pdf_page_index": 56}
+      ],
+      "evidence_selectors": ["central_manager.enabled", "central_manager.policy_sync", "central_manager.signature_update", "central_manager.patch_management"]
+    },
+    {
+      "control_id": "GB22239-FW-034",
+      "title": "安全事件集中识别、报警和分析",
+      "topic": "security-event-management",
+      "assessment_mode": "mixed",
+      "priority": "P1",
+      "requirement_summary": "应识别、报警和分析网络中的各类安全事件。",
+      "references": [
+        {"level": 3, "clause_id": "8.1.5.4", "item": "f", "printed_page": 31, "pdf_page_index": 37},
+        {"level": 4, "clause_id": "9.1.5.4", "item": "f", "printed_page": 51, "pdf_page_index": 57}
+      ],
+      "evidence_selectors": ["event_management.enabled", "event_management.alerting", "event_management.analysis"]
+    },
+    {
+      "control_id": "GB22239-FW-035",
+      "title": "系统范围统一时钟",
+      "topic": "time-synchronization",
+      "assessment_mode": "automatic",
+      "priority": "P1",
+      "requirement_summary": "第四级要求系统范围内时间由唯一确定的时钟产生，保证数据管理分析时间一致。",
+      "references": [
+        {"level": 4, "clause_id": "9.1.5.4", "item": "g", "printed_page": 51, "pdf_page_index": 57}
+      ],
+      "evidence_selectors": ["time_sync.enabled", "time_sync.servers"],
+      "automation_note": "配置可证明 NTP 等同步设置，实际一致性还可补充运行状态证据。"
+    },
+    {
+      "control_id": "GB22239-FW-036",
+      "title": "通信数据完整性和保密性",
+      "topic": "secure-communication",
+      "assessment_mode": "conditional",
+      "priority": "P1",
+      "requirement_summary": "通信过程应保护数据完整性；第三级和第四级进一步要求使用密码技术保护完整性和保密性。",
+      "references": [
+        {"level": 1, "clause_id": "6.1.2.1", "item": null, "printed_page": 5, "pdf_page_index": 11},
+        {"level": 2, "clause_id": "7.1.2.2", "item": null, "printed_page": 13, "pdf_page_index": 19},
+        {"level": 3, "clause_id": "8.1.2.2", "item": "a-b", "printed_page": 27, "pdf_page_index": 33},
+        {"level": 4, "clause_id": "9.1.2.2", "item": "a", "printed_page": 46, "pdf_page_index": 52},
+        {"level": 4, "clause_id": "9.1.2.2", "item": "b-d", "printed_page": 47, "pdf_page_index": 53}
+      ],
+      "applicability_condition": "防火墙承担 VPN、加密隧道或相关通信保护功能。",
+      "evidence_selectors": ["vpn.enabled", "vpn.protocols", "vpn.crypto_suites", "vpn.peer_authentication"]
+    }
+  ],
+  "conditional_extension_candidates": [
+    {
+      "control_id": "GB22239-FW-CLOUD-001",
+      "context": "cloud",
+      "title": "云服务客户虚拟网络隔离",
+      "assessment_mode": "mixed",
+      "references": ["6.2.2.1 b", "7.2.2.1 b", "8.2.2.1 b", "9.2.2.1 b"],
+      "applicability_condition": "deployment_context.cloud == true"
+    },
+    {
+      "control_id": "GB22239-FW-CLOUD-002",
+      "context": "cloud",
+      "title": "虚拟化边界访问控制机制和规则",
+      "assessment_mode": "automatic",
+      "references": ["6.2.3.1", "7.2.3.1 a-b", "8.2.3.1 a-b", "9.2.3.1 a-b"],
+      "applicability_condition": "deployment_context.cloud == true"
+    },
+    {
+      "control_id": "GB22239-FW-CLOUD-003",
+      "context": "cloud",
+      "title": "云环境攻击和异常流量检测告警",
+      "assessment_mode": "mixed",
+      "references": ["7.2.3.2 a-c", "8.2.3.2 a-d", "9.2.3.2 a-d"],
+      "applicability_condition": "deployment_context.cloud == true"
+    },
+    {
+      "control_id": "GB22239-FW-CLOUD-004",
+      "context": "cloud",
+      "title": "云平台远程特权命令审计",
+      "assessment_mode": "mixed",
+      "references": ["7.2.3.3 a-b", "8.2.3.3 a-b", "9.2.3.3 a-b"],
+      "applicability_condition": "deployment_context.cloud == true"
+    },
+    {
+      "control_id": "GB22239-FW-CLOUD-005",
+      "context": "cloud",
+      "title": "远程管理云设备双向身份验证",
+      "assessment_mode": "automatic",
+      "references": ["8.2.4.1", "9.2.4.1"],
+      "applicability_condition": "deployment_context.cloud == true AND remote_management == true"
+    },
+    {
+      "control_id": "GB22239-FW-MOBILE-001",
+      "context": "mobile",
+      "title": "有线与无线网络边界经无线接入网关",
+      "assessment_mode": "mixed",
+      "references": ["6.3.2.1", "7.3.2.1", "8.3.2.1", "9.3.2.1"],
+      "applicability_condition": "deployment_context.mobile == true"
+    },
+    {
+      "control_id": "GB22239-FW-IOT-001",
+      "context": "iot",
+      "title": "限制感知节点和网关节点通信目标地址",
+      "assessment_mode": "automatic",
+      "references": ["7.4.2.2 a-b", "8.4.2.2 a-b", "9.4.2.2 a-b"],
+      "applicability_condition": "deployment_context.iot == true"
+    },
+    {
+      "control_id": "GB22239-FW-ICS-001",
+      "context": "industrial-control",
+      "title": "工业控制系统分区和技术隔离",
+      "assessment_mode": "mixed",
+      "references": ["6.5.2.1 a-b", "7.5.2.1 a-c", "8.5.2.1 a-c", "9.5.2.1 a-c"],
+      "applicability_condition": "deployment_context.industrial_control == true"
+    },
+    {
+      "control_id": "GB22239-FW-ICS-002",
+      "context": "industrial-control",
+      "title": "工控边界部署访问控制并禁止通用网络服务",
+      "assessment_mode": "automatic",
+      "references": ["6.5.3.1", "7.5.3.1 a", "8.5.3.1 a", "9.5.3.1 a"],
+      "applicability_condition": "deployment_context.industrial_control == true"
+    },
+    {
+      "control_id": "GB22239-FW-ICS-003",
+      "context": "industrial-control",
+      "title": "工控安全域边界防护失效告警",
+      "assessment_mode": "automatic",
+      "references": ["7.5.3.1 b", "8.5.3.1 b", "9.5.3.1 b"],
+      "applicability_condition": "deployment_context.industrial_control == true"
+    },
+    {
+      "control_id": "GB22239-FW-ICS-004",
+      "context": "industrial-control",
+      "title": "工控广域网通信加密认证和访问控制",
+      "assessment_mode": "mixed",
+      "references": ["7.5.2.2", "8.5.2.2", "9.5.2.2"],
+      "applicability_condition": "deployment_context.industrial_control == true AND industrial_wan == true"
+    }
+  ],
+  "excluded_or_manual_only_groups": [
+    {
+      "group": "安全物理环境",
+      "disposition": "excluded-from-automatic-firewall-assessment",
+      "reason": "机房位置、门禁、防火、防水、防雷和供电不能由防火墙配置证明。"
+    },
+    {
+      "group": "安全管理制度",
+      "disposition": "manual-only",
+      "reason": "安全策略、制度制定发布和评审修订需要制度文件及审批证据。"
+    },
+    {
+      "group": "安全管理机构和安全管理人员",
+      "disposition": "manual-only",
+      "reason": "岗位、人员配备、录用离岗、培训和授权审批需要组织及人员证据。"
+    },
+    {
+      "group": "安全建设管理",
+      "disposition": "mostly-manual",
+      "reason": "定级备案、方案设计、采购、开发、测试验收和交付主要依赖项目文档；仅产品版本或设备能力可作为辅助事实。"
+    },
+    {
+      "group": "安全运维管理",
+      "disposition": "mostly-manual",
+      "reason": "运维流程、变更审批、漏洞处置、备份执行、事件响应和外包管理主要需要记录、工单和访谈证据。"
+    },
+    {
+      "group": "可信验证条款",
+      "disposition": "advisory-candidate",
+      "reason": "大量条款使用“可”而非“应”，不应直接生成强制 Failed；若项目需要可作为增强能力展示。"
+    }
+  ]
+}

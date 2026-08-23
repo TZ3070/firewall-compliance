@@ -1,0 +1,40 @@
+.DS_Store
+*.ses
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+backend/.venv/
+
+# SQLite and generated artifacts
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+backend/data/*
+!backend/data/.gitkeep
+!backend/data/catalog/
+!backend/data/catalog/*.json
+!backend/data/mock/
+!backend/data/mock/default-firewall.json
+!backend/data/mock/default-firewall.cfg
+!backend/data/huawei-atomic-configs/
+!backend/data/huawei-atomic-configs/*.cfg
+!backend/data/huawei-atomic-configs/*.json
+artifacts/
+
+# Frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+coverage/
+
+# Editors
+.idea/
+.vscode/

@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0.0",
+  "scenario_id": "06-management-source-restricted-compliant",
+  "vendor": "Huawei",
+  "judgment_scope": "configuration-only preliminary assessment",
+  "expected_result": "Passed",
+  "expected_parsed_patch": {
+    "management": {
+      "source_interface": "GigabitEthernet0/0/0",
+      "allowed_source_cidrs": [
+        "192.0.2.32/27"
+      ]
+    }
+  },
+  "judgment_reason": "配置同时约束管理接口和可管理的源地址段。",
+  "limitations": [],
+  "primary_standard": {
+    "record_id": "JR0071-2-FW-031",
+    "standard_code": "JR/T 0071.2—2020",
+    "title": "限制远程管理终端来源",
+    "clause_id": "8.1.4.4",
+    "classified_protection_level": 3,
+    "verbatim_text": "8.1.4.4   入侵防范\nc)   应通过设定终端接入方式或网络地址范围对通过网络进行管理的管理终端进行限制。",
+    "content_sha256": "bec4d3b9d5791c9db32ff11e7aad8088047673d5d973c022594af9ed2ada4cd0",
+    "review_status": "HumanReviewed",
+    "citation_eligible": true,
+    "source_record_pointer": "/control_candidates/30"
+  },
+  "related_standards": [
+    {
+      "record_id": "GB22239-FW-022",
+      "standard_code": "GB/T 22239—2019",
+      "title": "限制远程管理终端来源",
+      "clause_id": "8.1.4.4",
+      "classified_protection_level": 3,
+      "verbatim_text": "8 . 1 . 4 . 4    入侵防范\nc)   应通过设定终端接入方式或网络地址范围对通过网络进行管理的管理终端进行限制 ;",
+      "content_sha256": "cc5704e0a8037690e104953db7a0e570e9e1860917bddf7bb312896e3c711d50",
+      "review_status": "HumanReviewed",
+      "citation_eligible": true,
+      "source_record_pointer": "/general_control_families/21"
+    },
+    {
+      "record_id": "GB20281-FW-043",
+      "standard_code": "GB/T 20281—2020",
+      "title": "远程管理来源限制和非明文传输",
+      "clause_id": "6.2.4",
+      "classified_protection_level": null,
+      "verbatim_text": "6.2.4     管理方式\na)  支持通过 console端口进行本地管理；\nb)   支持通过网络接口进行远程管理，并能限定进行远程管理的 IP、MAC 地址；\nc)  远程管理过程中，管理端与产品之间的所有通信数据应非明文传输；\nd) 支持 SNMP 网管协议方式的监控和管理；",
+      "content_sha256": "024ac264f5569ba5a3cb69c79ba61e4f327a8efaf4035694dfd2a45da9925213",
+      "review_status": "HumanReviewed",
+      "citation_eligible": true,
+      "source_record_pointer": "/control_candidates/42"
+    }
+  ],
+  "catalog_provenance": {
+    "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+    "catalog_version": "1.0.0",
+    "catalog_record_count": 440,
+    "review_artifact_sha256": "4eae8aacab3733847dfffb5b8fecf52415dda82b26d23151fa0cdb805009670f"
+  }
+}

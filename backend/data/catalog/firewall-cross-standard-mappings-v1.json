@@ -1,0 +1,2617 @@
+{
+  "schema_version": "1.0.0",
+  "catalog_id": "firewall-cross-standard-mappings-v1",
+  "catalog_version": "1.0.0",
+  "generated_on": "2026-08-23",
+  "review_status": "Draft",
+  "scope": "连接 GB/T 22239、JR/T 0071.2 与 GB/T 20281 的防火墙控制项；JR/T 0072 的 measures 关系继续由统一目录承载。",
+  "unified_catalog_id": "unified-firewall-catalog-v1",
+  "unified_catalog_sha256": "54233d21fe2ca3b19084f31c61d61d13c5fcba55ad3a7719de50219ff01acba3",
+  "mapping_policy": [
+    "JR/T 0071.2 到 GB/T 22239 使用 equivalent、refines 或 partial。",
+    "GB/T 20281 到 JR/T 0071.2 仅使用 supports，表示产品能力支撑。",
+    "当前产品范围仅限 network-based-firewall，并按 basic/enhanced 适用表过滤。",
+    "所有跨标准关系 standalone_pass_allowed 均为 false。",
+    "待用户确认的问题不写成正式映射。"
+  ],
+  "mappings": [
+    {
+      "mapping_id": "XMAP-BASE-001",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-001",
+        "title": "网络分区与重要区域技术隔离"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-007",
+        "title": "网络分区与重要区域隔离"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“网络分区与重要区域技术隔离”与“网络分区与重要区域隔离”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-002",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-002",
+        "title": "业务容量、带宽与关键设备冗余"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-008",
+        "title": "关键网络设备容量与硬件冗余"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“业务容量、带宽与关键设备冗余”覆盖“关键网络设备容量与硬件冗余”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-003",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-004",
+        "title": "通信完整性、保密性和通信双方认证"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-036",
+        "title": "通信数据完整性和保密性"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“通信完整性、保密性和通信双方认证”覆盖“通信数据完整性和保密性”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-004",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-005",
+        "title": "跨边界流量经受控接口通信"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-001",
+        "title": "跨边界流量经受控接口通信"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“跨边界流量经受控接口通信”与“跨边界流量经受控接口通信”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-005",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-007",
+        "title": "边界访问控制默认拒绝"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-002",
+        "title": "边界访问控制默认拒绝"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“边界访问控制默认拒绝”与“边界访问控制默认拒绝”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-006",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-008",
+        "title": "删除多余或无效访问控制规则"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-003",
+        "title": "删除多余或无效访问控制规则"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“删除多余或无效访问控制规则”与“删除多余或无效访问控制规则”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-007",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-009",
+        "title": "基于五元组检查数据包"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-004",
+        "title": "基于五元组检查数据包"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“基于五元组检查数据包”与“基于五元组检查数据包”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-008",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-010",
+        "title": "基于会话状态进行访问控制"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-005",
+        "title": "基于会话状态进行访问控制"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“基于会话状态进行访问控制”与“基于会话状态进行访问控制”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-009",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-011",
+        "title": "应用内容控制或协议转换隔离"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-006",
+        "title": "应用协议、应用内容或协议隔离控制"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“应用内容控制或协议转换隔离”与“应用协议、应用内容或协议隔离控制”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-010",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-014",
+        "title": "内外部网络攻击检测、防止或限制"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-009",
+        "title": "网络攻击检测、防止或限制"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“内外部网络攻击检测、防止或限制”与“网络攻击检测、防止或限制”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-011",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-016",
+        "title": "攻击事件记录与严重事件告警"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-010",
+        "title": "攻击事件记录与严重事件告警"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“攻击事件记录与严重事件告警”与“攻击事件记录与严重事件告警”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-012",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-017",
+        "title": "关键节点恶意代码和垃圾邮件防护"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-011",
+        "title": "网络恶意代码检测、清除和更新"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“关键节点恶意代码和垃圾邮件防护”覆盖“网络恶意代码检测、清除和更新”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-013",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-018",
+        "title": "网络边界安全审计覆盖"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-012",
+        "title": "网络边界安全审计覆盖"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“网络边界安全审计覆盖”与“网络边界安全审计覆盖”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-014",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-020",
+        "title": "审计记录字段完整"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-013",
+        "title": "审计记录字段完整"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“审计记录字段完整”与“审计记录字段完整”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-015",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-021",
+        "title": "审计记录保护、备份及六个月留存"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-014",
+        "title": "审计记录保护与定期备份"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“审计记录保护、备份及六个月留存”覆盖“审计记录保护与定期备份”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-016",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-022",
+        "title": "远程访问和互联网访问行为单独审计分析"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-015",
+        "title": "远程访问及互联网访问行为单独审计"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“远程访问和互联网访问行为单独审计分析”与“远程访问及互联网访问行为单独审计”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-017",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-024",
+        "title": "唯一身份和分级口令策略"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-016",
+        "title": "管理登录身份唯一、鉴别信息复杂并定期更换"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“唯一身份和分级口令策略”覆盖“管理登录身份唯一、鉴别信息复杂并定期更换”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-018",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-025",
+        "title": "登录失败处理和管理会话超时"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-017",
+        "title": "登录失败处理和会话超时"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“登录失败处理和管理会话超时”与“登录失败处理和会话超时”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-019",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-026",
+        "title": "安全远程管理与管理终端鉴别"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-019",
+        "title": "远程管理鉴别信息传输保护"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“安全远程管理与管理终端鉴别”覆盖“远程管理鉴别信息传输保护”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-020",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-027",
+        "title": "管理用户多因素身份鉴别"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-018",
+        "title": "管理用户多因素身份鉴别"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“管理用户多因素身份鉴别”与“管理用户多因素身份鉴别”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-021",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-028",
+        "title": "默认账户和预设账户治理"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-020",
+        "title": "默认、过期、多余和共享账户治理"
+      },
+      "relationship": "partial",
+      "coverage": "partial",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“默认账户和预设账户治理”与“默认、过期、多余和共享账户治理”只在部分控制范围重合，必须结合其他控制项判断。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-022",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-029",
+        "title": "多余、过期和共享账户治理"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-020",
+        "title": "默认、过期、多余和共享账户治理"
+      },
+      "relationship": "partial",
+      "coverage": "partial",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“多余、过期和共享账户治理”与“默认、过期、多余和共享账户治理”只在部分控制范围重合，必须结合其他控制项判断。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-023",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-030",
+        "title": "最小权限、权限分离及默认账户权限限制"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-021",
+        "title": "管理用户最小权限和权限分离"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“最小权限、权限分离及默认账户权限限制”覆盖“管理用户最小权限和权限分离”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-024",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-031",
+        "title": "限制远程管理终端来源"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-022",
+        "title": "限制远程管理终端来源"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“限制远程管理终端来源”与“限制远程管理终端来源”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-025",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-032",
+        "title": "最小安装并关闭不需要的服务和高危端口"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-023",
+        "title": "关闭不需要的服务和高危端口"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“最小安装并关闭不需要的服务和高危端口”与“关闭不需要的服务和高危端口”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-026",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-033",
+        "title": "已知漏洞发现、评估和修补"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-024",
+        "title": "已知漏洞发现和修补"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“已知漏洞发现、评估和修补”覆盖“已知漏洞发现和修补”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-027",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-036",
+        "title": "设备安全审计覆盖与记录字段"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-026",
+        "title": "设备安全审计功能及审计进程保护"
+      },
+      "relationship": "partial",
+      "coverage": "partial",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“设备安全审计覆盖与记录字段”与“设备安全审计功能及审计进程保护”只在部分控制范围重合，必须结合其他控制项判断。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-028",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-037",
+        "title": "设备审计保护、六个月留存和审计进程保护"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-026",
+        "title": "设备安全审计功能及审计进程保护"
+      },
+      "relationship": "partial",
+      "coverage": "partial",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“设备审计保护、六个月留存和审计进程保护”与“设备安全审计功能及审计进程保护”只在部分控制范围重合，必须结合其他控制项判断。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-029",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-039",
+        "title": "重要配置和日志数据备份恢复"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-025",
+        "title": "重要配置和数据备份恢复"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“重要配置和日志数据备份恢复”覆盖“重要配置和数据备份恢复”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-030",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-040",
+        "title": "系统管理员身份鉴别、受限界面和操作审计"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-027",
+        "title": "系统管理员身份鉴别、受限操作界面和操作审计"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“系统管理员身份鉴别、受限界面和操作审计”覆盖“系统管理员身份鉴别、受限操作界面和操作审计”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-031",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-043",
+        "title": "审计管理员鉴别、操作审计和审计数据权限分离"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-028",
+        "title": "审计管理员身份鉴别、受限操作界面和操作审计"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“审计管理员鉴别、操作审计和审计数据权限分离”覆盖“审计管理员身份鉴别、受限操作界面和操作审计”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-032",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-044",
+        "title": "安全管理员鉴别、受限操作和策略配置"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-029",
+        "title": "安全管理员身份鉴别、受限操作界面和操作审计"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“安全管理员鉴别、受限操作和策略配置”与“安全管理员身份鉴别、受限操作界面和操作审计”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-033",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-045",
+        "title": "安全设备集中管理区域和安全管理路径"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-030",
+        "title": "安全设备集中管控区域和安全管理路径"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“安全设备集中管理区域和安全管理路径”与“安全设备集中管控区域和安全管理路径”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-034",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-046",
+        "title": "设备运行状态集中监测"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-031",
+        "title": "设备运行状态集中监测"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“设备运行状态集中监测”与“设备运行状态集中监测”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-035",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-047",
+        "title": "安全事件和审计数据集中收集分析与留存"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-032",
+        "title": "审计数据集中收集和留存"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“安全事件和审计数据集中收集分析与留存”覆盖“审计数据集中收集和留存”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-036",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-048",
+        "title": "安全策略、恶意代码和补丁升级集中管理"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-033",
+        "title": "安全策略、恶意代码和补丁升级集中管理"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“安全策略、恶意代码和补丁升级集中管理”与“安全策略、恶意代码和补丁升级集中管理”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-037",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-049",
+        "title": "安全事件集中识别响应、统一时钟和告警合并"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-034",
+        "title": "安全事件集中识别、报警和分析"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“安全事件集中识别响应、统一时钟和告警合并”覆盖“安全事件集中识别、报警和分析”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-038",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-049",
+        "title": "安全事件集中识别响应、统一时钟和告警合并"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-035",
+        "title": "系统范围统一时钟"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“安全事件集中识别响应、统一时钟和告警合并”覆盖“系统范围统一时钟”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-039",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-CLOUD-001",
+        "title": "云虚拟网络及业务管理网络隔离"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-CLOUD-001",
+        "title": "云服务客户虚拟网络隔离"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“云虚拟网络及业务管理网络隔离”覆盖“云服务客户虚拟网络隔离”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-040",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-CLOUD-002",
+        "title": "虚拟化边界访问控制机制和规则"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-CLOUD-002",
+        "title": "虚拟化边界访问控制机制和规则"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“虚拟化边界访问控制机制和规则”覆盖“虚拟化边界访问控制机制和规则”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-041",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-CLOUD-004",
+        "title": "云攻击与异常流量检测、记录和告警"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-CLOUD-003",
+        "title": "云环境攻击和异常流量检测告警"
+      },
+      "relationship": "refines",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“云攻击与异常流量检测、记录和告警”覆盖“云环境攻击和异常流量检测告警”的基线目标，并包含金融行业细化或增强要求。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-042",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-CLOUD-007",
+        "title": "云远程特权命令和服务商操作审计"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-CLOUD-004",
+        "title": "云平台远程特权命令审计"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“云远程特权命令和服务商操作审计”与“云平台远程特权命令审计”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-043",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-MOBILE-002",
+        "title": "有线与无线网络边界经无线接入网关"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-MOBILE-001",
+        "title": "有线与无线网络边界经无线接入网关"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“有线与无线网络边界经无线接入网关”与“有线与无线网络边界经无线接入网关”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-BASE-044",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-IOT-002",
+        "title": "限制感知节点和网关节点通信目标地址"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-IOT-001",
+        "title": "限制感知节点和网关节点通信目标地址"
+      },
+      "relationship": "equivalent",
+      "coverage": "full",
+      "confidence": 1.0,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": null,
+      "mapping_basis": "“限制感知节点和网关节点通信目标地址”与“限制感知节点和网关节点通信目标地址”在共同适用等级内控制目标一致。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-001",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-005",
+        "title": "冗余部署"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-002",
+        "title": "业务容量、带宽与关键设备冗余"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“冗余部署”可支撑“业务容量、带宽与关键设备冗余”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-002",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-009",
+        "title": "包过滤默认禁止"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-007",
+        "title": "边界访问控制默认拒绝"
+      },
+      "relationship": "supports",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“包过滤默认禁止”可支撑“边界访问控制默认拒绝”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-003",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-010",
+        "title": "包过滤维度和组合策略"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-009",
+        "title": "基于五元组检查数据包"
+      },
+      "relationship": "supports",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“包过滤维度和组合策略”可支撑“基于五元组检查数据包”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-004",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-012",
+        "title": "状态检测"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-010",
+        "title": "基于会话状态进行访问控制"
+      },
+      "relationship": "supports",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“状态检测”可支撑“基于会话状态进行访问控制”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-005",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-019",
+        "title": "应用类型识别和控制"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-011",
+        "title": "应用内容控制或协议转换隔离"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“应用类型识别和控制”可支撑“应用内容控制或协议转换隔离”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-006",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-023",
+        "title": "拒绝服务攻击防护"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-014",
+        "title": "内外部网络攻击检测、防止或限制"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“拒绝服务攻击防护”可支撑“内外部网络攻击检测、防止或限制”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-007",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-023",
+        "title": "拒绝服务攻击防护"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-CLOUD-005",
+        "title": "互联网金融服务 DoS/DDoS 清洗防护"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“拒绝服务攻击防护”可支撑“互联网金融服务 DoS/DDoS 清洗防护”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-008",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-024",
+        "title": "WEB 攻击防护"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-014",
+        "title": "内外部网络攻击检测、防止或限制"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“WEB 攻击防护”可支撑“内外部网络攻击检测、防止或限制”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-009",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-024",
+        "title": "WEB 攻击防护"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-CLOUD-006",
+        "title": "互联网金融服务 Web 应用攻击防护"
+      },
+      "relationship": "supports",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“WEB 攻击防护”可支撑“互联网金融服务 Web 应用攻击防护”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-010",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-026",
+        "title": "恶意代码防护"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-017",
+        "title": "关键节点恶意代码和垃圾邮件防护"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“恶意代码防护”可支撑“关键节点恶意代码和垃圾邮件防护”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-011",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-032",
+        "title": "安全审计日志字段"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-020",
+        "title": "审计记录字段完整"
+      },
+      "relationship": "supports",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“安全审计日志字段”可支撑“审计记录字段完整”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-012",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-033",
+        "title": "审计日志授权、查询、留存和备份"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-021",
+        "title": "审计记录保护、备份及六个月留存"
+      },
+      "relationship": "supports",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“审计日志授权、查询、留存和备份”可支撑“审计记录保护、备份及六个月留存”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-013",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-036",
+        "title": "身份唯一及鉴别信息保护"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-024",
+        "title": "唯一身份和分级口令策略"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“身份唯一及鉴别信息保护”可支撑“唯一身份和分级口令策略”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-014",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-037",
+        "title": "登录失败处理和管理登录超时"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-025",
+        "title": "登录失败处理和管理会话超时"
+      },
+      "relationship": "supports",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“登录失败处理和管理登录超时”可支撑“登录失败处理和管理会话超时”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-015",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-038",
+        "title": "口令复杂度和默认口令修改"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-024",
+        "title": "唯一身份和分级口令策略"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“口令复杂度和默认口令修改”可支撑“唯一身份和分级口令策略”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-016",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-038",
+        "title": "口令复杂度和默认口令修改"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-028",
+        "title": "默认账户和预设账户治理"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“口令复杂度和默认口令修改”可支撑“默认账户和预设账户治理”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-017",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-039",
+        "title": "授权管理员多因素鉴别"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-027",
+        "title": "管理用户多因素身份鉴别"
+      },
+      "relationship": "supports",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“授权管理员多因素鉴别”可支撑“管理用户多因素身份鉴别”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-018",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-043",
+        "title": "远程管理来源限制和非明文传输"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-026",
+        "title": "安全远程管理与管理终端鉴别"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“远程管理来源限制和非明文传输”可支撑“安全远程管理与管理终端鉴别”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-019",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-043",
+        "title": "远程管理来源限制和非明文传输"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-031",
+        "title": "限制远程管理终端来源"
+      },
+      "relationship": "supports",
+      "coverage": "full",
+      "confidence": 0.95,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“远程管理来源限制和非明文传输”可支撑“限制远程管理终端来源”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-020",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-044",
+        "title": "管理业务接口分离和集中管理"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-045",
+        "title": "安全设备集中管理区域和安全管理路径"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“管理业务接口分离和集中管理”可支撑“安全设备集中管理区域和安全管理路径”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-021",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-006",
+        "title": "负载均衡"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-002",
+        "title": "业务容量、带宽与关键设备冗余"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“负载均衡”可支撑“业务容量、带宽与关键设备冗余”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-022",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-018",
+        "title": "基于用户认证的网络访问控制"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-007",
+        "title": "边界访问控制默认拒绝"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“基于用户认证的网络访问控制”可支撑“边界访问控制默认拒绝”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-023",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-020",
+        "title": "WEB 应用内容控制"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-011",
+        "title": "应用内容控制或协议转换隔离"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“WEB 应用内容控制”可支撑“应用内容控制或协议转换隔离”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-024",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-022",
+        "title": "其他应用内容控制"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-011",
+        "title": "应用内容控制或协议转换隔离"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“其他应用内容控制”可支撑“应用内容控制或协议转换隔离”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-025",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-025",
+        "title": "数据库攻击防护"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-014",
+        "title": "内外部网络攻击检测、防止或限制"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“数据库攻击防护”可支撑“内外部网络攻击检测、防止或限制”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-026",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-027",
+        "title": "其他应用漏洞攻击防护"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-014",
+        "title": "内外部网络攻击检测、防止或限制"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“其他应用漏洞攻击防护”可支撑“内外部网络攻击检测、防止或限制”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-027",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-028",
+        "title": "自动化工具威胁防护"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-015",
+        "title": "新型攻击、APT 与欺骗或联动防护"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“自动化工具威胁防护”可支撑“新型攻击、APT 与欺骗或联动防护”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-028",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-029",
+        "title": "攻击逃逸防护"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-015",
+        "title": "新型攻击、APT 与欺骗或联动防护"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“攻击逃逸防护”可支撑“新型攻击、APT 与欺骗或联动防护”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-PRODUCT-029",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-030",
+        "title": "外部安全系统协同防护"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-015",
+        "title": "新型攻击、APT 与欺骗或联动防护"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.85,
+      "review_status": "DeterministicMatched",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": null,
+      "mapping_basis": "产品能力“外部安全系统协同防护”可支撑“新型攻击、APT 与欺骗或联动防护”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-BASE-001",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-023",
+        "title": "审计时间戳统一"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-035",
+        "title": "系统范围统一时钟"
+      },
+      "relationship": "partial",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": "XDEC-001",
+      "mapping_basis": "“审计时间戳统一”与“系统范围统一时钟”只在部分控制范围重合，必须结合其他控制项判断。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-BASE-002",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-038",
+        "title": "设备配置文件每月及变更后备份"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-025",
+        "title": "重要配置和数据备份恢复"
+      },
+      "relationship": "partial",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": "XDEC-001",
+      "mapping_basis": "“设备配置文件每月及变更后备份”与“重要配置和数据备份恢复”只在部分控制范围重合，必须结合其他控制项判断。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-BASE-003",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-041",
+        "title": "设备运行状态监测和每日查看记录"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-031",
+        "title": "设备运行状态集中监测"
+      },
+      "relationship": "partial",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": "XDEC-001",
+      "mapping_basis": "“设备运行状态监测和每日查看记录”与“设备运行状态集中监测”只在部分控制范围重合，必须结合其他控制项判断。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-BASE-004",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-042",
+        "title": "设备软件版本定期核验、测试后升级和留痕"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-033",
+        "title": "安全策略、恶意代码和补丁升级集中管理"
+      },
+      "relationship": "partial",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": false,
+      "applicability_conditions": [],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": "XDEC-001",
+      "mapping_basis": "“设备软件版本定期核验、测试后升级和留痕”与“安全策略、恶意代码和补丁升级集中管理”只在部分控制范围重合，必须结合其他控制项判断。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-CONTEXT-001",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-CLOUD-003",
+        "title": "云客户自主安全策略、子网规则与 VPN"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-CLOUD-002",
+        "title": "虚拟化边界访问控制机制和规则"
+      },
+      "relationship": "partial",
+      "coverage": "partial",
+      "confidence": 0.75,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "deployment_context.cloud == true"
+      ],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": "XDEC-002",
+      "mapping_basis": "“云客户自主安全策略、子网规则与 VPN”与“虚拟化边界访问控制机制和规则”只在部分控制范围重合，必须结合其他控制项判断。 仅在 cloud 场景适用。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-CONTEXT-002",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-CLOUD-005",
+        "title": "互联网金融服务 DoS/DDoS 清洗防护"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-CLOUD-003",
+        "title": "云环境攻击和异常流量检测告警"
+      },
+      "relationship": "partial",
+      "coverage": "partial",
+      "confidence": 0.75,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "deployment_context.cloud == true"
+      ],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": "XDEC-002",
+      "mapping_basis": "“互联网金融服务 DoS/DDoS 清洗防护”与“云环境攻击和异常流量检测告警”只在部分控制范围重合，必须结合其他控制项判断。 仅在 cloud 场景适用。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-CONTEXT-003",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-CLOUD-006",
+        "title": "互联网金融服务 Web 应用攻击防护"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-CLOUD-003",
+        "title": "云环境攻击和异常流量检测告警"
+      },
+      "relationship": "partial",
+      "coverage": "partial",
+      "confidence": 0.75,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "deployment_context.cloud == true"
+      ],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": "XDEC-002",
+      "mapping_basis": "“互联网金融服务 Web 应用攻击防护”与“云环境攻击和异常流量检测告警”只在部分控制范围重合，必须结合其他控制项判断。 仅在 cloud 场景适用。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-CONTEXT-004",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-MOBILE-001",
+        "title": "移动端到服务器安全通道和双向认证"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-036",
+        "title": "通信数据完整性和保密性"
+      },
+      "relationship": "partial",
+      "coverage": "partial",
+      "confidence": 0.75,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "deployment_context.mobile == true"
+      ],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": "XDEC-002",
+      "mapping_basis": "“移动端到服务器安全通道和双向认证”与“通信数据完整性和保密性”只在部分控制范围重合，必须结合其他控制项判断。 仅在 mobile 场景适用。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-CONTEXT-005",
+      "source": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-026",
+        "title": "安全远程管理与管理终端鉴别"
+      },
+      "target": {
+        "standard_code": "GB/T 22239—2019",
+        "control_id": "GB22239-FW-CLOUD-005",
+        "title": "远程管理云设备双向身份验证"
+      },
+      "relationship": "partial",
+      "coverage": "partial",
+      "confidence": 0.75,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "deployment_context.cloud == true"
+      ],
+      "evidence_scope": "requirement-alignment",
+      "review_decision_id": "XDEC-002",
+      "mapping_basis": "“安全远程管理与管理终端鉴别”与“远程管理云设备双向身份验证”只在部分控制范围重合，必须结合其他控制项判断。 仅在 cloud 场景适用。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-PERF-001",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-015",
+        "title": "带宽管理"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-002",
+        "title": "业务容量、带宽与关键设备冗余"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.75,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-003",
+      "mapping_basis": "产品能力“带宽管理”可支撑“业务容量、带宽与关键设备冗余”，但不能证明现场已启用或正确配置。 证据仅代表产品能力或实验室结果。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-PERF-002",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-016",
+        "title": "连接数和新建连接速率控制"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-002",
+        "title": "业务容量、带宽与关键设备冗余"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.75,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-003",
+      "mapping_basis": "产品能力“连接数和新建连接速率控制”可支撑“业务容量、带宽与关键设备冗余”，但不能证明现场已启用或正确配置。 证据仅代表产品能力或实验室结果。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-PERF-003",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-016",
+        "title": "连接数和新建连接速率控制"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-014",
+        "title": "内外部网络攻击检测、防止或限制"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.75,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-003",
+      "mapping_basis": "产品能力“连接数和新建连接速率控制”可支撑“内外部网络攻击检测、防止或限制”，但不能证明现场已启用或正确配置。 证据仅代表产品能力或实验室结果。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-PERF-004",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-016",
+        "title": "连接数和新建连接速率控制"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-CLOUD-005",
+        "title": "互联网金融服务 DoS/DDoS 清洗防护"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.75,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]",
+        "deployment_context.cloud == true"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-003",
+      "mapping_basis": "产品能力“连接数和新建连接速率控制”可支撑“互联网金融服务 DoS/DDoS 清洗防护”，但不能证明现场已启用或正确配置。 证据仅代表产品能力或实验室结果。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-PERF-005",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-046",
+        "title": "吞吐量、延迟、连接速率和并发连接性能"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-002",
+        "title": "业务容量、带宽与关键设备冗余"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.75,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-laboratory-test",
+      "review_decision_id": "XDEC-003",
+      "mapping_basis": "产品能力“吞吐量、延迟、连接速率和并发连接性能”可支撑“业务容量、带宽与关键设备冗余”，但不能证明现场已启用或正确配置。 证据仅代表产品能力或实验室结果。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-MGMT-001",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-031",
+        "title": "安全策略命中和攻击事件审计"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-016",
+        "title": "攻击事件记录与严重事件告警"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-004",
+      "mapping_basis": "产品能力“安全策略命中和攻击事件审计”可支撑“攻击事件记录与严重事件告警”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-MGMT-002",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-031",
+        "title": "安全策略命中和攻击事件审计"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-018",
+        "title": "网络边界安全审计覆盖"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-004",
+      "mapping_basis": "产品能力“安全策略命中和攻击事件审计”可支撑“网络边界安全审计覆盖”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-MGMT-003",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-034",
+        "title": "攻击安全告警和告警合并"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-016",
+        "title": "攻击事件记录与严重事件告警"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-004",
+      "mapping_basis": "产品能力“攻击安全告警和告警合并”可支撑“攻击事件记录与严重事件告警”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-MGMT-004",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-034",
+        "title": "攻击安全告警和告警合并"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-049",
+        "title": "安全事件集中识别响应、统一时钟和告警合并"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-004",
+      "mapping_basis": "产品能力“攻击安全告警和告警合并”可支撑“安全事件集中识别响应、统一时钟和告警合并”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-MGMT-005",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-040",
+        "title": "管理能力、NTP 与 SYSLOG"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-023",
+        "title": "审计时间戳统一"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-004",
+      "mapping_basis": "产品能力“管理能力、NTP 与 SYSLOG”可支撑“审计时间戳统一”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-MGMT-006",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-040",
+        "title": "管理能力、NTP 与 SYSLOG"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-047",
+        "title": "安全事件和审计数据集中收集分析与留存"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-004",
+      "mapping_basis": "产品能力“管理能力、NTP 与 SYSLOG”可支撑“安全事件和审计数据集中收集分析与留存”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-MGMT-007",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-041",
+        "title": "管理员角色制约和策略有效性检查"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-030",
+        "title": "最小权限、权限分离及默认账户权限限制"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-004",
+      "mapping_basis": "产品能力“管理员角色制约和策略有效性检查”可支撑“最小权限、权限分离及默认账户权限限制”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-MGMT-008",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-041",
+        "title": "管理员角色制约和策略有效性检查"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-043",
+        "title": "审计管理员鉴别、操作审计和审计数据权限分离"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-004",
+      "mapping_basis": "产品能力“管理员角色制约和策略有效性检查”可支撑“审计管理员鉴别、操作审计和审计数据权限分离”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-MGMT-009",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-041",
+        "title": "管理员角色制约和策略有效性检查"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-044",
+        "title": "安全管理员鉴别、受限操作和策略配置"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-004",
+      "mapping_basis": "产品能力“管理员角色制约和策略有效性检查”可支撑“安全管理员鉴别、受限操作和策略配置”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-MGMT-010",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-042",
+        "title": "管理操作审计和异常告警"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-040",
+        "title": "系统管理员身份鉴别、受限界面和操作审计"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-004",
+      "mapping_basis": "产品能力“管理操作审计和异常告警”可支撑“系统管理员身份鉴别、受限界面和操作审计”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-MGMT-011",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-042",
+        "title": "管理操作审计和异常告警"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-043",
+        "title": "审计管理员鉴别、操作审计和审计数据权限分离"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-004",
+      "mapping_basis": "产品能力“管理操作审计和异常告警”可支撑“审计管理员鉴别、操作审计和审计数据权限分离”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-MGMT-012",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-042",
+        "title": "管理操作审计和异常告警"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-044",
+        "title": "安全管理员鉴别、受限操作和策略配置"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-004",
+      "mapping_basis": "产品能力“管理操作审计和异常告警”可支撑“安全管理员鉴别、受限操作和策略配置”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-MGMT-013",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-042",
+        "title": "管理操作审计和异常告警"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-049",
+        "title": "安全事件集中识别响应、统一时钟和告警合并"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-004",
+      "mapping_basis": "产品能力“管理操作审计和异常告警”可支撑“安全事件集中识别响应、统一时钟和告警合并”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-MGMT-014",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-045",
+        "title": "安全支撑系统最小化、重启保护和漏洞基线"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-032",
+        "title": "最小安装并关闭不需要的服务和高危端口"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-004",
+      "mapping_basis": "产品能力“安全支撑系统最小化、重启保护和漏洞基线”可支撑“最小安装并关闭不需要的服务和高危端口”，但不能证明现场已启用或正确配置。"
+    },
+    {
+      "mapping_id": "XMAP-REVIEW-MGMT-015",
+      "source": {
+        "standard_code": "GB/T 20281—2020",
+        "control_id": "GB20281-FW-045",
+        "title": "安全支撑系统最小化、重启保护和漏洞基线"
+      },
+      "target": {
+        "standard_code": "JR/T 0071.2—2020",
+        "control_id": "JR0071-2-FW-033",
+        "title": "已知漏洞发现、评估和修补"
+      },
+      "relationship": "supports",
+      "coverage": "partial",
+      "confidence": 0.8,
+      "review_status": "HumanReviewed",
+      "standalone_pass_allowed": false,
+      "conditional": true,
+      "applicability_conditions": [
+        "product_type == network-based-firewall",
+        "product_security_level in [basic,enhanced]"
+      ],
+      "evidence_scope": "product-capability",
+      "review_decision_id": "XDEC-004",
+      "mapping_basis": "产品能力“安全支撑系统最小化、重启保护和漏洞基线”可支撑“已知漏洞发现、评估和修补”，但不能证明现场已启用或正确配置。"
+    }
+  ],
+  "review_decisions": [
+    {
+      "decision_id": "XDEC-001",
+      "question_id": "Q-MAP-001",
+      "status": "Approved",
+      "action": "建立 partial 关系，保留范围差异，不允许跨标准复用通过结论。"
+    },
+    {
+      "decision_id": "XDEC-002",
+      "question_id": "Q-MAP-002",
+      "status": "Approved",
+      "action": "建立 conditional partial 关系，仅在来源和目标的场景条件同时满足时参与检索和判定。"
+    },
+    {
+      "decision_id": "XDEC-003",
+      "question_id": "Q-MAP-003",
+      "status": "Approved",
+      "action": "建立 supports/partial 关系，证据限定为产品能力或实验室测试，禁止形成现场合规结论。"
+    },
+    {
+      "decision_id": "XDEC-004",
+      "question_id": "Q-MAP-004",
+      "status": "Approved",
+      "action": "按具体子能力建立 supports/partial 一对多关系，全部禁止单独产生合规结论。"
+    },
+    {
+      "decision_id": "XDEC-005",
+      "question_id": "Q-MAP-005",
+      "status": "Approved",
+      "action": "当前只启用网络型防火墙映射，并按产品基本级或增强级条件过滤；其他产品类型保留在源目录但不参与当前判定。"
+    }
+  ],
+  "pending_questions": [],
+  "unmapped_control_ids": {
+    "GB/T 20281—2020": [
+      "GB20281-FW-001",
+      "GB20281-FW-002",
+      "GB20281-FW-003",
+      "GB20281-FW-004",
+      "GB20281-FW-007",
+      "GB20281-FW-008",
+      "GB20281-FW-011",
+      "GB20281-FW-013",
+      "GB20281-FW-014",
+      "GB20281-FW-017",
+      "GB20281-FW-021",
+      "GB20281-FW-035",
+      "GB20281-FW-047"
+    ],
+    "GB/T 22239—2019": [
+      "GB22239-FW-ICS-001",
+      "GB22239-FW-ICS-002",
+      "GB22239-FW-ICS-003",
+      "GB22239-FW-ICS-004"
+    ],
+    "JR/T 0071.2—2020": [
+      "JR0071-2-FW-003",
+      "JR0071-2-FW-006",
+      "JR0071-2-FW-012",
+      "JR0071-2-FW-013",
+      "JR0071-2-FW-019",
+      "JR0071-2-FW-034",
+      "JR0071-2-FW-035",
+      "JR0071-2-FW-CLOUD-008",
+      "JR0071-2-FW-IOT-001",
+      "JR0071-2-FW-IOT-003",
+      "JR0071-2-FW-MOBILE-003"
+    ]
+  },
+  "statistics": {
+    "mapping_count": 102,
+    "by_relationship": {
+      "equivalent": 23,
+      "partial": 13,
+      "refines": 17,
+      "supports": 49
+    },
+    "by_source_standard": {
+      "GB/T 20281—2020": 49,
+      "JR/T 0071.2—2020": 53
+    },
+    "mapped_control_count": {
+      "GB/T 20281—2020": 34,
+      "GB/T 22239—2019": 43,
+      "JR/T 0071.2—2020": 52
+    },
+    "unmapped_control_count": {
+      "GB/T 20281—2020": 13,
+      "GB/T 22239—2019": 4,
+      "JR/T 0071.2—2020": 11
+    },
+    "pending_question_count": 0,
+    "human_reviewed_mapping_count": 29
+  }
+}

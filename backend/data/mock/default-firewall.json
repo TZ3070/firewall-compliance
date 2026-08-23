@@ -1,0 +1,233 @@
+{
+  "_mock_metadata": {
+    "is_mock": true,
+    "contains_real_customer_data": false,
+    "source_profile": "Huawei HiSecEngine/USG VRP-style",
+    "fixture_version": "1.0.0",
+    "notice": "人工构造的公开演示配置；名称、地址、标识和状态均为虚构数据。"
+  },
+  "target": {
+    "target_id": "default-firewall-mock",
+    "display_name": "Default Firewall Mock",
+    "vendor": "Huawei",
+    "product_family": "HiSecEngine/USG",
+    "model": "USG-MOCK",
+    "software_version": "VRP-MOCK-1.0",
+    "hostname": "FW-MOCK-01"
+  },
+  "management": {
+    "protocols": {
+      "ssh": {
+        "enabled": true,
+        "port": 22
+      },
+      "https": {
+        "enabled": true,
+        "port": 443
+      },
+      "telnet": {
+        "enabled": false,
+        "port": 23
+      },
+      "http": {
+        "enabled": false,
+        "port": 80
+      }
+    },
+    "source_interface": "GigabitEthernet0/0/0",
+    "allowed_source_cidrs": [
+      "192.0.2.32/27"
+    ],
+    "mfa_enabled": false,
+    "accounts": [
+      {
+        "account_id": "mock-security-admin",
+        "role": "security_admin",
+        "enabled": true,
+        "mfa_bound": false
+      },
+      {
+        "account_id": "mock-auditor",
+        "role": "auditor",
+        "enabled": true,
+        "mfa_bound": true
+      }
+    ]
+  },
+  "interfaces": [
+    {
+      "name": "GigabitEthernet0/0/0",
+      "description": "MOCK-MANAGEMENT",
+      "zone": "local",
+      "ipv4_cidrs": [
+        "192.0.2.10/24"
+      ],
+      "ipv6_cidrs": [],
+      "enabled": true,
+      "management_services": [
+        "ssh",
+        "https",
+        "ping"
+      ]
+    },
+    {
+      "name": "Eth-Trunk1.100",
+      "description": "MOCK-TRUST",
+      "zone": "trust",
+      "ipv4_cidrs": [
+        "198.51.100.33/27"
+      ],
+      "ipv6_cidrs": [],
+      "enabled": true,
+      "management_services": []
+    },
+    {
+      "name": "Eth-Trunk1.200",
+      "description": "MOCK-DMZ",
+      "zone": "dmz",
+      "ipv4_cidrs": [
+        "198.51.100.65/27"
+      ],
+      "ipv6_cidrs": [],
+      "enabled": true,
+      "management_services": []
+    },
+    {
+      "name": "Eth-Trunk2",
+      "description": "MOCK-UNTRUST",
+      "zone": "untrust",
+      "ipv4_cidrs": [
+        "203.0.113.2/29"
+      ],
+      "ipv6_cidrs": [
+        "2001:db8:100::2/64"
+      ],
+      "enabled": true,
+      "management_services": []
+    }
+  ],
+  "access_control": {
+    "default_action": "deny",
+    "policies": [
+      {
+        "policy_id": "mock-policy-001",
+        "name": "ALLOW-HTTPS-TO-MOCK-DMZ",
+        "source_zones": [
+          "untrust"
+        ],
+        "destination_zones": [
+          "dmz"
+        ],
+        "source_cidrs": [
+          "203.0.113.64/27"
+        ],
+        "destination_cidrs": [
+          "198.51.100.70/32"
+        ],
+        "services": [
+          "tcp/443"
+        ],
+        "action": "permit",
+        "logging_enabled": true,
+        "enabled": true,
+        "expires_at": null
+      },
+      {
+        "policy_id": "mock-policy-002",
+        "name": "TEMP-OPS-ANY-MOCK",
+        "source_zones": [
+          "trust"
+        ],
+        "destination_zones": [
+          "dmz"
+        ],
+        "source_cidrs": [
+          "198.51.100.40/32"
+        ],
+        "destination_cidrs": [
+          "any"
+        ],
+        "services": [
+          "any"
+        ],
+        "action": "permit",
+        "logging_enabled": true,
+        "enabled": true,
+        "expires_at": null
+      },
+      {
+        "policy_id": "mock-policy-999",
+        "name": "DEFAULT-DENY-MOCK",
+        "source_zones": [
+          "any"
+        ],
+        "destination_zones": [
+          "any"
+        ],
+        "source_cidrs": [
+          "any"
+        ],
+        "destination_cidrs": [
+          "any"
+        ],
+        "services": [
+          "any"
+        ],
+        "action": "deny",
+        "logging_enabled": true,
+        "enabled": true,
+        "expires_at": null
+      }
+    ]
+  },
+  "logging": {
+    "policy_log_enabled": true,
+    "threat_log_enabled": true,
+    "audit_log_enabled": true,
+    "local_retention_days": 30,
+    "remote_logging": {
+      "enabled": true,
+      "servers": [
+        {
+          "address": "192.0.2.200",
+          "port": 6514,
+          "transport": "tls",
+          "reachable": true
+        },
+        {
+          "address": "192.0.2.201",
+          "port": 514,
+          "transport": "udp",
+          "reachable": null
+        }
+      ]
+    }
+  },
+  "time_sync": {
+    "enabled": true,
+    "servers": [
+      "192.0.2.123",
+      "192.0.2.124"
+    ]
+  },
+  "network_stack": {
+    "ipv4_enabled": true,
+    "ipv6_enabled": true,
+    "ipv4_default_route_configured": true,
+    "ipv6_default_route_configured": false
+  },
+  "threat_prevention": {
+    "ips_enabled": true,
+    "antivirus_enabled": true,
+    "dos_protection_enabled": null
+  },
+  "high_availability": {
+    "enabled": true,
+    "protocol": "HRP",
+    "state": "degraded",
+    "configuration_synchronized": false
+  },
+  "vpn": {
+    "enabled": false
+  }
+}

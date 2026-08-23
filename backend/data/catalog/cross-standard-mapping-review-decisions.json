@@ -1,0 +1,38 @@
+{
+  "decision_log_id": "cross-standard-mapping-review-decisions",
+  "decision_log_version": "1.0.0",
+  "approved_on": "2026-08-23",
+  "approval_source": "用户在跨标准映射会话中明确回复“4 项全部按建议处理”",
+  "decisions": [
+    {
+      "decision_id": "XDEC-001",
+      "question_id": "Q-MAP-001",
+      "status": "Approved",
+      "action": "建立 partial 关系，保留范围差异，不允许跨标准复用通过结论。"
+    },
+    {
+      "decision_id": "XDEC-002",
+      "question_id": "Q-MAP-002",
+      "status": "Approved",
+      "action": "建立 conditional partial 关系，仅在来源和目标的场景条件同时满足时参与检索和判定。"
+    },
+    {
+      "decision_id": "XDEC-003",
+      "question_id": "Q-MAP-003",
+      "status": "Approved",
+      "action": "建立 supports/partial 关系，证据限定为产品能力或实验室测试，禁止形成现场合规结论。"
+    },
+    {
+      "decision_id": "XDEC-004",
+      "question_id": "Q-MAP-004",
+      "status": "Approved",
+      "action": "按具体子能力建立 supports/partial 一对多关系，全部禁止单独产生合规结论。"
+    },
+    {
+      "decision_id": "XDEC-005",
+      "question_id": "Q-MAP-005",
+      "status": "Approved",
+      "action": "当前只启用网络型防火墙映射，并按产品基本级或增强级条件过滤；其他产品类型保留在源目录但不参与当前判定。"
+    }
+  ]
+}

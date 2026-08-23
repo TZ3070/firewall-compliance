@@ -1,0 +1,606 @@
+{
+  "catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+  "catalog_version": "0.1.0",
+  "review_status": "Candidate",
+  "generated_on": "2026-08-23",
+  "source": {
+    "standard_code": "JR/T 0071.2—2020",
+    "title": "金融行业网络安全等级保护实施指引 第2部分：基本要求",
+    "source_pdf": "标准文档/核心标准/JR-T-0071.2-2020-基本要求.pdf",
+    "pdf_sha256": "97396ae2a4848a19e994f29ec5a36e203a8b25e2ee3a92675f32f0a0816eff62",
+    "pdf_pages": 109,
+    "printed_to_pdf_page_offset": 8,
+    "page_number_note": "正文印刷页码加 8 等于当前 PDF 物理页序号。"
+  },
+  "scope": {
+    "statement": "仅整理可由防火墙配置、运行状态、日志或针对防火墙的测试直接或部分验证的要求，不代表覆盖 JR/T 0071.2—2020 全部要求。",
+    "classified_protection_levels": [2, 3, 4],
+    "financial_enhancement_markers": ["F2", "F3", "F4"],
+    "included_contexts": ["general", "cloud-conditional", "mobile-conditional", "iot-conditional"],
+    "default_context": "general",
+    "missing_level_result": "NeedsReview",
+    "missing_evidence_result": "NeedsReview",
+    "not_applicable_rule": "仅当等级或部署场景存在可验证的不适用条件时使用 NotApplicable。"
+  },
+  "assessment_modes": {
+    "automatic": "可主要从结构化防火墙配置或状态字段判断。",
+    "mixed": "配置只能验证一部分，还需要日志样本、拓扑、运行记录或主动测试。",
+    "conditional": "仅在防火墙承担相应能力且部署上下文成立时适用。"
+  },
+  "recommended_p0_control_ids": [
+    "JR0071-2-FW-005", "JR0071-2-FW-007", "JR0071-2-FW-008", "JR0071-2-FW-009",
+    "JR0071-2-FW-010", "JR0071-2-FW-012", "JR0071-2-FW-013", "JR0071-2-FW-014",
+    "JR0071-2-FW-016", "JR0071-2-FW-018", "JR0071-2-FW-020", "JR0071-2-FW-021",
+    "JR0071-2-FW-023", "JR0071-2-FW-024", "JR0071-2-FW-025", "JR0071-2-FW-026",
+    "JR0071-2-FW-027", "JR0071-2-FW-028", "JR0071-2-FW-029", "JR0071-2-FW-030",
+    "JR0071-2-FW-031", "JR0071-2-FW-032", "JR0071-2-FW-033", "JR0071-2-FW-036",
+    "JR0071-2-FW-037", "JR0071-2-FW-038", "JR0071-2-FW-041", "JR0071-2-FW-042",
+    "JR0071-2-FW-043", "JR0071-2-FW-049"
+  ],
+  "control_candidates": [
+    {
+      "control_id": "JR0071-2-FW-001", "title": "网络分区与重要区域技术隔离", "topic": "network-segmentation", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.2.1 a-b", "printed_pages": [12], "pdf_page_indexes": [20]},
+        {"level": 3, "clause_id": "8.1.2.1 c-d", "printed_pages": [29], "pdf_page_indexes": [37]},
+        {"level": 4, "clause_id": "9.1.2.1 c-d", "printed_pages": [55], "pdf_page_indexes": [63]}
+      ],
+      "evidence_selectors": ["network_zones", "interfaces", "routing", "topology"],
+      "requirement_summary": "划分网络区域并使重要区域与其他区域可靠隔离。"
+    },
+    {
+      "control_id": "JR0071-2-FW-002", "title": "业务容量、带宽与关键设备冗余", "topic": "availability", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 3, "clause_id": "8.1.2.1 a-b,e", "printed_pages": [29], "pdf_page_indexes": [37], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.2.1 a-b,e-f,i", "printed_pages": [55], "pdf_page_indexes": [63], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["capacity", "interface_utilization", "high_availability", "uplinks"],
+      "full_conformance_note": "需要业务高峰基线、链路路由和故障切换测试，不能只看 HA 开关。"
+    },
+    {
+      "control_id": "JR0071-2-FW-003", "title": "跨机构前置隔离与专用网络", "topic": "financial-network-isolation", "assessment_mode": "mixed",
+      "minimum_level": 4,
+      "source_refs": [{"level": 4, "clause_id": "9.1.2.1 g-i", "printed_pages": [55], "pdf_page_indexes": [63], "financial_marker": "F4"}],
+      "evidence_selectors": ["topology.frontend_devices", "network_zones", "uplinks", "routing"],
+      "requirement_summary": "跨机构联网系统与业务主机隔离，重要信息交换使用专用网络，并具备双主干链路。"
+    },
+    {
+      "control_id": "JR0071-2-FW-004", "title": "通信完整性、保密性和通信双方认证", "topic": "secure-communication", "assessment_mode": "conditional",
+      "applicability_condition": "firewall provides VPN, TLS proxy, IPSec or another protected communication channel",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.2.2", "printed_pages": [12], "pdf_page_indexes": [20]},
+        {"level": 3, "clause_id": "8.1.2.2 a-b", "printed_pages": [29], "pdf_page_indexes": [37], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.2.2 a-d", "printed_pages": [55, 56], "pdf_page_indexes": [63, 64], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["vpn", "tls", "ipsec", "crypto.algorithms", "crypto.mutual_authentication", "crypto.hardware_module"]
+    },
+    {
+      "control_id": "JR0071-2-FW-005", "title": "跨边界流量经受控接口通信", "topic": "boundary-protection", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.3.1", "printed_pages": [12], "pdf_page_indexes": [20]},
+        {"level": 3, "clause_id": "8.1.3.1 a", "printed_pages": [30], "pdf_page_indexes": [38]},
+        {"level": 4, "clause_id": "9.1.3.1 a", "printed_pages": [56], "pdf_page_indexes": [64]}
+      ],
+      "evidence_selectors": ["interfaces", "network_zones", "routing", "topology"],
+      "full_conformance_note": "需要结合网络拓扑和旁路路径核验。"
+    },
+    {
+      "control_id": "JR0071-2-FW-006", "title": "非授权内外联检查、限制或阻断", "topic": "unauthorized-connection", "assessment_mode": "mixed", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.1.3.1 b-c", "printed_pages": [30], "pdf_page_indexes": [38]},
+        {"level": 4, "clause_id": "9.1.3.1 b-c,e", "printed_pages": [56], "pdf_page_indexes": [64]}
+      ],
+      "evidence_selectors": ["device_control", "source_validation", "egress_control", "alerts.unauthorized_connection"]
+    },
+    {
+      "control_id": "JR0071-2-FW-007", "title": "边界访问控制默认拒绝", "topic": "access-control", "assessment_mode": "automatic",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.3.2 a", "printed_pages": [12], "pdf_page_indexes": [20]},
+        {"level": 3, "clause_id": "8.1.3.2 a", "printed_pages": [30], "pdf_page_indexes": [38]},
+        {"level": 4, "clause_id": "9.1.3.2 a", "printed_pages": [56], "pdf_page_indexes": [64]}
+      ],
+      "evidence_selectors": ["access_control.default_action"], "suggested_operator": "equals", "suggested_expected_value": "deny"
+    },
+    {
+      "control_id": "JR0071-2-FW-008", "title": "删除多余或无效访问控制规则", "topic": "rule-hygiene", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.3.2 b", "printed_pages": [12], "pdf_page_indexes": [20]},
+        {"level": 3, "clause_id": "8.1.3.2 b", "printed_pages": [30], "pdf_page_indexes": [38]},
+        {"level": 4, "clause_id": "9.1.3.2 b", "printed_pages": [56], "pdf_page_indexes": [64]}
+      ],
+      "evidence_selectors": ["access_control.policies", "access_control.rule_hits", "access_control.shadow_analysis", "access_control.expiration"]
+    },
+    {
+      "control_id": "JR0071-2-FW-009", "title": "基于五元组检查数据包", "topic": "packet-filtering", "assessment_mode": "automatic",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.3.2 c", "printed_pages": [12], "pdf_page_indexes": [20]},
+        {"level": 3, "clause_id": "8.1.3.2 c", "printed_pages": [30], "pdf_page_indexes": [38]},
+        {"level": 4, "clause_id": "9.1.3.2 c", "printed_pages": [56], "pdf_page_indexes": [64]}
+      ],
+      "evidence_selectors": ["access_control.policies[*].source", "access_control.policies[*].destination", "access_control.policies[*].service", "access_control.policies[*].protocol"]
+    },
+    {
+      "control_id": "JR0071-2-FW-010", "title": "基于会话状态进行访问控制", "topic": "stateful-inspection", "assessment_mode": "automatic",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.3.2 d", "printed_pages": [12], "pdf_page_indexes": [20], "granularity": "network-segment", "financial_marker": "F2"},
+        {"level": 3, "clause_id": "8.1.3.2 d", "printed_pages": [30], "pdf_page_indexes": [38], "granularity": "port", "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.3.2 d", "printed_pages": [56], "pdf_page_indexes": [64], "granularity": "port", "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["access_control.stateful_inspection_enabled", "access_control.granularity"]
+    },
+    {
+      "control_id": "JR0071-2-FW-011", "title": "应用内容控制或协议转换隔离", "topic": "application-control", "assessment_mode": "mixed", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.1.3.2 e", "printed_pages": [30], "pdf_page_indexes": [38]},
+        {"level": 4, "clause_id": "9.1.3.2 e", "printed_pages": [56], "pdf_page_indexes": [64]}
+      ],
+      "evidence_selectors": ["application_control", "protocol_isolation", "security_profiles"]
+    },
+    {
+      "control_id": "JR0071-2-FW-012", "title": "系统服务端口梳理、关闭与开放审批", "topic": "service-port-governance", "assessment_mode": "mixed", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.1.3.2 f", "printed_pages": [30], "pdf_page_indexes": [38], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.3.2 f", "printed_pages": [56], "pdf_page_indexes": [64], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["management.services", "system.services", "open_port_inventory", "port_approval_records"]
+    },
+    {
+      "control_id": "JR0071-2-FW-013", "title": "定期检查并锁定或撤销不必要账户", "topic": "account-review", "assessment_mode": "mixed", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.1.3.2 g", "printed_pages": [30], "pdf_page_indexes": [38], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.3.2 g", "printed_pages": [56], "pdf_page_indexes": [64], "financial_marker": "F4", "maximum_review_interval_days": 92}
+      ],
+      "evidence_selectors": ["management.accounts", "account_review.last_reviewed_at", "account_review.records"]
+    },
+    {
+      "control_id": "JR0071-2-FW-014", "title": "内外部网络攻击检测、防止或限制", "topic": "intrusion-prevention", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.3.3", "printed_pages": [12], "pdf_page_indexes": [20]},
+        {"level": 3, "clause_id": "8.1.3.3 a-b", "printed_pages": [30], "pdf_page_indexes": [38]},
+        {"level": 4, "clause_id": "9.1.3.3 a-b", "printed_pages": [56], "pdf_page_indexes": [64]}
+      ],
+      "evidence_selectors": ["threat_prevention.ips_enabled", "threat_prevention.directions", "security_profiles"],
+      "full_conformance_note": "开关只能证明已配置，防护有效性需要攻击样本测试。"
+    },
+    {
+      "control_id": "JR0071-2-FW-015", "title": "新型攻击、APT 与欺骗或联动防护", "topic": "advanced-threat-protection", "assessment_mode": "mixed", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.1.3.3 c,e-f", "printed_pages": [30], "pdf_page_indexes": [38], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.3.3 c,e-g", "printed_pages": [56, 57], "pdf_page_indexes": [64, 65], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["threat_prevention.behavior_analysis", "threat_prevention.apt", "threat_prevention.deception", "threat_prevention.hierarchical_management", "threat_prevention.integration"]
+    },
+    {
+      "control_id": "JR0071-2-FW-016", "title": "攻击事件记录与严重事件告警", "topic": "intrusion-alerting", "assessment_mode": "mixed", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.1.3.3 d", "printed_pages": [30], "pdf_page_indexes": [38]},
+        {"level": 4, "clause_id": "9.1.3.3 d", "printed_pages": [56], "pdf_page_indexes": [64]}
+      ],
+      "evidence_selectors": ["threat_prevention.attack_logging_enabled", "threat_prevention.attack_log_fields", "threat_prevention.severe_event_alerting_enabled"]
+    },
+    {
+      "control_id": "JR0071-2-FW-017", "title": "关键节点恶意代码和垃圾邮件防护", "topic": "anti-malware", "assessment_mode": "conditional",
+      "applicability_condition": "firewall provides anti-malware or mail security functions",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.3.4 a-b", "printed_pages": [12, 13], "pdf_page_indexes": [20, 21], "financial_marker": "F2"},
+        {"level": 3, "clause_id": "8.1.3.4 a-b", "printed_pages": [30], "pdf_page_indexes": [38]},
+        {"level": 4, "clause_id": "9.1.3.4 a-b", "printed_pages": [57], "pdf_page_indexes": [65]}
+      ],
+      "evidence_selectors": ["threat_prevention.antivirus_enabled", "threat_prevention.signature_version", "mail_security"]
+    },
+    {
+      "control_id": "JR0071-2-FW-018", "title": "网络边界安全审计覆盖", "topic": "boundary-audit", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.3.5 a", "printed_pages": [13], "pdf_page_indexes": [21]},
+        {"level": 3, "clause_id": "8.1.3.5 a", "printed_pages": [30], "pdf_page_indexes": [38]},
+        {"level": 4, "clause_id": "9.1.3.5 a", "printed_pages": [57], "pdf_page_indexes": [65]}
+      ],
+      "evidence_selectors": ["logging.policy_log_enabled", "logging.threat_log_enabled", "access_control.policies[*].log_enabled", "log_samples"]
+    },
+    {
+      "control_id": "JR0071-2-FW-019", "title": "无线接入行为日志保存六个月", "topic": "wireless-audit", "assessment_mode": "conditional", "minimum_level": 3,
+      "applicability_condition": "wireless network is in scope and its access logs are collected by the firewall or connected log platform",
+      "source_refs": [
+        {"level": 3, "clause_id": "8.1.3.5 b", "printed_pages": [31], "pdf_page_indexes": [39], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.3.5 b", "printed_pages": [57], "pdf_page_indexes": [65], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["wireless.logging_enabled", "wireless.log_retention_days"], "suggested_minimum_retention_days": 183
+    },
+    {
+      "control_id": "JR0071-2-FW-020", "title": "审计记录字段完整", "topic": "audit-record", "assessment_mode": "automatic",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.3.5 b", "printed_pages": [13], "pdf_page_indexes": [21]},
+        {"level": 3, "clause_id": "8.1.3.5 c", "printed_pages": [31], "pdf_page_indexes": [39]},
+        {"level": 4, "clause_id": "9.1.3.5 c", "printed_pages": [57], "pdf_page_indexes": [65]}
+      ],
+      "evidence_selectors": ["logging.audit_record_fields", "log_samples"],
+      "required_fields": ["timestamp", "user", "event_type", "result"]
+    },
+    {
+      "control_id": "JR0071-2-FW-021", "title": "审计记录保护、备份及六个月留存", "topic": "audit-protection", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.3.5 c", "printed_pages": [13], "pdf_page_indexes": [21]},
+        {"level": 3, "clause_id": "8.1.3.5 d", "printed_pages": [31], "pdf_page_indexes": [39], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.3.5 d", "printed_pages": [57], "pdf_page_indexes": [65], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["logging.local_retention_days", "logging.remote_syslog", "logging.audit_log_protection_enabled", "logging.backup"],
+      "suggested_minimum_retention_days": 183,
+      "threshold_note": "标准表述为不少于六个月；183 天仅用于候选机器比较，正式规则宜按自然月或日志起止时间计算。"
+    },
+    {
+      "control_id": "JR0071-2-FW-022", "title": "远程访问和互联网访问行为单独审计分析", "topic": "user-behavior-audit", "assessment_mode": "conditional", "minimum_level": 3,
+      "source_refs": [{"level": 3, "clause_id": "8.1.3.5 e", "printed_pages": [31], "pdf_page_indexes": [39]}],
+      "evidence_selectors": ["logging.remote_access", "logging.internet_access", "analytics.user_behavior"]
+    },
+    {
+      "control_id": "JR0071-2-FW-023", "title": "审计时间戳统一", "topic": "time-synchronization", "assessment_mode": "automatic",
+      "source_refs": [
+        {"level": 3, "clause_id": "8.1.3.5 f", "printed_pages": [31], "pdf_page_indexes": [39], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.3.5 e", "printed_pages": [57], "pdf_page_indexes": [65], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["time.ntp_enabled", "time.ntp_servers", "logging.timestamp_source"]
+    },
+    {
+      "control_id": "JR0071-2-FW-024", "title": "唯一身份和分级口令策略", "topic": "identity-authentication", "assessment_mode": "automatic",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.4.1 a", "printed_pages": [13], "pdf_page_indexes": [21], "financial_marker": "F2", "password_min_length": 8},
+        {"level": 3, "clause_id": "8.1.4.1 a", "printed_pages": [31], "pdf_page_indexes": [39], "financial_marker": "F3", "password_min_length": 8, "maximum_password_age_days": 184, "password_history": 1},
+        {"level": 4, "clause_id": "9.1.4.1 a", "printed_pages": [57], "pdf_page_indexes": [65], "financial_marker": "F4", "password_min_length": 8, "maximum_password_age_days": 90, "password_history": 3}
+      ],
+      "evidence_selectors": ["management.accounts", "management.password_policy"]
+    },
+    {
+      "control_id": "JR0071-2-FW-025", "title": "登录失败处理和管理会话超时", "topic": "login-protection", "assessment_mode": "automatic",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.4.1 b", "printed_pages": [13], "pdf_page_indexes": [21]},
+        {"level": 3, "clause_id": "8.1.4.1 b", "printed_pages": [31], "pdf_page_indexes": [39], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.4.1 b", "printed_pages": [57], "pdf_page_indexes": [65], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["management.login_policy", "management.session_timeout_minutes"]
+    },
+    {
+      "control_id": "JR0071-2-FW-026", "title": "安全远程管理与管理终端鉴别", "topic": "secure-remote-management", "assessment_mode": "automatic",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.4.1 c", "printed_pages": [13], "pdf_page_indexes": [21]},
+        {"level": 3, "clause_id": "8.1.4.1 c", "printed_pages": [31], "pdf_page_indexes": [39], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.4.1 d", "printed_pages": [57], "pdf_page_indexes": [65], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["management.protocols", "management.terminal_authentication", "management.encryption"]
+    },
+    {
+      "control_id": "JR0071-2-FW-027", "title": "管理用户多因素身份鉴别", "topic": "mfa", "assessment_mode": "automatic", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.1.4.1 d", "printed_pages": [31], "pdf_page_indexes": [39]},
+        {"level": 4, "clause_id": "9.1.4.1 e", "printed_pages": [57], "pdf_page_indexes": [65]}
+      ],
+      "evidence_selectors": ["management.mfa_enabled", "management.authentication_factors"],
+      "requirement_summary": "使用两种或以上鉴别技术，且至少一种使用密码技术。"
+    },
+    {
+      "control_id": "JR0071-2-FW-028", "title": "默认账户和预设账户治理", "topic": "default-account", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.4.2 b,e", "printed_pages": [13], "pdf_page_indexes": [21], "financial_marker": "F2"},
+        {"level": 3, "clause_id": "8.1.4.2 b-c,f", "printed_pages": [31], "pdf_page_indexes": [39], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.4.2 b-c,g", "printed_pages": [57, 58], "pdf_page_indexes": [65, 66], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["management.default_accounts", "management.force_initial_password_change", "management.role_permissions"]
+    },
+    {
+      "control_id": "JR0071-2-FW-029", "title": "多余、过期和共享账户治理", "topic": "account-management", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.4.2 c", "printed_pages": [13], "pdf_page_indexes": [21]},
+        {"level": 3, "clause_id": "8.1.4.2 d", "printed_pages": [31], "pdf_page_indexes": [39]},
+        {"level": 4, "clause_id": "9.1.4.2 d-e", "printed_pages": [57, 58], "pdf_page_indexes": [65, 66], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["management.accounts", "management.shared_account_flags", "account_review"]
+    },
+    {
+      "control_id": "JR0071-2-FW-030", "title": "最小权限、权限分离及默认账户权限限制", "topic": "least-privilege", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.4.2 d-e", "printed_pages": [13], "pdf_page_indexes": [21], "financial_marker": "F2"},
+        {"level": 3, "clause_id": "8.1.4.2 e-f", "printed_pages": [31], "pdf_page_indexes": [39], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.4.2 f-g", "printed_pages": [58], "pdf_page_indexes": [66], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["management.roles", "management.role_permissions", "management.accounts[*].role"]
+    },
+    {
+      "control_id": "JR0071-2-FW-031", "title": "限制远程管理终端来源", "topic": "management-source-restriction", "assessment_mode": "automatic",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.4.4 c", "printed_pages": [14], "pdf_page_indexes": [22]},
+        {"level": 3, "clause_id": "8.1.4.4 c", "printed_pages": [32], "pdf_page_indexes": [40]},
+        {"level": 4, "clause_id": "9.1.4.4 c", "printed_pages": [58], "pdf_page_indexes": [66]}
+      ],
+      "evidence_selectors": ["management.interfaces", "management.allowed_sources", "management.allowed_source_macs"]
+    },
+    {
+      "control_id": "JR0071-2-FW-032", "title": "最小安装并关闭不需要的服务和高危端口", "topic": "system-hardening", "assessment_mode": "automatic",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.4.4 a-b", "printed_pages": [14], "pdf_page_indexes": [22]},
+        {"level": 3, "clause_id": "8.1.4.4 a-b", "printed_pages": [32], "pdf_page_indexes": [40]},
+        {"level": 4, "clause_id": "9.1.4.4 a-b", "printed_pages": [58], "pdf_page_indexes": [66]}
+      ],
+      "evidence_selectors": ["system.components", "system.services", "management.protocols", "open_ports"]
+    },
+    {
+      "control_id": "JR0071-2-FW-033", "title": "已知漏洞发现、评估和修补", "topic": "vulnerability-management", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.4.4 e", "printed_pages": [14], "pdf_page_indexes": [22]},
+        {"level": 3, "clause_id": "8.1.4.4 e", "printed_pages": [32], "pdf_page_indexes": [40], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.4.4 e", "printed_pages": [58], "pdf_page_indexes": [66], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["vulnerability_scan", "firmware.version", "patches", "change_approval"]
+    },
+    {
+      "control_id": "JR0071-2-FW-034", "title": "设备节点入侵检测和严重事件告警", "topic": "device-intrusion", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.4.4 f", "printed_pages": [14], "pdf_page_indexes": [22], "financial_marker": "F2"},
+        {"level": 3, "clause_id": "8.1.4.4 f", "printed_pages": [32], "pdf_page_indexes": [40]},
+        {"level": 4, "clause_id": "9.1.4.4 f", "printed_pages": [58], "pdf_page_indexes": [66], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["device_integrity", "management_intrusion_detection", "alerts"]
+    },
+    {
+      "control_id": "JR0071-2-FW-035", "title": "安全计算环境设备生产专用", "topic": "dedicated-device", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.4.4 g", "printed_pages": [14], "pdf_page_indexes": [22], "financial_marker": "F2"},
+        {"level": 3, "clause_id": "8.1.4.4 g", "printed_pages": [32], "pdf_page_indexes": [40], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.4.4 g", "printed_pages": [58], "pdf_page_indexes": [66], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["asset.purpose", "system.installed_components", "system.running_services"]
+    },
+    {
+      "control_id": "JR0071-2-FW-036", "title": "设备安全审计覆盖与记录字段", "topic": "device-audit", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.4.3 a-b", "printed_pages": [13], "pdf_page_indexes": [21]},
+        {"level": 3, "clause_id": "8.1.4.3 a-b", "printed_pages": [31], "pdf_page_indexes": [39]},
+        {"level": 4, "clause_id": "9.1.4.3 a-b", "printed_pages": [58], "pdf_page_indexes": [66]}
+      ],
+      "evidence_selectors": ["logging.audit_enabled", "logging.admin_operation_log_enabled", "logging.audit_record_fields", "log_samples"]
+    },
+    {
+      "control_id": "JR0071-2-FW-037", "title": "设备审计保护、六个月留存和审计进程保护", "topic": "device-audit-protection", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.4.3 c-d", "printed_pages": [13], "pdf_page_indexes": [21], "financial_marker": "F2"},
+        {"level": 3, "clause_id": "8.1.4.3 c-d,f", "printed_pages": [32], "pdf_page_indexes": [40], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.4.3 c-d,f", "printed_pages": [58], "pdf_page_indexes": [66], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["logging.local_retention_days", "logging.remote_syslog", "logging.audit_log_protection_enabled", "logging.audit_process_protected", "time.ntp_enabled"],
+      "suggested_minimum_retention_days": 183
+    },
+    {
+      "control_id": "JR0071-2-FW-038", "title": "设备配置文件每月及变更后备份", "topic": "configuration-backup", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.5.1 c", "printed_pages": [15], "pdf_page_indexes": [23], "financial_marker": "F2"},
+        {"level": 3, "clause_id": "8.1.5.1 c", "printed_pages": [34], "pdf_page_indexes": [42], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.5.1 c", "printed_pages": [60], "pdf_page_indexes": [68], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["configuration_backup.enabled", "configuration_backup.last_success_at", "configuration_backup.on_change", "configuration_backup.records"],
+      "maximum_scheduled_backup_interval_days": 31
+    },
+    {
+      "control_id": "JR0071-2-FW-039", "title": "重要配置和日志数据备份恢复", "topic": "backup-recovery", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.4.9 a-b；7.1.5.1 f", "printed_pages": [14, 15], "pdf_page_indexes": [22, 23], "financial_marker": "F2"},
+        {"level": 3, "clause_id": "8.1.4.9 a-c", "printed_pages": [33], "pdf_page_indexes": [41], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.4.9 a-d", "printed_pages": [59], "pdf_page_indexes": [67], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["configuration_backup", "logging.backup", "backup.restore_tests", "high_availability"],
+      "scope_note": "只评价防火墙配置、日志及设备恢复能力，不代替业务数据灾备评价。"
+    },
+    {
+      "control_id": "JR0071-2-FW-040", "title": "系统管理员身份鉴别、受限界面和操作审计", "topic": "system-administration", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.5.1 a-b", "printed_pages": [15], "pdf_page_indexes": [23]},
+        {"level": 3, "clause_id": "8.1.5.1 a-b", "printed_pages": [34], "pdf_page_indexes": [42]},
+        {"level": 4, "clause_id": "9.1.5.1 a-b", "printed_pages": [60], "pdf_page_indexes": [68]}
+      ],
+      "evidence_selectors": ["management.accounts", "management.roles", "management.allowed_operations", "logging.admin_operation_log_enabled"]
+    },
+    {
+      "control_id": "JR0071-2-FW-041", "title": "设备运行状态监测和每日查看记录", "topic": "device-monitoring", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.5.1 d", "printed_pages": [15], "pdf_page_indexes": [23], "financial_marker": "F2"},
+        {"level": 3, "clause_id": "8.1.5.1 d", "printed_pages": [34], "pdf_page_indexes": [42], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.5.1 d", "printed_pages": [60], "pdf_page_indexes": [68], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["monitoring.enabled", "monitoring.mode", "monitoring.last_operator_review_at", "monitoring.review_records"]
+    },
+    {
+      "control_id": "JR0071-2-FW-042", "title": "设备软件版本定期核验、测试后升级和留痕", "topic": "version-management", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.5.1 e", "printed_pages": [15], "pdf_page_indexes": [23], "financial_marker": "F2"},
+        {"level": 3, "clause_id": "8.1.5.1 e", "printed_pages": [34], "pdf_page_indexes": [42], "financial_marker": "F3", "maximum_review_interval_days": 92},
+        {"level": 4, "clause_id": "9.1.5.1 e", "printed_pages": [60], "pdf_page_indexes": [68], "financial_marker": "F4", "maximum_review_interval_days": 31}
+      ],
+      "evidence_selectors": ["firmware.version", "version_review.last_reviewed_at", "upgrade.test_records", "upgrade.change_records"]
+    },
+    {
+      "control_id": "JR0071-2-FW-043", "title": "审计管理员鉴别、操作审计和审计数据权限分离", "topic": "audit-administration", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.1.5.2 a-b", "printed_pages": [15], "pdf_page_indexes": [23]},
+        {"level": 3, "clause_id": "8.1.5.2 a-c", "printed_pages": [34], "pdf_page_indexes": [42], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.5.2 a-c", "printed_pages": [60, 61], "pdf_page_indexes": [68, 69], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["management.audit_admin", "management.roles", "management.role_permissions", "logging.audit_admin_operations", "logging.authorized_roles"]
+    },
+    {
+      "control_id": "JR0071-2-FW-044", "title": "安全管理员鉴别、受限操作和策略配置", "topic": "security-administration", "assessment_mode": "mixed", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.1.5.3 a-b", "printed_pages": [34], "pdf_page_indexes": [42]},
+        {"level": 4, "clause_id": "9.1.5.3 a-b", "printed_pages": [61], "pdf_page_indexes": [69]}
+      ],
+      "evidence_selectors": ["management.security_admin", "management.roles", "management.allowed_operations", "logging.security_admin_operations"]
+    },
+    {
+      "control_id": "JR0071-2-FW-045", "title": "安全设备集中管理区域和安全管理路径", "topic": "centralized-management", "assessment_mode": "mixed", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.1.5.4 a-b", "printed_pages": [34], "pdf_page_indexes": [42]},
+        {"level": 4, "clause_id": "9.1.5.4 a-b", "printed_pages": [61], "pdf_page_indexes": [69]}
+      ],
+      "evidence_selectors": ["management.management_zone", "management.management_path", "management.interfaces", "management.encryption"]
+    },
+    {
+      "control_id": "JR0071-2-FW-046", "title": "设备运行状态集中监测", "topic": "central-monitoring", "assessment_mode": "mixed", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.1.5.4 c", "printed_pages": [34], "pdf_page_indexes": [42]},
+        {"level": 4, "clause_id": "9.1.5.4 c", "printed_pages": [61], "pdf_page_indexes": [69]}
+      ],
+      "evidence_selectors": ["monitoring.centralized", "monitoring.metrics", "monitoring.alerts"]
+    },
+    {
+      "control_id": "JR0071-2-FW-047", "title": "安全事件和审计数据集中收集分析与留存", "topic": "centralized-logging", "assessment_mode": "mixed", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.1.5.4 d", "printed_pages": [34], "pdf_page_indexes": [42], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.5.4 d", "printed_pages": [61], "pdf_page_indexes": [69], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["logging.remote_syslog", "logging.siem", "logging.retention_policy", "analytics.centralized"]
+    },
+    {
+      "control_id": "JR0071-2-FW-048", "title": "安全策略、恶意代码和补丁升级集中管理", "topic": "central-policy-management", "assessment_mode": "mixed", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.1.5.4 e", "printed_pages": [34], "pdf_page_indexes": [42]},
+        {"level": 4, "clause_id": "9.1.5.4 e", "printed_pages": [61], "pdf_page_indexes": [69]}
+      ],
+      "evidence_selectors": ["central_management.security_policy", "central_management.signature_updates", "central_management.patch_management"]
+    },
+    {
+      "control_id": "JR0071-2-FW-049", "title": "安全事件集中识别响应、统一时钟和告警合并", "topic": "security-event-management", "assessment_mode": "mixed", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.1.5.4 f-g", "printed_pages": [35], "pdf_page_indexes": [43], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.1.5.4 f-h", "printed_pages": [61], "pdf_page_indexes": [69], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["siem.identification", "siem.alerting", "siem.response", "time.ntp_enabled", "alerting.aggregation_enabled"]
+    }
+  ],
+  "conditional_extension_candidates": [
+    {
+      "control_id": "JR0071-2-FW-CLOUD-001", "title": "云虚拟网络及业务管理网络隔离", "context": "cloud-conditional", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.2.2.1 b-c", "printed_pages": [22], "pdf_page_indexes": [30]},
+        {"level": 3, "clause_id": "8.2.2.1 b-d", "printed_pages": [45], "pdf_page_indexes": [53], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.2.2.1 b-d,j", "printed_pages": [72], "pdf_page_indexes": [80], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["cloud.virtual_networks", "cloud.business_management_network_separation", "cloud.physical_network_sharing"]
+    },
+    {
+      "control_id": "JR0071-2-FW-CLOUD-002", "title": "虚拟化边界访问控制机制和规则", "context": "cloud-conditional", "assessment_mode": "automatic",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.2.3.1 a-b", "printed_pages": [23], "pdf_page_indexes": [31]},
+        {"level": 3, "clause_id": "8.2.3.1 a-d", "printed_pages": [45], "pdf_page_indexes": [53], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.2.3.1 a-d", "printed_pages": [73], "pdf_page_indexes": [81], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["cloud.firewalls", "cloud.security_groups", "cloud.network_acls", "cloud.management_network_access_control"]
+    },
+    {
+      "control_id": "JR0071-2-FW-CLOUD-003", "title": "云客户自主安全策略、子网规则与 VPN", "context": "cloud-conditional", "assessment_mode": "mixed", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.2.2.1 e；8.2.3.1", "printed_pages": [45], "pdf_page_indexes": [53]},
+        {"level": 4, "clause_id": "9.2.2.1 e；9.2.3.1 e-g", "printed_pages": [72, 73], "pdf_page_indexes": [80, 81], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["cloud.self_service_security_policy", "cloud.subnets", "cloud.security_groups", "cloud.vpn"]
+    },
+    {
+      "control_id": "JR0071-2-FW-CLOUD-004", "title": "云攻击与异常流量检测、记录和告警", "context": "cloud-conditional", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.2.3.2 a-c", "printed_pages": [23], "pdf_page_indexes": [31]},
+        {"level": 3, "clause_id": "8.2.3.2 a-e", "printed_pages": [45], "pdf_page_indexes": [53], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.2.3.2 a-e", "printed_pages": [73], "pdf_page_indexes": [81], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["cloud.threat_detection", "cloud.east_west_traffic", "cloud.attack_logs", "cloud.alerting"]
+    },
+    {
+      "control_id": "JR0071-2-FW-CLOUD-005", "title": "互联网金融服务 DoS/DDoS 清洗防护", "context": "cloud-conditional", "assessment_mode": "mixed", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.2.3.2 f", "printed_pages": [45], "pdf_page_indexes": [53], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.2.3.2 f", "printed_pages": [73], "pdf_page_indexes": [81], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["cloud.ddos_protection", "cloud.traffic_scrubbing", "cloud.ddos_test_results"]
+    },
+    {
+      "control_id": "JR0071-2-FW-CLOUD-006", "title": "互联网金融服务 Web 应用攻击防护", "context": "cloud-conditional", "assessment_mode": "mixed", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.2.3.2 g", "printed_pages": [45], "pdf_page_indexes": [53], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.2.3.2 g", "printed_pages": [73], "pdf_page_indexes": [81], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["cloud.waf_enabled", "cloud.waf_rules", "cloud.waf_test_results"]
+    },
+    {
+      "control_id": "JR0071-2-FW-CLOUD-007", "title": "云远程特权命令和服务商操作审计", "context": "cloud-conditional", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.2.3.3 a-b", "printed_pages": [23], "pdf_page_indexes": [31]},
+        {"level": 3, "clause_id": "8.2.3.3 a-b", "printed_pages": [46], "pdf_page_indexes": [54]},
+        {"level": 4, "clause_id": "9.2.3.3 a-b", "printed_pages": [73], "pdf_page_indexes": [81]}
+      ],
+      "evidence_selectors": ["cloud.privileged_command_logging", "cloud.provider_operation_audit", "cloud.audit_visibility"]
+    },
+    {
+      "control_id": "JR0071-2-FW-CLOUD-008", "title": "云客户网络节点流量监控", "context": "cloud-conditional", "assessment_mode": "mixed", "minimum_level": 4,
+      "source_refs": [{"level": 4, "clause_id": "9.2.2.1 k", "printed_pages": [72], "pdf_page_indexes": [80], "financial_marker": "F4"}],
+      "evidence_selectors": ["cloud.flow_logs", "cloud.traffic_monitoring", "cloud.customer_visibility"]
+    },
+    {
+      "control_id": "JR0071-2-FW-MOBILE-001", "title": "移动端到服务器安全通道和双向认证", "context": "mobile-conditional", "assessment_mode": "conditional",
+      "applicability_condition": "firewall terminates, proxies or enforces the TLS/IPSec channel",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.3.2.1", "printed_pages": [24], "pdf_page_indexes": [32], "financial_marker": "F2"},
+        {"level": 3, "clause_id": "8.3.2.1 a-b", "printed_pages": [49], "pdf_page_indexes": [57], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.3.2.1 a-b", "printed_pages": [76], "pdf_page_indexes": [84], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["tls", "ipsec", "mutual_authentication", "certificates"]
+    },
+    {
+      "control_id": "JR0071-2-FW-MOBILE-002", "title": "有线与无线网络边界经无线接入网关", "context": "mobile-conditional", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.3.3.1", "printed_pages": [24], "pdf_page_indexes": [32]},
+        {"level": 3, "clause_id": "8.3.3.1", "printed_pages": [49], "pdf_page_indexes": [57]},
+        {"level": 4, "clause_id": "9.3.3.1", "printed_pages": [76], "pdf_page_indexes": [84]}
+      ],
+      "evidence_selectors": ["wireless.gateway", "network_zones", "routing", "topology"]
+    },
+    {
+      "control_id": "JR0071-2-FW-MOBILE-003", "title": "无线攻击、高风险功能检测和非授权接入阻断", "context": "mobile-conditional", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.3.3.3 a-e", "printed_pages": [25], "pdf_page_indexes": [33]},
+        {"level": 3, "clause_id": "8.3.3.3 a-f", "printed_pages": [49], "pdf_page_indexes": [57]},
+        {"level": 4, "clause_id": "9.3.3.3 a-f", "printed_pages": [77], "pdf_page_indexes": [85]}
+      ],
+      "evidence_selectors": ["wireless.intrusion_detection", "wireless.attack_detection", "wireless.high_risk_features", "wireless.blocking"]
+    },
+    {
+      "control_id": "JR0071-2-FW-IOT-001", "title": "物联网授权节点接入和非法节点数据过滤", "context": "iot-conditional", "assessment_mode": "mixed",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.4.2.1 a-c；7.4.3.2 b", "printed_pages": [26, 27], "pdf_page_indexes": [34, 35], "financial_marker": "F2"},
+        {"level": 3, "clause_id": "8.4.2.1 a-c；8.4.3.2 b", "printed_pages": [51, 52], "pdf_page_indexes": [59, 60], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.4.2.1 a-c；9.4.3.2 b", "printed_pages": [79, 80], "pdf_page_indexes": [87, 88], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["iot.authorized_nodes", "iot.node_authentication", "iot.access_rules", "iot.illegal_node_filtering"]
+    },
+    {
+      "control_id": "JR0071-2-FW-IOT-002", "title": "限制感知节点和网关节点通信目标地址", "context": "iot-conditional", "assessment_mode": "automatic",
+      "source_refs": [
+        {"level": 2, "clause_id": "7.4.2.2 a-b", "printed_pages": [26], "pdf_page_indexes": [34]},
+        {"level": 3, "clause_id": "8.4.2.2 a-b", "printed_pages": [51], "pdf_page_indexes": [59]},
+        {"level": 4, "clause_id": "9.4.2.2 a-b", "printed_pages": [79], "pdf_page_indexes": [87]}
+      ],
+      "evidence_selectors": ["iot.allowed_destinations", "access_control.policies"]
+    },
+    {
+      "control_id": "JR0071-2-FW-IOT-003", "title": "物联网攻击信息上报", "context": "iot-conditional", "assessment_mode": "mixed", "minimum_level": 3,
+      "source_refs": [
+        {"level": 3, "clause_id": "8.4.2.2 c", "printed_pages": [51], "pdf_page_indexes": [59], "financial_marker": "F3"},
+        {"level": 4, "clause_id": "9.4.2.2 c", "printed_pages": [79], "pdf_page_indexes": [87], "financial_marker": "F4"}
+      ],
+      "evidence_selectors": ["iot.attack_reporting", "iot.attack_log_fields", "logging.remote_syslog"]
+    }
+  ],
+  "excluded_or_manual_only_groups": [
+    "封面、前言、目录、引言、规范性引用文件、术语和缩略语",
+    "物理机房、门禁、消防、防雷、防水、供配电和电磁防护",
+    "安全策略制度、组织机构、人员录用离岗、培训和沟通",
+    "定级备案、采购、软件开发、工程实施、测试验收和系统交付",
+    "与防火墙无直接证据关系的数据库、应用、个人金融信息和业务数据要求",
+    "仅使用“可”表述的可信验证要求",
+    "大数据安全扩展要求及移动终端应用自身安全要求",
+    "运维审批、事件处置、应急预案和外包管理等需制度或工单证明的事项"
+  ]
+}

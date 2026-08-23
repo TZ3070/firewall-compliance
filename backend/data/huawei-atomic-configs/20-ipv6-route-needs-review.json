@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "scenario_id": "20-ipv6-route-needs-review",
+  "vendor": "Huawei",
+  "judgment_scope": "configuration-only preliminary assessment",
+  "expected_result": "NeedsReview",
+  "expected_parsed_patch": {
+    "network_stack": {
+      "ipv6_default_route_configured": true
+    }
+  },
+  "judgment_reason": "CLI 可证明存在 IPv6 默认路由，但不能证明产品的 IPv6 协议一致性、健壮性和全部功能要求。",
+  "limitations": [
+    "需要 IPv6 协议一致性与健壮性测试证据。"
+  ],
+  "primary_standard": {
+    "record_id": "GB20281-FW-008",
+    "standard_code": "GB/T 20281—2020",
+    "title": "IPv6 环境、协议一致性和健壮性",
+    "clause_id": "6.1.1.5",
+    "classified_protection_level": null,
+    "verbatim_text": "6.1.1.5    IPv6  支持（可选）\n6.1.1.5.1     支持 IPv6 网络环境\n若产品支持 IPv6 ,应支持在 IPv6 网络环境下正常工作，能有效运行其安全功能和 自身安全\n功能。\n6.1.1.5.2    协议一致性\n若产品支持 IPv6 ,应满足 IPv6 协议一致性的要求，至少包括 IPv6 核心协议、IPv6 NDP 协议、IPv6 Autoconfig 协议和 ICMPv6 协议。\n6.1.1.5.3    协议健壮性\n若产品支持 IPv6,应满足 IPv6 协议健壮性的要求，抵御 IPv6 网络环境下畸形协议报文攻击。 6.1.1.5.4     支持 IPv6  过渡网络环境\n若产品支持 IPv6,应支持在以下一种或多种 IPv6 过渡网络环境下工作：\na)    协议转换，将 IPv4 和 IPv6 两种协议相互转换；\nb) 隧道，将 IPv6 封装在 IPv4 中穿越 IPv4 网络，如 IPv6 over IPv4、IPv6 to IPv4、ISATAP 等。",
+    "content_sha256": "8e7b8dd87779ce904e0e48952fdb2c7b59718021189fda56f07e77b015ada209",
+    "review_status": "HumanReviewed",
+    "citation_eligible": true,
+    "source_record_pointer": "/control_candidates/7"
+  },
+  "related_standards": [],
+  "catalog_provenance": {
+    "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+    "catalog_version": "1.0.0",
+    "catalog_record_count": 440,
+    "review_artifact_sha256": "4eae8aacab3733847dfffb5b8fecf52415dda82b26d23151fa0cdb805009670f"
+  }
+}

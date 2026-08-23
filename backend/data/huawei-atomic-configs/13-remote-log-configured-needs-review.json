@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0.0",
+  "scenario_id": "13-remote-log-configured-needs-review",
+  "vendor": "Huawei",
+  "judgment_scope": "configuration-only preliminary assessment",
+  "expected_result": "NeedsReview",
+  "expected_parsed_patch": {
+    "logging": {
+      "remote_logging": {
+        "enabled": true
+      }
+    }
+  },
+  "judgment_reason": "CLI 可证明已配置 TLS 远程日志目标，但不能证明可达、已收集、已分析和实际留存期。",
+  "limitations": [
+    "需要日志平台连通性、收集记录和留存策略证据。"
+  ],
+  "primary_standard": {
+    "record_id": "JR0071-2-FW-047",
+    "standard_code": "JR/T 0071.2—2020",
+    "title": "安全事件和审计数据集中收集分析与留存",
+    "clause_id": "8.1.5.4",
+    "classified_protection_level": 3,
+    "verbatim_text": "8.1.5.4   集中管控\nd)   应对分散在各个设备上的安全事件、审计数据进行收集汇总和集中分析，并保证审计记录的留存时间符合法律法规要求 。（F3）",
+    "content_sha256": "e4a710ad5d851be202f36ebe2f626fc0afa594f325a3054272f57d42229107c0",
+    "review_status": "HumanReviewed",
+    "citation_eligible": true,
+    "source_record_pointer": "/control_candidates/46"
+  },
+  "related_standards": [
+    {
+      "record_id": "GB22239-FW-032",
+      "standard_code": "GB/T 22239—2019",
+      "title": "审计数据集中收集和留存",
+      "clause_id": "8.1.5.4",
+      "classified_protection_level": 3,
+      "verbatim_text": "8 . 1 . 5 . 4    集中管控\nd)   应对分散在各个设备上的审计数据进行收集汇总和集中分析,并保证审计记录的留存时间符合法律法规要求 ;",
+      "content_sha256": "40dc76c4510c45731ed8b990932b3417bc6213b29a1c1f20039d64d93fe689f5",
+      "review_status": "HumanReviewed",
+      "citation_eligible": true,
+      "source_record_pointer": "/general_control_families/31"
+    }
+  ],
+  "catalog_provenance": {
+    "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+    "catalog_version": "1.0.0",
+    "catalog_record_count": 440,
+    "review_artifact_sha256": "4eae8aacab3733847dfffb5b8fecf52415dda82b26d23151fa0cdb805009670f"
+  }
+}

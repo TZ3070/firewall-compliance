@@ -1,0 +1,2 @@
+"""Deterministic vendor configuration parsers."""
+

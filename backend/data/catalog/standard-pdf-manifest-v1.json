@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "manifest_id": "bank-firewall-standard-pdf-manifest-v1",
+  "manifest_version": "1.0.0",
+  "generated_on": "2026-08-23",
+  "hash_algorithm": "sha256",
+  "scope": "P0 标准来源文件身份清单；仅证明本地整理时使用的 PDF 文件版本，不证明条款整理内容已完成人工合规复核。",
+  "p0_scope_status": "AcceptedForDemo",
+  "formal_content_review": "DeferredToP1",
+  "pdf_files_committed_to_repository": false,
+  "sources": [
+    {
+      "standard_code": "GB/T 20281—2020",
+      "title": "信息安全技术 防火墙安全技术要求和测试评价方法",
+      "file_name": "GB-T-20281-2020-防火墙安全技术要求和测试评价方法.pdf",
+      "file_size_bytes": 3826990,
+      "pdf_sha256": "619eec845ae2e7c34f522121f196f9c3015b8efb51ebf19a02ffdf691f9f718d"
+    },
+    {
+      "standard_code": "GB/T 22239—2019",
+      "title": "信息安全技术 网络安全等级保护基本要求",
+      "file_name": "GB-T-22239-2019-网络安全等级保护基本要求.pdf",
+      "file_size_bytes": 8604147,
+      "pdf_sha256": "254ddd75cac3dec755fd1216f7ef4d3fb8552399b376a1590efd060c537298a4"
+    },
+    {
+      "standard_code": "JR/T 0071.2—2020",
+      "title": "金融行业网络安全等级保护实施指引 第2部分：基本要求",
+      "file_name": "JR-T-0071.2-2020-基本要求.pdf",
+      "file_size_bytes": 2235828,
+      "pdf_sha256": "97396ae2a4848a19e994f29ec5a36e203a8b25e2ee3a92675f32f0a0816eff62"
+    },
+    {
+      "standard_code": "JR/T 0072—2020",
+      "title": "金融行业网络安全等级保护测评指南",
+      "file_name": "JR-T-0072-2020-测评指南.pdf",
+      "file_size_bytes": 1907504,
+      "pdf_sha256": "9e38522f63d2b0dbd595db42f73a960f4f542f13a041da48b173251f3dcf1f35"
+    }
+  ]
+}

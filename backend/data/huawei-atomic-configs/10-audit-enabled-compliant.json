@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0.0",
+  "scenario_id": "10-audit-enabled-compliant",
+  "vendor": "Huawei",
+  "judgment_scope": "configuration-only preliminary assessment",
+  "expected_result": "Passed",
+  "expected_parsed_patch": {
+    "logging": {
+      "audit_log_enabled": true,
+      "policy_log_enabled": true,
+      "threat_log_enabled": true
+    }
+  },
+  "judgment_reason": "配置启用设备审计、策略日志和威胁日志。",
+  "limitations": [],
+  "primary_standard": {
+    "record_id": "JR0071-2-FW-036",
+    "standard_code": "JR/T 0071.2—2020",
+    "title": "设备安全审计覆盖与记录字段",
+    "clause_id": "8.1.4.3",
+    "classified_protection_level": 3,
+    "verbatim_text": "8.1.4.3   安全审计\na)   应启用安全审计功能，审计应覆盖到每个用户，对重要的用户行为和重要安全事件进行审计。\nb)   审计记录应包括事件的日期和时间、用户、事件类型、事件是否成功及其他与审计相关的信息。",
+    "content_sha256": "8edb188abc3d5d0a837e16523774132db4caf80e9f4906ef741e99b30e6ac86c",
+    "review_status": "HumanReviewed",
+    "citation_eligible": true,
+    "source_record_pointer": "/control_candidates/35"
+  },
+  "related_standards": [
+    {
+      "record_id": "GB22239-FW-026",
+      "standard_code": "GB/T 22239—2019",
+      "title": "设备安全审计功能及审计进程保护",
+      "clause_id": "8.1.4.3",
+      "classified_protection_level": 3,
+      "verbatim_text": "8 . 1 . 4 . 3    安全审计\na)   应启用安全审计功能,审计覆盖到每个用户,对重要的用户行为和重要安全事件进行审计 ;\nb)   审计记录应包括事件的 日期和时间、用户、事件类型、事件是否成功及其他与审计相关的信息 ;\nc)   应对审计记录进行保护,定期备份,避免受到未预期的删除、修改或覆盖等 ;\nd)   应对审计进程进行保护,防止未经授权的中断。",
+      "content_sha256": "86e0697be5356d7eb45c758a776aab97ad1fe1fb2db7dee013c3b54753b324a0",
+      "review_status": "HumanReviewed",
+      "citation_eligible": true,
+      "source_record_pointer": "/general_control_families/25"
+    },
+    {
+      "record_id": "GB20281-FW-031",
+      "standard_code": "GB/T 20281—2020",
+      "title": "安全策略命中和攻击事件审计",
+      "clause_id": "6.1.5.1",
+      "classified_protection_level": null,
+      "verbatim_text": "6.1.5.1     安全审计\na)  记录事件类型：\n1)   被产品安全策略匹配的访问请求；\n2)   检测到的攻击行为。",
+      "content_sha256": "26ee89231c927629d398caede5d92324da74fb40f09b8dc4305356069cee4a7f",
+      "review_status": "HumanReviewed",
+      "citation_eligible": true,
+      "source_record_pointer": "/control_candidates/30"
+    }
+  ],
+  "catalog_provenance": {
+    "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+    "catalog_version": "1.0.0",
+    "catalog_record_count": 440,
+    "review_artifact_sha256": "4eae8aacab3733847dfffb5b8fecf52415dda82b26d23151fa0cdb805009670f"
+  }
+}

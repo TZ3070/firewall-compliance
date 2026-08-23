@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0.0",
+  "scenario_id": "08-mfa-enabled-compliant",
+  "vendor": "Huawei",
+  "judgment_scope": "configuration-only preliminary assessment",
+  "expected_result": "Passed",
+  "expected_parsed_patch": {
+    "management": {
+      "mfa_enabled": true
+    }
+  },
+  "judgment_reason": "配置明确启用管理用户多因素鉴别。",
+  "limitations": [],
+  "primary_standard": {
+    "record_id": "JR0071-2-FW-027",
+    "standard_code": "JR/T 0071.2—2020",
+    "title": "管理用户多因素身份鉴别",
+    "clause_id": "8.1.4.1",
+    "classified_protection_level": 3,
+    "verbatim_text": "8.1.4.1   身份鉴别\nd)   应采用口令、密码技术、生物技术等两种或两种以上组合的鉴别技术对用户进行身份鉴别，且其中一种鉴别技术至少应使用密码技术来实现。",
+    "content_sha256": "ba4edd2ace4b21e96ba16ed0c60ecf43c7f22e41329b7962f2587b08259ca05a",
+    "review_status": "HumanReviewed",
+    "citation_eligible": true,
+    "source_record_pointer": "/control_candidates/26"
+  },
+  "related_standards": [
+    {
+      "record_id": "GB22239-FW-018",
+      "standard_code": "GB/T 22239—2019",
+      "title": "管理用户多因素身份鉴别",
+      "clause_id": "8.1.4.1",
+      "classified_protection_level": 3,
+      "verbatim_text": "8 . 1 . 4 . 1      身份鉴别\nd)   应采用口令、密码技术、生物技术等两种或两种以上组合的鉴别技术对用户进行身份鉴别,且其中一种鉴别技术至少应使用密码技术来实现。",
+      "content_sha256": "1b95b823670ccfcf7f557e2ec9a5ff93632382a4c4c3addb6054744d3ad3c388",
+      "review_status": "HumanReviewed",
+      "citation_eligible": true,
+      "source_record_pointer": "/general_control_families/17"
+    },
+    {
+      "record_id": "GB20281-FW-039",
+      "standard_code": "GB/T 20281—2020",
+      "title": "授权管理员多因素鉴别",
+      "clause_id": "6.2.1",
+      "classified_protection_level": null,
+      "verbatim_text": "6.2.1     身份标识与鉴别\ng)   应对授权管理员选择两种或两种以上组合的鉴别技术进行身份鉴别。",
+      "content_sha256": "ba49f9e8f849dc66f89e0973fa9c00078554c7c48f2ec9b8cfeb8b7ab978bb25",
+      "review_status": "HumanReviewed",
+      "citation_eligible": true,
+      "source_record_pointer": "/control_candidates/38"
+    }
+  ],
+  "catalog_provenance": {
+    "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+    "catalog_version": "1.0.0",
+    "catalog_record_count": 440,
+    "review_artifact_sha256": "4eae8aacab3733847dfffb5b8fecf52415dda82b26d23151fa0cdb805009670f"
+  }
+}

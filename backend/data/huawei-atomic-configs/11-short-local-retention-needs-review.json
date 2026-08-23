@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0.0",
+  "scenario_id": "11-short-local-retention-needs-review",
+  "vendor": "Huawei",
+  "judgment_scope": "configuration-only preliminary assessment",
+  "expected_result": "NeedsReview",
+  "expected_parsed_patch": {
+    "logging": {
+      "local_retention_days": 30,
+      "remote_logging": {
+        "enabled": true
+      }
+    }
+  },
+  "judgment_reason": "本地仅留存30天；已配置远程日志，但 CLI 不能证明远端留存期。",
+  "limitations": [
+    "需要远程日志平台的留存策略和实际日志记录。"
+  ],
+  "primary_standard": {
+    "record_id": "JR0071-2-FW-037",
+    "standard_code": "JR/T 0071.2—2020",
+    "title": "设备审计保护、六个月留存和审计进程保护",
+    "clause_id": "8.1.4.3",
+    "classified_protection_level": 3,
+    "verbatim_text": "8.1.4.3   安全审计\nc)   应对审计记录进行保护，定期备份，避免受到未预期的删除、修改或覆盖等，审计记录保存时间应不少于 6 个月 。（F3）\nd)   应对审计进程进行保护， 防止未经授权的中断。\nf)   审计记录产生时的时间应由系统范围内唯一确定的时钟产生 ， 以确保审计分析的一致性与正确性 。（F3）",
+    "content_sha256": "b827579f281a8a4a1e6606338c3623c113906d006372a6d8fc4110368e0729f3",
+    "review_status": "HumanReviewed",
+    "citation_eligible": true,
+    "source_record_pointer": "/control_candidates/36"
+  },
+  "related_standards": [
+    {
+      "record_id": "GB22239-FW-014",
+      "standard_code": "GB/T 22239—2019",
+      "title": "审计记录保护与定期备份",
+      "clause_id": "8.1.3.5",
+      "classified_protection_level": 3,
+      "verbatim_text": "8 . 1 . 3 . 5    安全审计\nc)    应对审计记录进行保护 , 定期备份 , 避免受到未预期的删除、修改或覆盖等 ;",
+      "content_sha256": "83010256fd1922d6db407feb77e98620391a7d18023b64e20a3d8c18d72644f5",
+      "review_status": "HumanReviewed",
+      "citation_eligible": true,
+      "source_record_pointer": "/general_control_families/13"
+    },
+    {
+      "record_id": "GB20281-FW-033",
+      "standard_code": "GB/T 20281—2020",
+      "title": "审计日志授权、查询、留存和备份",
+      "clause_id": "6.1.5.1",
+      "classified_protection_level": null,
+      "verbatim_text": "6.1.5.1     安全审计\nc)    日志管理：\n1)   仅允许授权管理员访问 日志，并提供日志查阅、导出等功能；\n2)    能对审计事件按 日期、时间、主体、客体等条件查询；\n3)    日志存储于掉电非易失性存储介质中；\n4)    日志存储周期设定不小于六个月；\n5)   存储空间达到阈值时，能通知授权管理员，并确保审计功能的正常运行；\n6)    日志支持自动化备份至其他存储设备。",
+      "content_sha256": "07e4c16f086dfe238e443f706e2b5ec7e7807b95915732a1032fbc8fd5ee4902",
+      "review_status": "HumanReviewed",
+      "citation_eligible": true,
+      "source_record_pointer": "/control_candidates/32"
+    }
+  ],
+  "catalog_provenance": {
+    "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+    "catalog_version": "1.0.0",
+    "catalog_record_count": 440,
+    "review_artifact_sha256": "4eae8aacab3733847dfffb5b8fecf52415dda82b26d23151fa0cdb805009670f"
+  }
+}

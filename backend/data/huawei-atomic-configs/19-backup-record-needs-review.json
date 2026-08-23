@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0.0",
+  "scenario_id": "19-backup-record-needs-review",
+  "vendor": "Huawei",
+  "judgment_scope": "configuration-only preliminary assessment",
+  "expected_result": "NeedsReview",
+  "expected_parsed_patch": {
+    "target": {
+      "hostname": "FW-BACKUP-REVIEW"
+    }
+  },
+  "judgment_reason": "运行配置快照不包含每月及变更后的备份成功记录，无法仅凭 CLI 判定。",
+  "limitations": [
+    "需要配置管理平台、备份任务和备份文件记录。"
+  ],
+  "primary_standard": {
+    "record_id": "JR0071-2-FW-038",
+    "standard_code": "JR/T 0071.2—2020",
+    "title": "设备配置文件每月及变更后备份",
+    "clause_id": "8.1.5.1",
+    "classified_protection_level": 3,
+    "verbatim_text": "8.1.5.1   系统管理\nc)   应每月对设备的配置文件进行备份，发生变动时应及时备份 。（F3）",
+    "content_sha256": "2eb14162b2b2d67d0b7b42b298cfcc4d5baa87a9a3c4eb78381a80fcbf6d22ed",
+    "review_status": "HumanReviewed",
+    "citation_eligible": true,
+    "source_record_pointer": "/control_candidates/37"
+  },
+  "related_standards": [
+    {
+      "record_id": "GB22239-FW-025",
+      "standard_code": "GB/T 22239—2019",
+      "title": "重要配置和数据备份恢复",
+      "clause_id": "8.1.4.9",
+      "classified_protection_level": 3,
+      "verbatim_text": "8 . 1 . 4 . 9    数据备份恢复\na)   应提供重要数据的本地数据备份与恢复功能 ;\nb)   应提供异地实时备份功能,利用通信网络将重要数据实时备份至备份场地 ;",
+      "content_sha256": "38f2c0b75429e9afdef9dd27fad87e812f1ae0db3bfd81b9f2e4226599f374ab",
+      "review_status": "HumanReviewed",
+      "citation_eligible": true,
+      "source_record_pointer": "/general_control_families/24"
+    },
+    {
+      "record_id": "L3|7.1.5.1|L3-SMC1-03|107",
+      "standard_code": "JR/T 0072—2020",
+      "title": "L3-SMC1-03 测评单元",
+      "clause_id": "7.1.5.1",
+      "classified_protection_level": 3,
+      "verbatim_text": "测评单元（L3-SMC1-03）\n该测评单元包括以下要求：\na)   测评指标： 应每月对设备的配置文件进行备份，发生变动时应及时备份 。（F3）\nb)   测评对象： 提供集中系统管理功能的系统。\nc)   测评实施包括以下内容：\n1)   应核查是否每月对设备的配置文件进行备份。\n2)   应核查系统发生变动时是否及时备份。\nd)   单元判定：如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+      "content_sha256": "567794503f765a19318e046d26d428c9a6aa9d813d9c94b7f07d8c52e2cdbc97",
+      "review_status": "HumanReviewed",
+      "citation_eligible": true,
+      "source_record_pointer": "/measurement_units/119"
+    }
+  ],
+  "catalog_provenance": {
+    "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+    "catalog_version": "1.0.0",
+    "catalog_record_count": 440,
+    "review_artifact_sha256": "4eae8aacab3733847dfffb5b8fecf52415dda82b26d23151fa0cdb805009670f"
+  }
+}

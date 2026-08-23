@@ -1,0 +1,60 @@
+{
+  "decision_log_id": "unified-catalog-review-decisions",
+  "decision_log_version": "1.0.0",
+  "approved_on": "2026-08-23",
+  "approval_source": "用户在整理会话中明确回复“按建议处理”",
+  "decisions": [
+    {
+      "decision_id": "DEC-CONTEXT-001",
+      "decision_type": "context-normalization",
+      "status": "Approved",
+      "applies_to": [
+        "GB/T 22239—2019",
+        "JR/T 0071.2—2020",
+        "JR/T 0072—2020"
+      ],
+      "action": "统一使用 general、cloud、mobile、iot、industrial-control，并用 conditional 布尔字段表达条件适用性。",
+      "rationale": "避免同一部署场景因 -conditional 后缀形成两个过滤值。"
+    },
+    {
+      "decision_id": "DEC-MAPPING-001",
+      "decision_type": "mapping-wording-equivalence",
+      "status": "Approved",
+      "applies_to": [
+        "L2|6.3.3.3|L2-ABS3-07|68"
+      ],
+      "action": "将“鉴别密钥”和“认证密钥”按同一安全概念处理，映射状态改为 HumanReviewed。",
+      "rationale": "在该无线接入控制语境中，两种措辞描述同一密钥控制要求。"
+    },
+    {
+      "decision_id": "DEC-MAPPING-002",
+      "decision_type": "mapping-partial-coverage",
+      "status": "Approved",
+      "applies_to": [
+        "L3|7.1.4.1|L3-CES1-03|94"
+      ],
+      "action": "保留到 JR0071-2-FW-026 的映射，但标记为 partial，并禁止该测评单元单独使目标控制项通过。",
+      "rationale": "测评单元仅验证远程管理鉴别信息防窃听，未覆盖目标控制项中的管理终端身份鉴别。"
+    },
+    {
+      "decision_id": "DEC-MAPPING-003",
+      "decision_type": "mapping-wording-equivalence",
+      "status": "Approved",
+      "applies_to": [
+        "L4|8.3.3.3|L4-ABS3-07|296"
+      ],
+      "action": "将“鉴别密钥”和“认证密钥”按同一安全概念处理，映射状态改为 HumanReviewed。",
+      "rationale": "在该无线接入控制语境中，两种措辞描述同一密钥控制要求。"
+    },
+    {
+      "decision_id": "DEC-SOURCE-001",
+      "decision_type": "source-id-alias",
+      "status": "Approved",
+      "applies_to": [
+        "L4|8.3.3.3|L3-ABS3-03|296"
+      ],
+      "action": "保留原文编号 L3-ABS3-03，建立规范编号 L4-ABS3-03，并将原始复合键登记为别名。",
+      "rationale": "该单元位于第四级章节，且同页后续编号从 L4-ABS3-04 连续排列。"
+    }
+  ]
+}

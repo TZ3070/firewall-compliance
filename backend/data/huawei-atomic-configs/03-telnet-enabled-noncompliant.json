@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0.0",
+  "scenario_id": "03-telnet-enabled-noncompliant",
+  "vendor": "Huawei",
+  "judgment_scope": "configuration-only preliminary assessment",
+  "expected_result": "Failed",
+  "expected_parsed_patch": {
+    "management": {
+      "protocols": {
+        "telnet": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "judgment_reason": "Telnet 以明文方式承载远程管理，不能保护鉴别信息传输。",
+  "limitations": [],
+  "primary_standard": {
+    "record_id": "JR0071-2-FW-026",
+    "standard_code": "JR/T 0071.2—2020",
+    "title": "安全远程管理与管理终端鉴别",
+    "clause_id": "8.1.4.1",
+    "classified_protection_level": 3,
+    "verbatim_text": "8.1.4.1   身份鉴别\nc)   当进行远程管理时 ，应对管理终端进行身份标识和鉴别 ，采用密码技术防止鉴别信息在网络传输过程中被窃听 。（F3）",
+    "content_sha256": "55d9ef0a6bd3eac2da80f47504e26bcea3e32d707bac1c76791ed0b87030fc45",
+    "review_status": "HumanReviewed",
+    "citation_eligible": true,
+    "source_record_pointer": "/control_candidates/25"
+  },
+  "related_standards": [
+    {
+      "record_id": "GB22239-FW-019",
+      "standard_code": "GB/T 22239—2019",
+      "title": "远程管理鉴别信息传输保护",
+      "clause_id": "8.1.4.1",
+      "classified_protection_level": 3,
+      "verbatim_text": "8 . 1 . 4 . 1      身份鉴别\nc)    当进行远程管理时,应采取必要措施防止鉴别信息在网络传输过程中被窃听 ;",
+      "content_sha256": "f23e95097275697a5b35902c828f8f0af0a31929ed992400057c4ae3474b01eb",
+      "review_status": "HumanReviewed",
+      "citation_eligible": true,
+      "source_record_pointer": "/general_control_families/18"
+    },
+    {
+      "record_id": "GB20281-FW-043",
+      "standard_code": "GB/T 20281—2020",
+      "title": "远程管理来源限制和非明文传输",
+      "clause_id": "6.2.4",
+      "classified_protection_level": null,
+      "verbatim_text": "6.2.4     管理方式\na)  支持通过 console端口进行本地管理；\nb)   支持通过网络接口进行远程管理，并能限定进行远程管理的 IP、MAC 地址；\nc)  远程管理过程中，管理端与产品之间的所有通信数据应非明文传输；\nd) 支持 SNMP 网管协议方式的监控和管理；",
+      "content_sha256": "024ac264f5569ba5a3cb69c79ba61e4f327a8efaf4035694dfd2a45da9925213",
+      "review_status": "HumanReviewed",
+      "citation_eligible": true,
+      "source_record_pointer": "/control_candidates/42"
+    },
+    {
+      "record_id": "JR0071-2-FW-032",
+      "standard_code": "JR/T 0071.2—2020",
+      "title": "最小安装并关闭不需要的服务和高危端口",
+      "clause_id": "8.1.4.4",
+      "classified_protection_level": 3,
+      "verbatim_text": "8.1.4.4   入侵防范\na)   应遵循最小安装的原则，仅安装需要的组件和应用程序。\nb)   应关闭不需要的系统服务、 默认共享和高危端口。",
+      "content_sha256": "72b91c4d5c05774106794f45b47de46a68d92d73907bfa60fb7125cd0e935cc5",
+      "review_status": "HumanReviewed",
+      "citation_eligible": true,
+      "source_record_pointer": "/control_candidates/31"
+    }
+  ],
+  "catalog_provenance": {
+    "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+    "catalog_version": "1.0.0",
+    "catalog_record_count": 440,
+    "review_artifact_sha256": "4eae8aacab3733847dfffb5b8fecf52415dda82b26d23151fa0cdb805009670f"
+  }
+}
