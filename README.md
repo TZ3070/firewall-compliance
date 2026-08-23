@@ -1,88 +1,199 @@
 # Bank Firewall Compliance Chatbot
 
-两天面试场景代码题的可信 MVP：一个 React 单页面 Chatbot，由 FastAPI 运行最多 6 步的受控 ReAct Agent。Agent 根据已解析的 Mock 配置选择检查范围，调用 Qdrant Local RAG 召回审核标准；12 条确定性规则优先生成高置信度结论，其他条款由 DeepSeek 判断并经配置证据门控后合并进带 SHA-256 的不可变 SQLite 报告。
+[![CI](https://github.com/TZ3070/firewall-compliance/actions/workflows/ci.yml/badge.svg)](https://github.com/TZ3070/firewall-compliance/actions/workflows/ci.yml)
 
-当前实现不是生产系统，也不是最终等级保护测评结论。它没有登录，只允许绑定本机回环地址演示；不连接真实设备、不上传配置、不调用模型修改配置。
+银行防火墙配置合规检测演示系统。用户通过 React 单页 Chatbot 查询配置、触发检测、筛选 Finding、查看判断依据和历史报告。后端使用 FastAPI 运行有步数上限、工具白名单和证据门控的 ReAct Agent。
 
-## 已实现
+系统当前只检测项目内置的 Huawei Mock CLI，不连接真实设备，不自动修改防火墙配置。输出是可复核的配置检测结果，不等同于正式等级保护测评结论。
 
-- 自然语言查询配置、运行检测、列历史报告、筛选结构化结果和解释 Finding；
-- 检测主链路使用 `Reason → Action → Observation` 的有限步 ReAct 循环，工具严格白名单且不允许自由无限调用；
-- ReAct 工具为 `get_current_config`、`retrieve_standards`、`evaluate_compliance_candidates`、`create_report`和 `finish`；
-- 检测报告按二/三/四级折叠展示动态数量的 Finding：12 条确定性规则按等级展开为基线，RAG 模型辅助条款去重后增量合并；
-- 受控会话上下文：保存上一轮消息、意图和查询对象，支持配置查询后的格式追问，不保存完整历史或工具载荷；
-- 对话输入上限 16000 字符；可粘贴项目内置 Mock CLI 触发固定检测，其他 CLI 在本地拒绝，不发送给 DeepSeek；
-- 默认 Huawei Mock CLI → 确定性 CLI 解析器 → 标准化 JSON → 不可变 Snapshot → JSON Pointer 证据；
-- `POST /api/v1/config/parse` 可单独验证 Huawei CLI 片段的结构化解析结果；
-- 二级、三级、四级分别执行 12 条确定性规则；
-- 440 条人工审核记录、688 段可引用标准原文的 Qdrant Local 索引；
-- 千问 `text-embedding-v4`（未配置时回退本地 BGE）+ 本地 BM25 双路召回；
-- Qdrant RRF 融合候选，再由千问 `qwen3-rerank` 二次排序；Rerank 失败时回退 RRF；
-- Citation Validator：拒绝摘要冒充标准原文，检测载荷篡改；
-- 不可变 Report JSON、报告 SHA-256、SQLite 更新/删除拒绝；
-- 提示词注入前置阻断和闭集工具路由；
-- DeepSeek V4 Pro 负责结构化意图、ReAct 范围/工具选择、未被确定性规则覆盖的 RAG 条款判断和检测说明；无 Key 时安全回退到只生成确定性基线报告；
-- 后端、前端和 GitHub Actions 自动检查。
+## 功能
 
-当前 440 条原文记录已经人工审核通过，发布为 688 个逐条款/逐测评单元的原文块，全部为 `text_kind=verbatim`、`citation_eligible=true`和 `review_status=HumanReviewed`。新生成的报告在所有适用引用通过哈希、等级和页码校验时显示 `Completed`。历史报告保持不可变，不会被回写。
+- 自然语言查询内置防火墙的原始 CLI 或结构化 JSON。
+- 通过受控 ReAct Agent 触发完整配置检测。
+- Agent 根据 CLI 中明确出现的配置事实动态选择标准检索主题。
+- 12 条本地确定性规则优先输出高置信度结果；未覆盖条款由 DeepSeek 辅助判断。
+- 四态 Finding：`Passed`、`Failed`、`NeedsReview`、`NotApplicable`。
+- 按结果、严重程度、标准编号和 Finding ID 筛选历史报告。
+- 展示 Finding 的配置证据、标准原文、判断说明和限制。
+- 基于上一轮消息、上一轮意图和上次查询对象的有界上下文处理。
+- 混合 RAG：百炼 Embedding/本地 BGE + BM25 + RRF + 按控制项去重 + 百炼 Rerank。
+- 标准引用门禁：只允许已人工审核、可引用且哈希匹配的原文进入报告。
+- Snapshot 和 Report 保存到 SQLite，报告绑定 SHA-256 并拒绝更新和删除。
+- DeepSeek、Embedding 或 Rerank 不可用时返回降级提示，并在安全范围内继续执行。
 
-## 1. 环境准备
+## 技术栈
 
-建议使用 Python 3.12、Node.js 20+ 和 pnpm。
+| 层级 | 技术 |
+|---|---|
+| 前端 | React 19、TypeScript、Vite |
+| API | FastAPI、Pydantic v2、Uvicorn |
+| Agent | 自定义有界 ReAct 状态机，最多 6 步 |
+| 大模型 | DeepSeek，用于意图识别、检索规划、候选条款判断和结果解释 |
+| 检索 | Qdrant Local、百炼 Embedding、BM25、RRF、百炼 Rerank |
+| 规则 | Python 确定性规则引擎 |
+| 存储 | SQLite 不可变 Snapshot/Report、本地 Qdrant 索引 |
+| 质量 | Pytest、Vitest、TypeScript、GitHub Actions |
+
+## 系统架构
+
+```mermaid
+flowchart LR
+    U["Browser / React Chatbot"] -->|"HTTP JSON"| API["FastAPI"]
+
+    subgraph APP["Application"]
+        API --> SAFE["安全检查"]
+        SAFE --> CTX["有界会话上下文"]
+        CTX --> ROUTER["闭集意图路由"]
+        ROUTER --> CHAT["Chat Service"]
+        CHAT --> AGENT["有界 ReAct Agent"]
+        AGENT --> CONFIG["配置服务 / Huawei CLI Parser"]
+        AGENT --> RETRIEVAL["混合检索服务"]
+        AGENT --> RULES["12 条确定性规则"]
+        AGENT --> GATE["配置证据门控 / Citation Validator"]
+        GATE --> REPORT["报告服务"]
+    end
+
+    CONFIG --> MOCK["内置 Huawei Mock CLI"]
+    ROUTER -.->|"意图与降级"| DS["DeepSeek API"]
+    AGENT -.->|"规划与候选判断"| DS
+    RETRIEVAL --> QD["Qdrant Local"]
+    RETRIEVAL -.-> EMB["百炼 Embedding / Rerank"]
+    RETRIEVAL --> CAT["已审核标准原文目录"]
+    REPORT --> DB["SQLite"]
+    CHAT --> API
+```
+
+### 配置检测主链路
+
+```mermaid
+flowchart TD
+    A["用户：开始检测当前防火墙配置"] --> B["提示词注入和越权请求检查"]
+    B -->|"拒绝"| B1["返回 SafetyBlocked"]
+    B -->|"通过"| C["意图识别：RunAssessment"]
+    C --> D["ReAct: get_current_config"]
+    D --> E["读取 Mock CLI"]
+    E --> F["确定性解析为标准化 JSON"]
+    F --> G["提取 CLI 明确出现的配置事实"]
+    G --> H["ReAct 根据事实选择检索主题"]
+    H --> I["Embedding + BM25 双路召回"]
+    I --> J["RRF 融合"]
+    J --> K["按标准控制项去重"]
+    K --> L["百炼 Rerank"]
+    L --> M["取回已审核标准原文"]
+    F --> N["确定性规则判断"]
+    M --> O["DeepSeek 评估未覆盖候选"]
+    G --> O
+    N --> P["证据绑定与结果优先级合并"]
+    O --> P
+    P --> Q{"配置证据是否足够？"}
+    Q -->|"是"| R["Passed / Failed / NotApplicable"]
+    Q -->|"否"| S["NeedsReview"]
+    R --> T["校验标准号、条款、原文和哈希"]
+    S --> T
+    T --> U["生成不可变报告并写入 SQLite"]
+    U --> V["前端展示报告和 Finding 明细"]
+```
+
+Agent 只能从以下工具中选择：`get_current_config`、`retrieve_standards`、`evaluate_compliance_candidates`、`create_report`、`finish`。工具循环最多 6 步，检索最多执行两次，模型不能创建工具、执行 SQL/Shell 或修改配置。
+
+## 模块划分
+
+| 路径 | 职责 | 测试入口 |
+|---|---|---|
+| `frontend/src` | Chatbot UI、报告/Finding 展示、历史报告详情 | `frontend/src/*.test.ts` |
+| `backend/app/api` | Health、Chat、Config、Report HTTP 边界 | `backend/tests/test_health.py`、`test_chat_agent.py` |
+| `backend/app/agent` | 安全检查、意图路由、上下文、有界 ReAct 执行 | `test_chat_agent.py`、`test_deepseek_agent.py` |
+| `backend/app/models` | API、配置、Agent、RAG、Finding 和不可变报告契约 | 各 API/服务合同测试 |
+| `backend/app/parsers` | Huawei VRP-style CLI 确定性解析和显式事实提取 | `test_huawei_cli_parser.py`、`test_config_pipeline.py` |
+| `backend/app/providers` | Mock 配置、DeepSeek、Embedding、Rerank、Qdrant 适配 | `test_qdrant_knowledge.py`、`test_qwen_retrieval.py` |
+| `backend/app/rules` | 12 条确定性配置规则 | `test_p0_assessment.py` |
+| `backend/app/services` | 配置、知识索引、引用校验、报告和 Chat 编排 | `test_citations_and_reports.py`、`test_knowledge_index.py` |
+| `backend/app/repositories` | SQLite Snapshot/Report 不可变存储 | `test_snapshot_repository.py` |
+| `backend/data/catalog` | 标准目录、审核原文、跨标准映射和 PDF 清单 | 目录、发布与引用测试 |
+| `backend/scripts` | 原文发布、索引构建、检索冒烟和端到端评测 | 命令行直接运行 |
+
+## 快速开始
+
+### 1. 环境要求
+
+- Python 3.12
+- Node.js 22
+- pnpm 10
+- macOS 或 Linux
+- 完整 Agent 链路需要 DeepSeek API、阿里云百炼 Embedding API 和 Rerank API
+
+### 2. 安装依赖
 
 ```bash
+git clone git@github.com:TZ3070/firewall-compliance.git
+cd firewall-compliance
 cp .env.example .env
 
-cd backend
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt -r requirements-dev.txt
+python3.12 -m venv backend/.venv
+source backend/.venv/bin/activate
+pip install -r backend/requirements.txt -r backend/requirements-dev.txt
+
+cd frontend
+pnpm install --frozen-lockfile
+cd ..
 ```
 
-`.env`、SQLite、Qdrant 数据、模型缓存和前端构建目录都已被 Git 忽略。
+### 3. 配置环境变量
 
-DeepSeek 配置位置是项目根目录的 `.env`：
+所有配置位于项目根目录 `.env`。`.env`、SQLite、Qdrant 索引、模型缓存和前端构建产物均已被 Git 忽略。
 
-```text
+完整云端模型链路的关键配置：
+
+```dotenv
 DEEPSEEK_BASE_URL=https://api.deepseek.com
-DEEPSEEK_API_KEY=在这里填写你的Key
+DEEPSEEK_API_KEY=
 DEEPSEEK_MODEL=deepseek-v4-pro
-DEEPSEEK_TIMEOUT_SECONDS=45
-```
 
-不要把 Key 写入 `.env.example`、源码或 README。Key 为空时系统不会调用公网，自动使用确定性意图路由。
-
-千问检索配置也位于项目根目录 `.env`：
-
-```text
-BAILIAN_EMBEDDING_BASE_URL=https://你的业务空间域名/compatible-mode/v1
-BAILIAN_EMBEDDING_API_KEY=在这里填写Embedding Key
+BAILIAN_EMBEDDING_BASE_URL=https://<业务空间域名>/compatible-mode/v1
+BAILIAN_EMBEDDING_API_KEY=
 BAILIAN_EMBEDDING_MODEL=text-embedding-v4
 BAILIAN_EMBEDDING_DIMENSION=1024
 
-BAILIAN_RERANK_BASE_URL=https://你的业务空间域名/compatible-api/v1
-BAILIAN_RERANK_API_KEY=在这里填写Rerank Key
+BAILIAN_RERANK_BASE_URL=https://<业务空间域名>/compatible-api/v1
+BAILIAN_RERANK_API_KEY=
 BAILIAN_RERANK_MODEL=qwen3-rerank
 ```
 
-两个 Base URL 需要使用百炼控制台给出的实际地域和业务空间地址。代码分别调用
-`/embeddings` 和 `/reranks`，因此 Base URL 不要再包含这两个末级路径。只配置
-Embedding 时会执行“BM25 + 千问向量 → RRF”；同时配置 Rerank 后执行
-“BM25 + 千问向量 → RRF → qwen3-rerank”。
+`DEEPSEEK_MODEL` 必须填写账号实际可调用的模型 ID。百炼的 Embedding 和 Rerank Base URL 可能使用不同兼容路径，应以百炼控制台对应模型的 API 示例为准。Base URL 不要包含末级 `/embeddings` 或 `/reranks`，程序会自行拼接。
 
-默认配置 `RAG_ENFORCE_REVIEW_STATUS=true`，只有审核状态为 `HumanReviewed` 的原文才会通过引用门禁。四态报告使用 `backend/data/app-v2.db`，旧报告不会被覆盖。
+主要环境变量：
 
-## 2. 构建本地标准索引
+| 变量 | 默认值 | 用途 |
+|---|---|---|
+| `DATABASE_PATH` | `./data/app-v2.db` | SQLite Snapshot/Report 库，相对于 `backend` |
+| `DEMO_FIXTURE_MODE` | `true` | 内置 Mock 演示标记 |
+| `QDRANT_PATH` | `./data/qdrant` | 本地 Qdrant 存储目录 |
+| `QDRANT_COLLECTION` | `firewall-standard-knowledge-v1` | 知识集合名 |
+| `RAG_TOP_K` | `8` | 最终候选数 |
+| `RAG_PREFETCH_LIMIT` | `20` | RRF/Rerank 前的候选池基数 |
+| `RAG_ENFORCE_REVIEW_STATUS` | `true` | 只允许 `HumanReviewed` 原文通过引用门禁 |
+| `RAG_DENSE_MODEL` | `BAAI/bge-small-zh-v1.5` | 未配置百炼 Embedding 时的本地向量模型 |
+| `RAG_MODEL_CACHE_PATH` | `./data/model-cache` | 本地模型缓存 |
+| `*_TIMEOUT_SECONDS` | 见 `.env.example` | 外部模型请求超时 |
 
-配置千问 Embedding 后，首次运行会调用 API 为 688 段审核原文生成向量；未配置时才会
-下载约 100MB 的本地中文嵌入模型。索引写入 `backend/data/qdrant`：
+降级行为：
+
+- 未配置 DeepSeek：使用确定性意图路由和本地规则，不会伪造模型判断。
+- 未配置百炼 Embedding：使用本地 BGE，首次运行需要下载模型。
+- Embedding 请求失败：回退到本地 BM25 关键词检索。
+- Rerank 未配置或失败：保留 RRF 排序。
+
+### 4. 构建知识索引
+
+首次启动前必须构建 Qdrant 索引：
 
 ```bash
 cd backend
-.venv/bin/python -m scripts.index_knowledge
+source .venv/bin/activate
+python -m scripts.index_knowledge
 ```
 
-预期输出包含：
+当前审核目录包含 440 条记录，发布为 688 个逐条款/逐测评单元原文块。预期输出包含：
 
 ```text
 indexed 688 records
@@ -90,40 +201,11 @@ catalog_sha256=...
 citation_eligible=688
 ```
 
-切换 Embedding 模型或维度后必须重新运行索引命令。索引清单会绑定模型名称，旧集合
-不会被新模型静默复用。
+更换 Embedding 模型、向量维度、目录版本或 Qdrant Collection 后必须重建索引。
 
-重新从四份经审查 Word 文档生成原文审核候选：
+### 5. 运行开发环境
 
-```bash
-cd backend
-.venv/bin/python -m scripts.extract_verbatim_candidates \
-  --docx-root "/absolute/path/to/标准文档/核心标准"
-```
-
-机器候选见 `backend/data/catalog/verbatim-extraction-candidates-v1.json`，人工审核工作簿为
-`outputs/verbatim-extraction/standard-verbatim-review-v1.xlsx`。该命令不会自动把候选标记为可引用原文。
-
-审核完成后，校验 Excel 中的审核决定、原文和哈希，并发布可引用目录：
-
-```bash
-cd backend
-.venv/bin/python -m scripts.publish_reviewed_verbatim
-.venv/bin/python -m scripts.index_knowledge
-```
-
-发布结果为 `backend/data/catalog/reviewed-verbatim-catalog-v1.json`。存在 Pending、未填原因的 Rejected、重复 ID、原文变更或哈希不一致时，发布脚本会失败关闭。
-
-检索冒烟测试：
-
-```bash
-.venv/bin/python -m scripts.search_knowledge \
-  "防火墙远程日志和审计留存要求" --limit 5
-```
-
-## 3. 启动
-
-后端：
+终端 1：
 
 ```bash
 cd backend
@@ -131,48 +213,155 @@ source .venv/bin/activate
 uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 ```
 
-前端：
+终端 2：
 
 ```bash
 cd frontend
-pnpm install
 pnpm dev
 ```
 
-打开 `http://127.0.0.1:5173`。健康检查为 `http://127.0.0.1:8000/health`。
+访问：
 
-## 4. 推荐演示
+- Chatbot：<http://127.0.0.1:5173/>
+- Health：<http://127.0.0.1:8000/health>
+- Swagger UI：<http://127.0.0.1:8000/docs>
+- OpenAPI JSON：<http://127.0.0.1:8000/openapi.json>
 
-依次发送：
+健康检查：
 
-1. `开始检测当前防火墙配置`
-2. `列出所有不符合项`
-3. 点击任意 Finding 的“询问判断依据与限制”
-4. `查询远程日志和审计留存相关标准`
-5. `查看历史报告`
-6. 点击任意历史报告的“查看详情”，展开一个等级分组，再输入 `有哪些不符合`
+```bash
+curl http://127.0.0.1:8000/health
+```
 
-新生成的报告应显示 `Completed`，Finding 的标准依据会展示审核通过的原文。如索引版本不一致、条款缺失或引用元数据错误，报告仍会失败关闭为 `Incomplete`。
+推荐演示对话：
 
-## 5. API
+1. `现在的防火墙配置是什么？`
+2. `输出结构化 JSON`
+3. `开始检测当前防火墙配置`
+4. `有哪些不符合？`
+5. 在 Finding 上点击“询问判断依据与限制”
+6. `查看历史报告`
+7. 选中历史报告后再输入 `有哪些需要人工复核？`
 
-| 方法 | 路径 | 用途 |
-|---|---|---|
-| GET | `/health` | 存活检查 |
-| POST | `/api/v1/chat/messages` | 受控 Chat Agent 入口 |
-| GET | `/api/v1/config/current` | 当前 Mock Snapshot |
-| POST | `/api/v1/config/parse` | Huawei CLI 片段转结构化 JSON 补丁 |
-| GET | `/api/v1/reports` | 结构化查询报告 |
-| GET | `/api/v1/reports/{report_id}` | 读取不可变报告 |
+## 部署
 
-报告只能由受控 Chat Agent 检测链路创建，不能通过旁路 API 绕过 ReAct、RAG 和证据门控。报告筛选不接收 SQL；用户文本只会变成枚举意图和白名单过滤字段，仓储代码负责固定参数化查询。
+### 本机或内网演示部署
 
-## 6. 测试
+后端生产演示进程：
 
 ```bash
 cd backend
-.venv/bin/pytest -q tests
+source .venv/bin/activate
+uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 1
 ```
+
+前端构建：
+
+```bash
+cd frontend
+pnpm install --frozen-lockfile
+pnpm build
+```
+
+构建结果位于 `frontend/dist`。前端 API 使用 `/health` 和 `/api/...` 同源相对路径，因此建议用 Nginx/Caddy 托管静态文件，并将两个路径反向代理到 FastAPI。
+
+Nginx 示例：
+
+```nginx
+server {
+    listen 8080;
+    server_name _;
+    root /absolute/path/to/firewall-compliance/frontend/dist;
+    index index.html;
+
+    location / {
+        try_files $uri /index.html;
+    }
+
+    location /api/ {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location = /health {
+        proxy_pass http://127.0.0.1:8000/health;
+    }
+}
+```
+
+部署注意事项：
+
+- 当前会话上下文存在单进程内存中，Qdrant 也使用本地文件模式，因此演示部署应使用 `--workers 1`。
+- 运行用户必须对 `backend/data` 有写权限，SQLite 和 Qdrant 数据均在该目录下。
+- API Key 通过部署环境或只读 `.env` 注入，不得写入镜像、代码、日志或 Git。
+- 当前没有登录、RBAC、TLS 终止和限流，不应直接暴露到公网。
+- 仓库未提供 Dockerfile/Compose 或 Kubernetes 清单；上述方式是当前可验证的部署路径。
+
+## API
+
+| 方法 | 路径 | 说明 |
+|---|---|---|
+| `GET` | `/health` | 存活检查 |
+| `POST` | `/api/v1/chat/messages` | 唯一 Chat/Agent 业务入口 |
+| `GET` | `/api/v1/config/current` | 读取当前内置 Mock Snapshot、解析结果和证据 |
+| `POST` | `/api/v1/config/parse` | 将 Huawei CLI 片段解析为结构化 JSON 补丁；不触发合规检测 |
+| `GET` | `/api/v1/reports` | 查询不可变报告 |
+| `GET` | `/api/v1/reports/{report_id}` | 按 ID 读取报告详情 |
+
+`GET /api/v1/reports` 支持以下 Query 参数：
+
+- `result`：`Passed` / `Failed` / `NeedsReview` / `NotApplicable`
+- `severity`：`critical` / `high` / `medium` / `low`
+- `standard_code`：标准编号
+- `finding_id`：Finding ID
+
+Chat 请求示例：
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/v1/chat/messages \
+  -H 'Content-Type: application/json' \
+  -d '{"message":"开始检测当前防火墙配置"}'
+```
+
+连续对话时，客户端应将上次响应的 `conversation_id` 和 `active_report_id` 传回：
+
+```json
+{
+  "message": "有哪些不符合？",
+  "conversation_id": "conv:...",
+  "active_report_id": "report:..."
+}
+```
+
+报告只能由 Chat Agent 检测链路创建，不提供绕过 ReAct、RAG 和证据门控的公开创建接口。报告筛选不接收 SQL，用户文本只能转换为闭集意图和白名单过滤字段，仓储层负责参数化查询。
+
+## 数据与存储位置
+
+| 路径 | 内容 | 是否提交 Git |
+|---|---|---|
+| `backend/data/mock/default-firewall.cfg` | 默认 Huawei Mock 原始 CLI | 是 |
+| `backend/data/mock/default-firewall.json` | 默认标准化 Mock 配置 | 是 |
+| `backend/data/catalog` | 标准目录、审核原文、映射和清单 | 是 |
+| `backend/data/huawei-atomic-configs` | 20 组端到端评测 CFG 及预期结果 | 是 |
+| `backend/data/qdrant` | 运行时生成的 Qdrant 索引 | 否 |
+| `backend/data/app-v2.db` | 运行时 Snapshot 和 Report | 否 |
+| `outputs/huawei-agent-evaluation` | 已保留的 20 组 Agent 评测结果 | 是 |
+
+## 测试
+
+### 自动化测试
+
+后端：
+
+```bash
+cd backend
+source .venv/bin/activate
+pytest -q tests
+```
+
+前端：
 
 ```bash
 cd frontend
@@ -181,42 +370,128 @@ pnpm typecheck
 pnpm build
 ```
 
-单元测试使用确定性嵌入器，不访问公网或下载模型。真实 Qdrant 冒烟测试使用上面的两个脚本。
+当前仓库验证结果：后端 119 项测试通过，前端 2 项测试通过，TypeScript 类型检查和 Vite 生产构建通过。`.github/workflows/ci.yml` 会在 Push 和 Pull Request 时重复执行这些检查。单元测试使用确定性嵌入器，不调用收费 API。
 
 ### 20 组端到端 Agent 评测
 
-评测脚本会逐个注入 20 份原子化 Huawei CFG，真实运行
-`CLI 解析 → ReAct 选择检查范围 → RAG/RRF/Rerank → DeepSeek 判断 → 证据门控 → 报告`：
+测试数据：
+
+- CFG：[`backend/data/huawei-atomic-configs`](backend/data/huawei-atomic-configs)
+- 每份 CFG 的目标标准和预期结果：同名 `.json`
+- 汇总对比：[`outputs/huawei-agent-evaluation/agent-evaluation-comparison.md`](outputs/huawei-agent-evaluation/agent-evaluation-comparison.md)
+- 机器可读汇总：[`outputs/huawei-agent-evaluation/agent-evaluation-results.json`](outputs/huawei-agent-evaluation/agent-evaluation-results.json)
+- 每个场景的完整轨迹：[`outputs/huawei-agent-evaluation/details`](outputs/huawei-agent-evaluation/details)
+
+运行前必须完成 Qdrant 索引构建，并配置 DeepSeek 和百炼 Embedding。Rerank 建议同时配置，以保持与已保留结果相同的链路。该评测会调用真实 API，可能产生费用：
 
 ```bash
 cd backend
-.venv/bin/python -m scripts.evaluate_huawei_agent_scenarios
+source .venv/bin/activate
+python -m scripts.evaluate_huawei_agent_scenarios
 ```
 
-本次保留的唯一正式结果见
-[Agent 评测对比表](outputs/huawei-agent-evaluation/agent-evaluation-comparison.md)，
-完整机器可读结果见
-[agent-evaluation-results.json](outputs/huawei-agent-evaluation/agent-evaluation-results.json)。当前结果为：
+快速冒烟可使用 `--limit`：
 
-- 目标控制项召回 `20/20`；
-- 目标控制项送入模型 `20/20`；
-- 模型与现有场景标签一致 `17/20`；
-- 3 个差异均是审计启用、180 天留存和 NTP 启用被场景标签记为 `Passed`，但完整复合条款还需要配置覆盖范围或运行效果证据，因此模型按项目的失败关闭约束输出 `NeedsReview`，不为追求测试满分强行改为 `Passed`。
+```bash
+python -m scripts.evaluate_huawei_agent_scenarios --limit 1
+```
 
-结果目录只保留这一代评测；`details/` 中保存每个场景的显式配置事实、
-Agent 轨迹、检索排名、模型输入/输出、Finding 和报告哈希，便于复核。
+评测执行的是真实主链路：`CFG → CLI Parser → ReAct → Qdrant/RRF/Rerank → DeepSeek → 证据门控 → Report`。评测只对每个场景声明的主目标控制项计分，不因 Agent 返回其他相关标准而扣分。
 
-## 7. 安全和审计边界
+已保留结果：
 
-- 确定性规则覆盖范围内的 Passed/Failed 始终由本地规则产生且优先；规则未覆盖的 RAG 条款可由 DeepSeek 判断并进入报告，但明确标记为 `MODEL-ASSISTED-RAG`，不属于高置信度确定性结论；
-- 配置查询只把用户问题交给 DeepSeek 做意图分类，不发送配置内容；命中后直接返回 [default-firewall.cfg](backend/data/mock/default-firewall.cfg) 的厂商 CLI 风格原始 Mock 文本，不向前端返回内部处理后的 JSON。检测说明才会把 Mock 标准化配置和固定规则报告 JSON 发送给 DeepSeek；
-- 模型判断引用的所有配置字段必须存在 `ConfigurationVerified` 证据；否则 Passed/Failed/NotApplicable 强制门控为 NeedsReview；
-- 配置字段缺失时证据状态为 `InsufficientEvidence`，Finding 统一进入 `NeedsReview`；
-- Qdrant 的 BM25/向量召回、RRF 和千问 Rerank 决定模型辅助检查的候选范围，不得覆盖确定性规则结果；
-- 只有 `text_kind=verbatim`、`citation_eligible=true` 且 `review_status=HumanReviewed` 的数据可以输出为标准原文；
-- 报告绑定 snapshot、catalog、rule pack 和 report hash；
-- Snapshot 和 Report 在 SQLite 中拒绝更新和删除；
-- 没有真实配置、IP、密码、Token 或私钥进入默认 Mock；
-- 当前版本无鉴权，禁止直接部署到公网。
+| 指标 | 结果 | 含义 |
+|---|---:|---|
+| 场景数 | 20 | 20 份原子化 Huawei CFG |
+| 主目标控制项召回率 | 20/20（100%） | 目标条款出现在 Agent 的检索候选中 |
+| 主目标送入模型率 | 20/20（100%） | 目标条款进入 DeepSeek 判断边界 |
+| 模型与现有场景标签一致率 | 17/20（85%） | 模型对主目标的四态结果与现有标签一致 |
+| 端到端模型成功率 | 17/20（85%） | 同时满足召回、送入模型和判断正确 |
+| 正式报告中目标出现率 | 19/20（95%） | 1 条非等级化 GB/T 20281 控制项尚未进入按等级组织的报告 |
+| 报告目标存在时正确率 | 19/19（100%） | 已进入报告的主目标结果与当前报告金标一致 |
+| 发生 API 降级的场景 | 0/20 | 本次运行未触发降级 |
 
-系统骨架与模块测试入口见 [docs/system-skeleton.md](docs/system-skeleton.md)。
+3 个模型差异来自金标粒度：“审计已启用”、“留存期为 180 天”、“NTP 已启用”被场景标签记为 `Passed`，但完整复合条款还需要覆盖范围、完整字段或运行效果证据，因此模型按“无法从配置证明必须进入 NeedsReview”的约束输出 `NeedsReview`。项目不为追求测试满分强行改成 `Passed`。
+
+## 标准知识库
+
+当前知识库由经审查的 Word 文档提取并人工审核发布，包含：
+
+- GB/T 22239—2019 相关控制要求
+- GB/T 20281—2020 相关防火墙要求
+- JR/T 0071.2—2020 相关网络安全控制要求
+- JR/T 0072—2020 相关测评单元
+
+原文发布流程：
+
+```bash
+cd backend
+source .venv/bin/activate
+
+python -m scripts.extract_verbatim_candidates \
+  --docx-root "/absolute/path/to/标准文档/核心标准"
+
+python -m scripts.publish_reviewed_verbatim
+python -m scripts.index_knowledge
+```
+
+机器候选不会自动成为可引用原文。发布脚本会校验审核决定、原文、重复 ID 和哈希；存在 Pending、未说明原因的 Rejected 或哈希不一致时失败关闭。
+
+检索冒烟：
+
+```bash
+cd backend
+source .venv/bin/activate
+python -m scripts.search_knowledge "防火墙远程日志和审计留存要求" --limit 5
+```
+
+## 安全与审计边界
+
+- 检测链路只接受项目内置 Mock。Chat 中粘贴的其他 CLI 会被拒绝，不解析、不保存、不发送给 DeepSeek。
+- `/api/v1/config/parse` 用于独立验证 Huawei CLI 片段的本地解析，不会触发 Agent 或保存报告。
+- 完整检测只会将内置 Mock 的标准化 JSON 发送给 DeepSeek。未脱敏真实配置不得发送给公网模型。
+- 当前安全性依赖“只允许内置 Mock”的输入隔离，而不是通用数据脱敏。系统不应被理解为已能安全处理真实银行配置。
+- 确定性规则结果优先于模型建议。模型引用的配置字段必须是 CLI 中明确观测且状态为 `ConfigurationVerified` 的证据。
+- 字段缺失、证据不足或只能证明功能存在而无法证明运行效果时，结果必须是 `NeedsReview`。
+- 标准原文必须同时满足 `text_kind=verbatim`、`citation_eligible=true`、`review_status=HumanReviewed` 和内容哈希一致。
+- 报告绑定 Snapshot、Catalog、Rule Pack、标准文件清单和报告 SHA-256。
+- 会话上下文默认保留 30 分钟、最多 1000 个会话，不保存工具载荷或模型输出，进程重启后丢失。
+- 用户输入上限为 16000 字符；请求会先经过提示词注入和未授权操作检查。
+
+## 当前限制
+
+- 只有 Huawei VRP-style 确定性 CLI Parser，完整检测只针对默认 Mock 目标。
+- 不采集真实设备，不支持 SSH/API 连接，不保存真实配置。
+- 未实现通用数据脱敏。当前没有对真实 CLI 中的账号名、IP/网段、客户标识、SNMP Community、口令、预共享密钥、Token、证书私钥和业务系统名称进行识别、置换和可逆/不可逆映射。
+- 未来接入真实配置前，必须在配置进入日志、SQLite、RAG 或公网模型之前增加本地脱敏层，并对脱敏覆盖率、正确性、残留敏感信息和证据可追溯性进行专项测试。
+- 不支持登录、RBAC、多用户隔离、多租户或多实例共享会话。
+- 不支持用户选择等保级别；报告按现有规则生成二/三/四级结果。
+- 报告当前不包含整改建议字段、总体 Passed/Failed 结论或 PDF 导出。
+- 当前报告结构是等级导向的；非等级化标准控制项可以被 RAG 召回和模型判断，但仍可能不进入正式报告。
+- 440 条审核知识用于召回、引用和辅助判断，不代表 440 条都可仅通过防火墙配置自动证明。
+
+## 常见问题
+
+### 对话提示“本次操作未完成”
+
+先检查 `backend/data/qdrant` 是否已构建、索引 Manifest 中的模型/目录哈希是否与当前 `.env` 一致，以及运行用户是否能写入 `backend/data`。修改 Embedding 模型或维度后重新运行 `python -m scripts.index_knowledge`。
+
+### 模型 API 不可用
+
+前端会展示降级提示。DeepSeek 失败时不会将模型未输出的结果伪造成合规结论；Embedding 失败时回退 BM25；Rerank 失败时保留 RRF 排序。需要完整端到端评测时，三类 API 都应正常可用。
+
+### 历史报告没有出现
+
+报告只在成功运行检测后写入 `backend/data/app-v2.db`。该文件不提交 Git，更换工作目录或删除本地数据库后历史不会自动恢复。
+
+## 相关文档
+
+- [系统骨架和模块边界](docs/system-skeleton.md)
+- [统一防火墙标准目录](docs/unified-firewall-catalog.md)
+- [跨标准映射报告](docs/firewall-cross-standard-mapping-report.md)
+- [标准原文提取审核摘要](docs/verbatim-extraction-summary-v1.md)
+- [20 组 Agent 评测对比表](outputs/huawei-agent-evaluation/agent-evaluation-comparison.md)
+
+## License
+
+仓库当前未附带开源 License。标准原文和整理数据可能受版权或使用限制约束，在公开分发、商用或部署前应单独确认授权范围。
