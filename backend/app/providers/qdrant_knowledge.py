@@ -72,6 +72,21 @@ def _sparse_vector(vector: SparseEmbedding) -> models.SparseVector:
     )
 
 
+def _deduplicate_controls(
+    items: Sequence[RetrievedKnowledge],
+) -> tuple[RetrievedKnowledge, ...]:
+    """Keep the highest-ranked excerpt for each standard control record."""
+
+    seen: set[str] = set()
+    unique: list[RetrievedKnowledge] = []
+    for item in items:
+        if item.chunk.record_id in seen:
+            continue
+        seen.add(item.chunk.record_id)
+        unique.append(item)
+    return tuple(unique)
+
+
 class QdrantKnowledgeStore:
     """Local Qdrant storage and fixed dense+sparse RRF retrieval."""
 
@@ -245,8 +260,11 @@ class QdrantKnowledgeStore:
             degradation_notices = (
                 "向量 API 暂时不可用，已使用本地关键词检索继续查询。",
             )
-        prefetch_limit = max(self._prefetch_limit, limit)
-        candidate_limit = max(prefetch_limit, limit) if self._reranker else limit
+        # The reviewed catalog can contain several excerpts for one control. Fetch
+        # a wider chunk pool, then collapse it to control records before top-k and
+        # reranking so duplicate excerpts cannot consume the candidate budget.
+        prefetch_limit = max(self._prefetch_limit, limit * 3)
+        candidate_limit = prefetch_limit
         if dense is None:
             response = self._client.query_points(
                 collection_name=self._collection_name,
@@ -295,22 +313,23 @@ class QdrantKnowledgeStore:
             )
             for point in response.points
         )
+        control_results = _deduplicate_controls(rrf_results)
         if self._reranker is None:
-            return rrf_results[:limit]
+            return control_results[:limit]
         try:
             reranked = await self._reranker.rerank(
                 query=query,
-                documents=tuple(item.chunk.search_text for item in rrf_results),
+                documents=tuple(item.chunk.search_text for item in control_results),
                 top_n=limit,
             )
             if not reranked:
                 raise ValueError("reranker returned no results")
             return tuple(
-                rrf_results[item.index].model_copy(
+                control_results[item.index].model_copy(
                     update={
                         "score": item.score,
                         "retrieval_sources": (
-                            *rrf_results[item.index].retrieval_sources,
+                            *control_results[item.index].retrieval_sources,
                             RetrievalSource.RERANK,
                         ),
                     }
@@ -331,5 +350,5 @@ class QdrantKnowledgeStore:
                         )
                     }
                 )
-                for item in rrf_results[:limit]
+                for item in control_results[:limit]
             )

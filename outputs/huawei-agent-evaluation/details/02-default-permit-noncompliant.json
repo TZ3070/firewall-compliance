@@ -1,0 +1,4428 @@
+{
+  "agent": {
+    "notices": [],
+    "trace": {
+      "completed": true,
+      "max_steps": 6,
+      "mode": "bounded-react",
+      "observations": [
+        {
+          "step": 1,
+          "success": true,
+          "summary": "已获取并解析 Huawei Mock CLI；配置完整度 0.60，明确配置事实 2 项；事实：access_control.policies=已配置；access_control.default_action=\"permit\"；候选检查主题：访问控制, 默认拒绝, 访问控制策略；明确范围：access_control。",
+          "tool": "get_current_config"
+        },
+        {
+          "step": 2,
+          "success": true,
+          "summary": "从审核知识库召回 12 条可引用标准候选；GB22239-FW-002、JR0071-2-FW-007、L2|6.1.3.2|L2-ABS1-02|17、L3|7.1.3.2|L3-ABS1-05|88、L4|8.1.3.2|L4-ABS1-07|202、JR0071-2-FW-009",
+          "tool": "retrieve_standards"
+        },
+        {
+          "step": 3,
+          "success": true,
+          "summary": "模型对 8 条候选形成初步建议；在确定性规则未覆盖时可进入报告，证据不足时已门控为 NeedsReview。",
+          "tool": "evaluate_compliance_candidates"
+        },
+        {
+          "step": 4,
+          "success": true,
+          "summary": "已由确定性规则和引用校验器生成不可变报告；状态 Completed。",
+          "tool": "create_report"
+        },
+        {
+          "step": 5,
+          "success": true,
+          "summary": "已完成受控 ReAct 检测链路。",
+          "tool": "finish"
+        }
+      ],
+      "stop_reason": "finish action accepted"
+    }
+  },
+  "config_file": "02-default-permit-noncompliant.cfg",
+  "configuration": {
+    "collected_at": "2026-08-23T18:26:58.875573Z",
+    "completeness": 0.6,
+    "configuration": {
+      "access_control": {
+        "default_action": "permit",
+        "policies": [
+          {
+            "action": "permit",
+            "destination_cidrs": [
+              "any"
+            ],
+            "destination_zones": [
+              "any"
+            ],
+            "enabled": true,
+            "expires_at": null,
+            "logging_enabled": false,
+            "name": "DEFAULT-PERMIT-UNSAFE",
+            "policy_id": "default-permit-unsafe",
+            "services": [
+              "any"
+            ],
+            "source_cidrs": [
+              "any"
+            ],
+            "source_zones": [
+              "any"
+            ]
+          }
+        ]
+      },
+      "high_availability": {
+        "configuration_synchronized": null,
+        "enabled": null,
+        "protocol": null,
+        "state": null
+      },
+      "interfaces": [],
+      "logging": {
+        "audit_log_enabled": null,
+        "local_retention_days": null,
+        "policy_log_enabled": null,
+        "remote_logging": {
+          "enabled": false,
+          "servers": []
+        },
+        "threat_log_enabled": null
+      },
+      "management": {
+        "accounts": [],
+        "allowed_source_cidrs": [],
+        "mfa_enabled": null,
+        "protocols": {
+          "http": {
+            "enabled": false,
+            "port": 80
+          },
+          "https": {
+            "enabled": false,
+            "port": 443
+          },
+          "ssh": {
+            "enabled": false,
+            "port": 22
+          },
+          "telnet": {
+            "enabled": false,
+            "port": 23
+          }
+        },
+        "source_interface": ""
+      },
+      "network_stack": {
+        "ipv4_default_route_configured": null,
+        "ipv4_enabled": null,
+        "ipv6_default_route_configured": null,
+        "ipv6_enabled": null
+      },
+      "target": {
+        "display_name": "Default Firewall Mock",
+        "hostname": "UNKNOWN",
+        "model": "USG-MOCK",
+        "product_family": "HiSecEngine/USG",
+        "software_version": "VRP-MOCK-1.0",
+        "target_id": "default-firewall-mock",
+        "vendor": "Huawei"
+      },
+      "threat_prevention": {
+        "antivirus_enabled": null,
+        "dos_protection_enabled": null,
+        "ips_enabled": null
+      },
+      "time_sync": {
+        "enabled": null,
+        "servers": []
+      },
+      "vpn": {
+        "enabled": null
+      }
+    },
+    "content_sha256": "9a5e1999e1d3765c5db2db69554a96493e2b600467aa191b3d1ab7e40d6fec35",
+    "evidence": [
+      {
+        "field": "target.vendor",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/target/vendor",
+        "value": "Huawei",
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "target.product_family",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/target/product_family",
+        "value": "HiSecEngine/USG",
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "target.model",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/target/model",
+        "value": "USG-MOCK",
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "target.software_version",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/target/software_version",
+        "value": "VRP-MOCK-1.0",
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "target.hostname",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/target/hostname",
+        "value": "UNKNOWN",
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "management.protocols.ssh.enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/management/protocols/ssh/enabled",
+        "value": false,
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "management.protocols.ssh.port",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/management/protocols/ssh/port",
+        "value": 22,
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "management.protocols.https.enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/management/protocols/https/enabled",
+        "value": false,
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "management.protocols.https.port",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/management/protocols/https/port",
+        "value": 443,
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "management.protocols.telnet.enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/management/protocols/telnet/enabled",
+        "value": false,
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "management.protocols.telnet.port",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/management/protocols/telnet/port",
+        "value": 23,
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "management.protocols.http.enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/management/protocols/http/enabled",
+        "value": false,
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "management.protocols.http.port",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/management/protocols/http/port",
+        "value": 80,
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "management.source_interface",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/management/source_interface",
+        "value": "",
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "management.allowed_source_cidrs",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/management/allowed_source_cidrs",
+        "value": [],
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "management.mfa_enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/management/mfa_enabled",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "access_control.default_action",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/access_control/default_action",
+        "value": "permit",
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "access_control.policies[default-permit-unsafe].source_zones",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/access_control/policies/0/source_zones",
+        "value": [
+          "any"
+        ],
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "access_control.policies[default-permit-unsafe].destination_zones",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/access_control/policies/0/destination_zones",
+        "value": [
+          "any"
+        ],
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "access_control.policies[default-permit-unsafe].source_cidrs",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/access_control/policies/0/source_cidrs",
+        "value": [
+          "any"
+        ],
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "access_control.policies[default-permit-unsafe].destination_cidrs",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/access_control/policies/0/destination_cidrs",
+        "value": [
+          "any"
+        ],
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "access_control.policies[default-permit-unsafe].services",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/access_control/policies/0/services",
+        "value": [
+          "any"
+        ],
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "access_control.policies[default-permit-unsafe].action",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/access_control/policies/0/action",
+        "value": "permit",
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "access_control.policies[default-permit-unsafe].logging_enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/access_control/policies/0/logging_enabled",
+        "value": false,
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "access_control.policies[default-permit-unsafe].enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/access_control/policies/0/enabled",
+        "value": true,
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "access_control.policies[default-permit-unsafe].expires_at",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/access_control/policies/0/expires_at",
+        "value": null,
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "logging.policy_log_enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/logging/policy_log_enabled",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "logging.threat_log_enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/logging/threat_log_enabled",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "logging.audit_log_enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/logging/audit_log_enabled",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "logging.local_retention_days",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/logging/local_retention_days",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "logging.remote_logging.enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/logging/remote_logging/enabled",
+        "value": false,
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "time_sync.enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/time_sync/enabled",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "time_sync.servers",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/time_sync/servers",
+        "value": [],
+        "verification_status": "ConfigurationVerified"
+      },
+      {
+        "field": "network_stack.ipv4_enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/network_stack/ipv4_enabled",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "network_stack.ipv6_enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/network_stack/ipv6_enabled",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "network_stack.ipv4_default_route_configured",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/network_stack/ipv4_default_route_configured",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "network_stack.ipv6_default_route_configured",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/network_stack/ipv6_default_route_configured",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "threat_prevention.ips_enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/threat_prevention/ips_enabled",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "threat_prevention.antivirus_enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/threat_prevention/antivirus_enabled",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "threat_prevention.dos_protection_enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/threat_prevention/dos_protection_enabled",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "high_availability.enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/high_availability/enabled",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "high_availability.protocol",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/high_availability/protocol",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "high_availability.state",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/high_availability/state",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "high_availability.configuration_synchronized",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/high_availability/configuration_synchronized",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      },
+      {
+        "field": "vpn.enabled",
+        "parser_version": "mock-json-parser/1.0.0",
+        "raw_config_excerpt": null,
+        "raw_config_sha256": null,
+        "raw_line_end": null,
+        "raw_line_start": null,
+        "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+        "source_pointer": "/vpn/enabled",
+        "value": null,
+        "verification_status": "InsufficientEvidence"
+      }
+    ],
+    "observed_facts": [
+      {
+        "field": "access_control.policies",
+        "source": "vendor_cli_explicit",
+        "value": [
+          {
+            "action": "permit",
+            "destination_cidrs": [
+              "any"
+            ],
+            "destination_zones": [
+              "any"
+            ],
+            "enabled": true,
+            "expires_at": null,
+            "logging_enabled": false,
+            "name": "DEFAULT-PERMIT-UNSAFE",
+            "policy_id": "default-permit-unsafe",
+            "services": [
+              "any"
+            ],
+            "source_cidrs": [
+              "any"
+            ],
+            "source_zones": [
+              "any"
+            ]
+          }
+        ]
+      },
+      {
+        "field": "access_control.default_action",
+        "source": "vendor_cli_explicit",
+        "value": "permit"
+      }
+    ],
+    "original_config_content": "! MOCK Huawei VRP-style configuration; fictitious test data only.\nsecurity-policy\n rule name DEFAULT-PERMIT-UNSAFE\n  source-zone any\n  destination-zone any\n  source-address any\n  destination-address any\n  service any\n  action permit\n",
+    "original_config_format": "vendor_cli_mock",
+    "original_config_sha256": "c2bda87b2d45e590502a1dc30e12a54a4d9ea49bb49252d08fb37155468f2a86",
+    "parser_version": "mock-json-parser/1.0.0",
+    "provider_version": "mock-json-provider/1.0.0",
+    "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+    "source_type": "mock",
+    "target_id": "default-firewall-mock",
+    "warnings": [
+      {
+        "code": "NULL_VALUE",
+        "field": "management.mfa_enabled",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/management/mfa_enabled"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "logging.policy_log_enabled",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/logging/policy_log_enabled"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "logging.threat_log_enabled",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/logging/threat_log_enabled"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "logging.audit_log_enabled",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/logging/audit_log_enabled"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "logging.local_retention_days",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/logging/local_retention_days"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "time_sync.enabled",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/time_sync/enabled"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "network_stack.ipv4_enabled",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/network_stack/ipv4_enabled"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "network_stack.ipv6_enabled",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/network_stack/ipv6_enabled"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "network_stack.ipv4_default_route_configured",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/network_stack/ipv4_default_route_configured"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "network_stack.ipv6_default_route_configured",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/network_stack/ipv6_default_route_configured"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "threat_prevention.ips_enabled",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/threat_prevention/ips_enabled"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "threat_prevention.antivirus_enabled",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/threat_prevention/antivirus_enabled"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "threat_prevention.dos_protection_enabled",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/threat_prevention/dos_protection_enabled"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "high_availability.enabled",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/high_availability/enabled"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "high_availability.protocol",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/high_availability/protocol"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "high_availability.state",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/high_availability/state"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "high_availability.configuration_synchronized",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/high_availability/configuration_synchronized"
+      },
+      {
+        "code": "NULL_VALUE",
+        "field": "vpn.enabled",
+        "message": "配置字段值未知，需要人工复核",
+        "source_pointer": "/vpn/enabled"
+      }
+    ]
+  },
+  "expected": {
+    "accepted_record_ids": [
+      "JR0071-2-FW-007",
+      "GB22239-FW-002",
+      "GB20281-FW-009",
+      "L3|7.1.3.2|L3-ABS1-05|88"
+    ],
+    "limitations": [],
+    "primary_clause_id": "8.1.3.2",
+    "primary_record_id": "JR0071-2-FW-007",
+    "primary_standard_code": "JR/T 0071.2—2020",
+    "reason": "配置明确将缺省动作设为 permit，与默认拒绝要求相反。",
+    "result": "Failed"
+  },
+  "expected_file": "02-default-permit-noncompliant.json",
+  "finished_at": "2026-08-23T18:27:14+00:00",
+  "metrics": {
+    "any_expected_record_recalled": true,
+    "end_to_end_model_success": true,
+    "final_report_results": [
+      "Failed"
+    ],
+    "final_report_target_correct": true,
+    "primary_answered_by_model": true,
+    "primary_model_judgment_correct": true,
+    "primary_model_result": "Failed",
+    "primary_recall_rank": 2,
+    "primary_recalled": true,
+    "primary_sent_to_model": true,
+    "target_present_in_final_report": true
+  },
+  "model": {
+    "assessments": [
+      {
+        "configuration_fields": [
+          "access_control.default_action",
+          "access_control.policies[default-permit-unsafe].action"
+        ],
+        "explanation": "明确配置默认动作为 permit，且存在一条允许任意通信的策略，直接违反默认拒绝要求。",
+        "record_id": "GB22239-FW-002",
+        "suggested_result": "Failed"
+      },
+      {
+        "configuration_fields": [
+          "access_control.default_action",
+          "access_control.policies[default-permit-unsafe].action"
+        ],
+        "explanation": "明确配置默认动作为 permit，且存在一条允许任意通信的策略，直接违反默认拒绝要求。",
+        "record_id": "JR0071-2-FW-007",
+        "suggested_result": "Failed"
+      },
+      {
+        "configuration_fields": [
+          "access_control.default_action",
+          "access_control.policies[default-permit-unsafe].action"
+        ],
+        "explanation": "明确配置默认动作为 permit，且最后一条策略为允许任意通信，直接违反测评单元要求。",
+        "record_id": "L2|6.1.3.2|L2-ABS1-02|17",
+        "suggested_result": "Failed"
+      },
+      {
+        "configuration_fields": [
+          "access_control.default_action",
+          "access_control.policies[default-permit-unsafe].action"
+        ],
+        "explanation": "明确配置默认动作为 permit，且最后一条策略为允许任意通信，直接违反测评单元要求。",
+        "record_id": "L3|7.1.3.2|L3-ABS1-05|88",
+        "suggested_result": "Failed"
+      },
+      {
+        "configuration_fields": [
+          "access_control.default_action",
+          "access_control.policies[default-permit-unsafe].action"
+        ],
+        "explanation": "明确配置默认动作为 permit，且最后一条策略为允许任意通信，直接违反测评单元要求。",
+        "record_id": "L4|8.1.3.2|L4-ABS1-07|202",
+        "suggested_result": "Failed"
+      },
+      {
+        "configuration_fields": [
+          "access_control.policies[default-permit-unsafe].source_cidrs",
+          "access_control.policies[default-permit-unsafe].destination_cidrs",
+          "access_control.policies[default-permit-unsafe].services"
+        ],
+        "explanation": "现有策略使用 any 作为源、目的和服务，未体现基于五元组的检查，且缺少运行效果证据，无法确认是否满足要求。",
+        "record_id": "JR0071-2-FW-009",
+        "suggested_result": "NeedsReview"
+      },
+      {
+        "configuration_fields": [
+          "access_control.default_action",
+          "access_control.policies[default-permit-unsafe].action"
+        ],
+        "explanation": "明确配置默认动作为 permit，直接违反包过滤默认禁止的预期结果。",
+        "record_id": "GB20281-FW-009",
+        "suggested_result": "Failed"
+      },
+      {
+        "configuration_fields": [
+          "access_control.policies[default-permit-unsafe].source_zones",
+          "access_control.policies[default-permit-unsafe].destination_zones",
+          "access_control.policies[default-permit-unsafe].action"
+        ],
+        "explanation": "存在一条允许任意区域间通信的策略，但未提供不同等级网络区域边界部署和非法访问拒绝的测试证据，无法确认是否满足要求。",
+        "record_id": "L3|7.2.3.1|L3-ABS2-02|157",
+        "suggested_result": "NeedsReview"
+      }
+    ],
+    "calls": [
+      {
+        "assessments": [
+          {
+            "configuration_fields": [
+              "access_control.default_action",
+              "access_control.policies[default-permit-unsafe].action"
+            ],
+            "explanation": "明确配置默认动作为 permit，且存在一条允许任意通信的策略，直接违反默认拒绝要求。",
+            "record_id": "GB22239-FW-002",
+            "suggested_result": "Failed"
+          },
+          {
+            "configuration_fields": [
+              "access_control.default_action",
+              "access_control.policies[default-permit-unsafe].action"
+            ],
+            "explanation": "明确配置默认动作为 permit，且存在一条允许任意通信的策略，直接违反默认拒绝要求。",
+            "record_id": "JR0071-2-FW-007",
+            "suggested_result": "Failed"
+          },
+          {
+            "configuration_fields": [
+              "access_control.default_action",
+              "access_control.policies[default-permit-unsafe].action"
+            ],
+            "explanation": "明确配置默认动作为 permit，且最后一条策略为允许任意通信，直接违反测评单元要求。",
+            "record_id": "L2|6.1.3.2|L2-ABS1-02|17",
+            "suggested_result": "Failed"
+          },
+          {
+            "configuration_fields": [
+              "access_control.default_action",
+              "access_control.policies[default-permit-unsafe].action"
+            ],
+            "explanation": "明确配置默认动作为 permit，且最后一条策略为允许任意通信，直接违反测评单元要求。",
+            "record_id": "L3|7.1.3.2|L3-ABS1-05|88",
+            "suggested_result": "Failed"
+          },
+          {
+            "configuration_fields": [
+              "access_control.default_action",
+              "access_control.policies[default-permit-unsafe].action"
+            ],
+            "explanation": "明确配置默认动作为 permit，且最后一条策略为允许任意通信，直接违反测评单元要求。",
+            "record_id": "L4|8.1.3.2|L4-ABS1-07|202",
+            "suggested_result": "Failed"
+          },
+          {
+            "configuration_fields": [
+              "access_control.policies[default-permit-unsafe].source_cidrs",
+              "access_control.policies[default-permit-unsafe].destination_cidrs",
+              "access_control.policies[default-permit-unsafe].services"
+            ],
+            "explanation": "现有策略使用 any 作为源、目的和服务，未体现基于五元组的检查，且缺少运行效果证据，无法确认是否满足要求。",
+            "record_id": "JR0071-2-FW-009",
+            "suggested_result": "NeedsReview"
+          },
+          {
+            "configuration_fields": [
+              "access_control.default_action",
+              "access_control.policies[default-permit-unsafe].action"
+            ],
+            "explanation": "明确配置默认动作为 permit，直接违反包过滤默认禁止的预期结果。",
+            "record_id": "GB20281-FW-009",
+            "suggested_result": "Failed"
+          },
+          {
+            "configuration_fields": [
+              "access_control.policies[default-permit-unsafe].source_zones",
+              "access_control.policies[default-permit-unsafe].destination_zones",
+              "access_control.policies[default-permit-unsafe].action"
+            ],
+            "explanation": "存在一条允许任意区域间通信的策略，但未提供不同等级网络区域边界部署和非法访问拒绝的测试证据，无法确认是否满足要求。",
+            "record_id": "L3|7.2.3.1|L3-ABS2-02|157",
+            "suggested_result": "NeedsReview"
+          }
+        ],
+        "sent_record_ids": [
+          "GB22239-FW-002",
+          "JR0071-2-FW-007",
+          "L2|6.1.3.2|L2-ABS1-02|17",
+          "L3|7.1.3.2|L3-ABS1-05|88",
+          "L4|8.1.3.2|L4-ABS1-07|202",
+          "JR0071-2-FW-009",
+          "GB20281-FW-009",
+          "L3|7.2.3.1|L3-ABS2-02|157"
+        ]
+      }
+    ],
+    "gated_candidates": [
+      {
+        "clause_ids": [
+          "8.1.3.2",
+          "8.1.3.2 a"
+        ],
+        "configuration_fields": [
+          "access_control.default_action",
+          "access_control.policies[default-permit-unsafe].action"
+        ],
+        "evidence_gate": "ConfigurationVerified",
+        "explanation": "明确配置默认动作为 permit，且存在一条允许任意通信的策略，直接违反默认拒绝要求。",
+        "gated_result": "Failed",
+        "model_suggestion": "Failed",
+        "official_report_effect": "EvidenceGated",
+        "record_id": "GB22239-FW-002",
+        "standard_code": "GB/T 22239—2019",
+        "title": "边界访问控制默认拒绝"
+      },
+      {
+        "clause_ids": [
+          "8.1.3.2",
+          "8.1.3.2 a"
+        ],
+        "configuration_fields": [
+          "access_control.default_action",
+          "access_control.policies[default-permit-unsafe].action"
+        ],
+        "evidence_gate": "ConfigurationVerified",
+        "explanation": "明确配置默认动作为 permit，且存在一条允许任意通信的策略，直接违反默认拒绝要求。",
+        "gated_result": "Failed",
+        "model_suggestion": "Failed",
+        "official_report_effect": "EvidenceGated",
+        "record_id": "JR0071-2-FW-007",
+        "standard_code": "JR/T 0071.2—2020",
+        "title": "边界访问控制默认拒绝"
+      },
+      {
+        "clause_ids": [
+          "6.1.3.2",
+          "L2-ABS1-02"
+        ],
+        "configuration_fields": [
+          "access_control.default_action",
+          "access_control.policies[default-permit-unsafe].action"
+        ],
+        "evidence_gate": "ConfigurationVerified",
+        "explanation": "明确配置默认动作为 permit，且最后一条策略为允许任意通信，直接违反测评单元要求。",
+        "gated_result": "Failed",
+        "model_suggestion": "Failed",
+        "official_report_effect": "EvidenceGated",
+        "record_id": "L2|6.1.3.2|L2-ABS1-02|17",
+        "standard_code": "JR/T 0072—2020",
+        "title": "L2-ABS1-02 测评单元"
+      },
+      {
+        "clause_ids": [
+          "7.1.3.2",
+          "L3-ABS1-05"
+        ],
+        "configuration_fields": [
+          "access_control.default_action",
+          "access_control.policies[default-permit-unsafe].action"
+        ],
+        "evidence_gate": "ConfigurationVerified",
+        "explanation": "明确配置默认动作为 permit，且最后一条策略为允许任意通信，直接违反测评单元要求。",
+        "gated_result": "Failed",
+        "model_suggestion": "Failed",
+        "official_report_effect": "EvidenceGated",
+        "record_id": "L3|7.1.3.2|L3-ABS1-05|88",
+        "standard_code": "JR/T 0072—2020",
+        "title": "L3-ABS1-05 测评单元"
+      },
+      {
+        "clause_ids": [
+          "8.1.3.2",
+          "L4-ABS1-07"
+        ],
+        "configuration_fields": [
+          "access_control.default_action",
+          "access_control.policies[default-permit-unsafe].action"
+        ],
+        "evidence_gate": "ConfigurationVerified",
+        "explanation": "明确配置默认动作为 permit，且最后一条策略为允许任意通信，直接违反测评单元要求。",
+        "gated_result": "Failed",
+        "model_suggestion": "Failed",
+        "official_report_effect": "EvidenceGated",
+        "record_id": "L4|8.1.3.2|L4-ABS1-07|202",
+        "standard_code": "JR/T 0072—2020",
+        "title": "L4-ABS1-07 测评单元"
+      },
+      {
+        "clause_ids": [
+          "7.1.3.2",
+          "7.1.3.2 c"
+        ],
+        "configuration_fields": [
+          "access_control.policies[default-permit-unsafe].source_cidrs",
+          "access_control.policies[default-permit-unsafe].destination_cidrs",
+          "access_control.policies[default-permit-unsafe].services"
+        ],
+        "evidence_gate": "ConfigurationVerified",
+        "explanation": "现有策略使用 any 作为源、目的和服务，未体现基于五元组的检查，且缺少运行效果证据，无法确认是否满足要求。",
+        "gated_result": "NeedsReview",
+        "model_suggestion": "NeedsReview",
+        "official_report_effect": "NeedsReview",
+        "record_id": "JR0071-2-FW-009",
+        "standard_code": "JR/T 0071.2—2020",
+        "title": "基于五元组检查数据包"
+      },
+      {
+        "clause_ids": [
+          "7.2.2.1.1"
+        ],
+        "configuration_fields": [
+          "access_control.default_action",
+          "access_control.policies[default-permit-unsafe].action"
+        ],
+        "evidence_gate": "ConfigurationVerified",
+        "explanation": "明确配置默认动作为 permit，直接违反包过滤默认禁止的预期结果。",
+        "gated_result": "Failed",
+        "model_suggestion": "Failed",
+        "official_report_effect": "EvidenceGated",
+        "record_id": "GB20281-FW-009",
+        "standard_code": "GB/T 20281—2020",
+        "title": "包过滤默认禁止"
+      },
+      {
+        "clause_ids": [
+          "7.2.3.1",
+          "L3-ABS2-02"
+        ],
+        "configuration_fields": [
+          "access_control.policies[default-permit-unsafe].source_zones",
+          "access_control.policies[default-permit-unsafe].destination_zones",
+          "access_control.policies[default-permit-unsafe].action"
+        ],
+        "evidence_gate": "ConfigurationVerified",
+        "explanation": "存在一条允许任意区域间通信的策略，但未提供不同等级网络区域边界部署和非法访问拒绝的测试证据，无法确认是否满足要求。",
+        "gated_result": "NeedsReview",
+        "model_suggestion": "NeedsReview",
+        "official_report_effect": "NeedsReview",
+        "record_id": "L3|7.2.3.1|L3-ABS2-02|157",
+        "standard_code": "JR/T 0072—2020",
+        "title": "L3-ABS2-02 测评单元"
+      }
+    ],
+    "sent_record_ids": [
+      "GB22239-FW-002",
+      "JR0071-2-FW-007",
+      "L2|6.1.3.2|L2-ABS1-02|17",
+      "L3|7.1.3.2|L3-ABS1-05|88",
+      "L4|8.1.3.2|L4-ABS1-07|202",
+      "JR0071-2-FW-009",
+      "GB20281-FW-009",
+      "L3|7.2.3.1|L3-ABS2-02|157"
+    ]
+  },
+  "report": {
+    "assessment_id": "asm:snp-698f2496356f4c08819b8373ac6ae07e:p0-current-config/1.0.0",
+    "control_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+    "control_catalog_sha256": "5f92a63f5051fa8fd6c5d543388a3a67b8590beed89d1ebb95c35db221ada6c0",
+    "control_catalog_version": "0.1.0",
+    "created_at": "2026-08-23T18:27:14.868428Z",
+    "disclaimer": "结果仅表示当前防火墙配置对本规则集控制项的匹配状态，不是信息系统最终等级保护测评结论。 本次另有 6 条 Finding 由 RAG 真实标准原文和大模型判断生成，已执行配置证据门控，不属于高置信度确定性规则结论。",
+    "knowledge_catalog_id": "bank-firewall-reviewed-verbatim-v1",
+    "knowledge_catalog_sha256": "9b01c7cc7d2a8ab6ab3c2260e488da63a9674516692b3aad96448d45f93c6fe2",
+    "knowledge_catalog_version": "1.0.0",
+    "levels": [
+      {
+        "classified_protection_level": 2,
+        "counts": {
+          "Failed": 4,
+          "NeedsReview": 6,
+          "NotApplicable": 4,
+          "Passed": 0
+        },
+        "findings": [
+          {
+            "check_title": "访问控制默认拒绝",
+            "classified_protection_level": 2,
+            "configuration_evidence": [
+              {
+                "field": "access_control.default_action",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/default_action",
+                "value": "permit",
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "full",
+            "control_id": "JR0071-2-FW-007",
+            "control_title": "边界访问控制默认拒绝",
+            "explanation": "访问控制默认动作不是 deny。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-007:L2",
+            "limitations": [],
+            "result": "Failed",
+            "rule_id": "P0-DEFAULT-DENY",
+            "severity": "critical",
+            "standard_references": [
+              {
+                "classified_protection_level": 2,
+                "clause_id": "7.1.3.2 a",
+                "content_sha256": "a893b9e44bef92596b68ecd7d92b988935ac38b5102197ce403b6904ccafdb67",
+                "pdf_page_indexes": [
+                  20
+                ],
+                "point_id": "2a07365d-6f06-5aa7-8979-0d62de48e740",
+                "printed_pages": [
+                  12
+                ],
+                "record_id": "JR0071-2-FW-007",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/6",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "7.1.3.2   访问控制\na)   应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "禁用明文管理协议",
+            "classified_protection_level": 2,
+            "configuration_evidence": [
+              {
+                "field": "management.protocols.ssh.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/ssh/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.ssh.port",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/ssh/port",
+                "value": 22,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.https.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/https/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.https.port",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/https/port",
+                "value": 443,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.telnet.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/telnet/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.telnet.port",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/telnet/port",
+                "value": 23,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.http.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/http/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.http.port",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/http/port",
+                "value": 80,
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-032",
+            "control_title": "最小安装并关闭不需要的服务和高危端口",
+            "explanation": "明文管理协议已关闭，但 SSH 和 HTTPS 均未启用。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-032:L2",
+            "limitations": [],
+            "result": "Failed",
+            "rule_id": "P0-SECURE-MANAGEMENT-PROTOCOLS",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 2,
+                "clause_id": "7.1.4.4 a-b",
+                "content_sha256": "435ba667ffc1b4c71289cb1a8201d6758f3e412b2d4ffcaf1e2794f26179bde1",
+                "pdf_page_indexes": [
+                  22
+                ],
+                "point_id": "1ea93297-d89b-5049-9448-7ab7aa8c099d",
+                "printed_pages": [
+                  14
+                ],
+                "record_id": "JR0071-2-FW-032",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/31",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "7.1.4.4   入侵防范\na)   应遵循最小安装的原则，仅安装需要的组件和应用程序。\nb)   应关闭不需要的系统服务、 默认共享和高危端口。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "限制管理接口和来源地址",
+            "classified_protection_level": 2,
+            "configuration_evidence": [
+              {
+                "field": "management.source_interface",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/source_interface",
+                "value": "",
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.allowed_source_cidrs",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/allowed_source_cidrs",
+                "value": [],
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "full",
+            "control_id": "JR0071-2-FW-031",
+            "control_title": "限制远程管理终端来源",
+            "explanation": "未配置管理来源接口或允许的管理来源地址范围。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-031:L2",
+            "limitations": [],
+            "result": "Failed",
+            "rule_id": "P0-MANAGEMENT-SOURCE",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 2,
+                "clause_id": "7.1.4.4 c",
+                "content_sha256": "a11e3f97dea91f8552dfd2315803715f5d006bef146b984613b49112c9a265c6",
+                "pdf_page_indexes": [
+                  22
+                ],
+                "point_id": "24da903d-470d-5c3b-8ffb-50b0ba046ca2",
+                "printed_pages": [
+                  14
+                ],
+                "record_id": "JR0071-2-FW-031",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/30",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "7.1.4.4   入侵防范\nc)   应通过设定终端接入方式或网络地址范围对通过网络进行管理的管理终端进行限制。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "管理用户多因素认证",
+            "classified_protection_level": 2,
+            "configuration_evidence": [],
+            "control_conclusion_allowed": false,
+            "control_coverage": "full",
+            "control_id": "JR0071-2-FW-027",
+            "control_title": "管理用户多因素身份鉴别",
+            "explanation": "该控制项未在 JR/T 0071.2—2020 第 2 级中出现。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-027:L2",
+            "limitations": [],
+            "result": "NotApplicable",
+            "rule_id": "P0-MANAGEMENT-MFA",
+            "severity": "high",
+            "standard_references": []
+          },
+          {
+            "check_title": "启用设备审计日志",
+            "classified_protection_level": 2,
+            "configuration_evidence": [
+              {
+                "field": "logging.audit_log_enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/logging/audit_log_enabled",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-036",
+            "control_title": "设备安全审计覆盖与记录字段",
+            "explanation": "当前配置字段为空，无法形成确定性结论。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-036:L2",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-AUDIT-LOGGING",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 2,
+                "clause_id": "7.1.4.3 a-b",
+                "content_sha256": "42899c7ef55b3ea6c23bb8d8d38b64f445a94c17c868fdf867f8a332e86be987",
+                "pdf_page_indexes": [
+                  21
+                ],
+                "point_id": "29bb71f6-13fa-5a69-9b42-5d1a7e702743",
+                "printed_pages": [
+                  13
+                ],
+                "record_id": "JR0071-2-FW-036",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/35",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "7.1.4.3   安全审计\na)   应提供安全审计功能，审计应覆盖到每个用户，对重要的用户行为和重要安全事件进行审计。\nb)   审计记录应包括事件的日期和时间、用户、事件类型、事件是否成功及其他与审计相关的信息。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "验证日志六个月留存",
+            "classified_protection_level": 2,
+            "configuration_evidence": [
+              {
+                "field": "logging.local_retention_days",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/logging/local_retention_days",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              },
+              {
+                "field": "logging.remote_logging.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/logging/remote_logging/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-037",
+            "control_title": "设备审计保护、六个月留存和审计进程保护",
+            "explanation": "当前配置未提供本地日志留存天数。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-037:L2",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-LOG-RETENTION",
+            "severity": "medium",
+            "standard_references": [
+              {
+                "classified_protection_level": 2,
+                "clause_id": "7.1.4.3 c-d",
+                "content_sha256": "0b161394a00c4aa89afe86cf2551a64dc3b4946840761b5772c52fac081bca2a",
+                "pdf_page_indexes": [
+                  21
+                ],
+                "point_id": "e1950651-d6b0-5c38-93bf-222008f1941b",
+                "printed_pages": [
+                  13
+                ],
+                "record_id": "JR0071-2-FW-037",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/36",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "7.1.4.3   安全审计\nc)   应对审计记录进行保护 ，定期备份 ，避免受到未预期的删除、 修改或覆盖等，审计记录保存时间应不少于 6 个月 。（F2）\nd)   审计记录产生时的时间应由系统范围内唯一确定的时钟产生 ， 以确保审计分析的一致性与正确性 。（F2）",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "远程集中日志发送",
+            "classified_protection_level": 2,
+            "configuration_evidence": [],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-047",
+            "control_title": "安全事件和审计数据集中收集分析与留存",
+            "explanation": "该控制项未在 JR/T 0071.2—2020 第 2 级中出现。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-047:L2",
+            "limitations": [],
+            "result": "NotApplicable",
+            "rule_id": "P0-REMOTE-LOGGING",
+            "severity": "medium",
+            "standard_references": []
+          },
+          {
+            "check_title": "启用统一时间同步",
+            "classified_protection_level": 2,
+            "configuration_evidence": [],
+            "control_conclusion_allowed": false,
+            "control_coverage": "full",
+            "control_id": "JR0071-2-FW-023",
+            "control_title": "审计时间戳统一",
+            "explanation": "该控制项未在 JR/T 0071.2—2020 第 2 级中出现。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-023:L2",
+            "limitations": [],
+            "result": "NotApplicable",
+            "rule_id": "P0-TIME-SYNC",
+            "severity": "medium",
+            "standard_references": []
+          },
+          {
+            "check_title": "启用 IPS 功能",
+            "classified_protection_level": 2,
+            "configuration_evidence": [
+              {
+                "field": "threat_prevention.ips_enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/threat_prevention/ips_enabled",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-014",
+            "control_title": "内外部网络攻击检测、防止或限制",
+            "explanation": "当前配置字段为空，无法形成确定性结论。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-014:L2",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-IPS",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 2,
+                "clause_id": "7.1.3.3",
+                "content_sha256": "dbb9c4550433a198965e0733af66e1f3f2360d04b5711b16ba9d2dabce6322c4",
+                "pdf_page_indexes": [
+                  20
+                ],
+                "point_id": "d1916d4c-d530-5876-bb3c-6094028e4852",
+                "printed_pages": [
+                  12
+                ],
+                "record_id": "JR0071-2-FW-014",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/13",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "7.1.3.3   入侵防范\n应在关键网络节点处监视网络攻击行为。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "启用恶意代码防护",
+            "classified_protection_level": 2,
+            "configuration_evidence": [
+              {
+                "field": "threat_prevention.antivirus_enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/threat_prevention/antivirus_enabled",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-017",
+            "control_title": "关键节点恶意代码和垃圾邮件防护",
+            "explanation": "当前配置字段为空，无法形成确定性结论。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-017:L2",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-ANTIVIRUS",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 2,
+                "clause_id": "7.1.3.4 a-b",
+                "content_sha256": "36590891c51ab3d5934b264d3aeb7416e9eecf17ffa739d46cb071a92ca8e480",
+                "pdf_page_indexes": [
+                  20,
+                  21
+                ],
+                "point_id": "259cf021-9e27-5cd3-aab5-751cdc517733",
+                "printed_pages": [
+                  12,
+                  13
+                ],
+                "record_id": "JR0071-2-FW-017",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/16",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "7.1.3.4   恶意代码和垃圾邮件防范\na)   应在关键网络节点处对恶意代码进行检测和清除，并维护恶意代码防护机制的升级和更新。\nb)   应在关键网络节点处对垃圾邮件进行检测和防护 ，并维护垃圾邮件防护机制的升级和更新。 （F2）",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "高可用运行和配置同步",
+            "classified_protection_level": 2,
+            "configuration_evidence": [],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-002",
+            "control_title": "业务容量、带宽与关键设备冗余",
+            "explanation": "该控制项未在 JR/T 0071.2—2020 第 2 级中出现。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-002:L2",
+            "limitations": [],
+            "result": "NotApplicable",
+            "rule_id": "P0-HIGH-AVAILABILITY",
+            "severity": "high",
+            "standard_references": []
+          },
+          {
+            "check_title": "配置备份记录完整性",
+            "classified_protection_level": 2,
+            "configuration_evidence": [],
+            "control_conclusion_allowed": false,
+            "control_coverage": "full",
+            "control_id": "JR0071-2-FW-038",
+            "control_title": "设备配置文件每月及变更后备份",
+            "explanation": "当前配置快照没有配置备份时间、周期和备份成功状态字段。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-038:L2",
+            "limitations": [
+              "需要备份记录或配置管理平台证据。"
+            ],
+            "result": "NeedsReview",
+            "rule_id": "P0-CONFIGURATION-BACKUP",
+            "severity": "medium",
+            "standard_references": [
+              {
+                "classified_protection_level": 2,
+                "clause_id": "7.1.5.1 c",
+                "content_sha256": "dade2f4d36abf88e8c44b5e0fae6da45975b1c9946710ffe8e4ca45bf09174da",
+                "pdf_page_indexes": [
+                  23
+                ],
+                "point_id": "92cb17b4-f9d9-52f6-bc6b-8a9b4bf48642",
+                "printed_pages": [
+                  15
+                ],
+                "record_id": "JR0071-2-FW-038",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/37",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "7.1.5.1   系统管理\nc)   应每月对设备的配置文件进行备份，发生变动时应及时备份 。（F2）",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "L2-ABS1-02 测评单元",
+            "classified_protection_level": 2,
+            "configuration_evidence": [
+              {
+                "field": "access_control.default_action",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/default_action",
+                "value": "permit",
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "access_control.policies[default-permit-unsafe].action",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/policies/0/action",
+                "value": "permit",
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "L2|6.1.3.2|L2-ABS1-02|17",
+            "control_title": "L2-ABS1-02 测评单元",
+            "explanation": "明确配置默认动作为 permit，且最后一条策略为允许任意通信，直接违反测评单元要求。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:MODEL:L2|6.1.3.2|L2-ABS1-02|17:L2",
+            "limitations": [
+              "本条由大模型基于 RAG 原文与结构化配置辅助判断，不属于高置信度确定性规则结论。"
+            ],
+            "result": "Failed",
+            "rule_id": "MODEL-ASSISTED-RAG",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 2,
+                "clause_id": "6.1.3.2",
+                "content_sha256": "45b60557c14e8842b5c316a47cd6189575e3f85c898e3dbd4e84bb6bf86d20ea",
+                "pdf_page_indexes": [
+                  17
+                ],
+                "point_id": "2e501726-7ff3-5abf-8f9d-a5c4f78cad5d",
+                "printed_pages": [
+                  11
+                ],
+                "record_id": "L2|6.1.3.2|L2-ABS1-02|17",
+                "source_catalog_id": "jr-t-0072-2020-firewall-test-methods",
+                "source_record_pointer": "/measurement_units/4",
+                "standard_code": "JR/T 0072—2020",
+                "standard_text": "测评单元（L2-ABS1-02）\n该测评单元包括以下要求：\na)   测评指标： 应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。\nb)   测评对象： 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。\nc)   测评实施包括以下内容：\n1)   应核查在网络边界或区域之间是否部署访问控制设备并启用访问控制策略。\n2)   应核查设备的最后一条访问控制策略是否为禁止所有网络通信。\nd)   单元判定：如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              },
+              {
+                "classified_protection_level": 2,
+                "clause_id": "L2-ABS1-02",
+                "content_sha256": "45b60557c14e8842b5c316a47cd6189575e3f85c898e3dbd4e84bb6bf86d20ea",
+                "pdf_page_indexes": [
+                  17
+                ],
+                "point_id": "2e501726-7ff3-5abf-8f9d-a5c4f78cad5d",
+                "printed_pages": [
+                  11
+                ],
+                "record_id": "L2|6.1.3.2|L2-ABS1-02|17",
+                "source_catalog_id": "jr-t-0072-2020-firewall-test-methods",
+                "source_record_pointer": "/measurement_units/4",
+                "standard_code": "JR/T 0072—2020",
+                "standard_text": "测评单元（L2-ABS1-02）\n该测评单元包括以下要求：\na)   测评指标： 应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。\nb)   测评对象： 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。\nc)   测评实施包括以下内容：\n1)   应核查在网络边界或区域之间是否部署访问控制设备并启用访问控制策略。\n2)   应核查设备的最后一条访问控制策略是否为禁止所有网络通信。\nd)   单元判定：如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "基于五元组检查数据包",
+            "classified_protection_level": 2,
+            "configuration_evidence": [
+              {
+                "field": "access_control.policies[default-permit-unsafe].source_cidrs",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/policies/0/source_cidrs",
+                "value": [
+                  "any"
+                ],
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "access_control.policies[default-permit-unsafe].destination_cidrs",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/policies/0/destination_cidrs",
+                "value": [
+                  "any"
+                ],
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "access_control.policies[default-permit-unsafe].services",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/policies/0/services",
+                "value": [
+                  "any"
+                ],
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-009",
+            "control_title": "基于五元组检查数据包",
+            "explanation": "现有策略使用 any 作为源、目的和服务，未体现基于五元组的检查，且缺少运行效果证据，无法确认是否满足要求。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:MODEL:JR0071-2-FW-009:L2",
+            "limitations": [
+              "本条由大模型基于 RAG 原文与结构化配置辅助判断，不属于高置信度确定性规则结论。",
+              "配置证据不足以证明标准要求，需要人工复核。"
+            ],
+            "result": "NeedsReview",
+            "rule_id": "MODEL-ASSISTED-RAG",
+            "severity": "medium",
+            "standard_references": [
+              {
+                "classified_protection_level": 2,
+                "clause_id": "7.1.3.2",
+                "content_sha256": "b2ee06847f9bc128f609777f006bb3c28f1d47cce9aa72c19f20d94b8ae04b3c",
+                "pdf_page_indexes": [
+                  20
+                ],
+                "point_id": "0a3a2e98-8ab5-538a-bb7a-b643e0f0bf5f",
+                "printed_pages": [
+                  12
+                ],
+                "record_id": "JR0071-2-FW-009",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/8",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "7.1.3.2   访问控制\nc)   应对源地址、 目的地址、源端口、 目的端口和协议等进行检查， 以允许/拒绝数据包进出。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              },
+              {
+                "classified_protection_level": 2,
+                "clause_id": "7.1.3.2 c",
+                "content_sha256": "b2ee06847f9bc128f609777f006bb3c28f1d47cce9aa72c19f20d94b8ae04b3c",
+                "pdf_page_indexes": [
+                  20
+                ],
+                "point_id": "0a3a2e98-8ab5-538a-bb7a-b643e0f0bf5f",
+                "printed_pages": [
+                  12
+                ],
+                "record_id": "JR0071-2-FW-009",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/8",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "7.1.3.2   访问控制\nc)   应对源地址、 目的地址、源端口、 目的端口和协议等进行检查， 以允许/拒绝数据包进出。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "classified_protection_level": 3,
+        "counts": {
+          "Failed": 6,
+          "NeedsReview": 9,
+          "NotApplicable": 0,
+          "Passed": 0
+        },
+        "findings": [
+          {
+            "check_title": "访问控制默认拒绝",
+            "classified_protection_level": 3,
+            "configuration_evidence": [
+              {
+                "field": "access_control.default_action",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/default_action",
+                "value": "permit",
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "full",
+            "control_id": "JR0071-2-FW-007",
+            "control_title": "边界访问控制默认拒绝",
+            "explanation": "访问控制默认动作不是 deny。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-007:L3",
+            "limitations": [],
+            "result": "Failed",
+            "rule_id": "P0-DEFAULT-DENY",
+            "severity": "critical",
+            "standard_references": [
+              {
+                "classified_protection_level": 3,
+                "clause_id": "8.1.3.2 a",
+                "content_sha256": "2726a49dcf46d1854d848d07f1b8752fa9b4eff6c4c16ce14718d44087e41bd8",
+                "pdf_page_indexes": [
+                  38
+                ],
+                "point_id": "db0d7788-e828-5b8c-8b75-e9a34c1bd527",
+                "printed_pages": [
+                  30
+                ],
+                "record_id": "JR0071-2-FW-007",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/6",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "8.1.3.2   访问控制\na)   应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "禁用明文管理协议",
+            "classified_protection_level": 3,
+            "configuration_evidence": [
+              {
+                "field": "management.protocols.ssh.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/ssh/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.ssh.port",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/ssh/port",
+                "value": 22,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.https.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/https/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.https.port",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/https/port",
+                "value": 443,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.telnet.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/telnet/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.telnet.port",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/telnet/port",
+                "value": 23,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.http.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/http/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.http.port",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/http/port",
+                "value": 80,
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-032",
+            "control_title": "最小安装并关闭不需要的服务和高危端口",
+            "explanation": "明文管理协议已关闭，但 SSH 和 HTTPS 均未启用。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-032:L3",
+            "limitations": [],
+            "result": "Failed",
+            "rule_id": "P0-SECURE-MANAGEMENT-PROTOCOLS",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 3,
+                "clause_id": "8.1.4.4 a-b",
+                "content_sha256": "72b91c4d5c05774106794f45b47de46a68d92d73907bfa60fb7125cd0e935cc5",
+                "pdf_page_indexes": [
+                  40
+                ],
+                "point_id": "460ed075-583b-5d50-a084-2f5c9e58af70",
+                "printed_pages": [
+                  32
+                ],
+                "record_id": "JR0071-2-FW-032",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/31",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "8.1.4.4   入侵防范\na)   应遵循最小安装的原则，仅安装需要的组件和应用程序。\nb)   应关闭不需要的系统服务、 默认共享和高危端口。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "限制管理接口和来源地址",
+            "classified_protection_level": 3,
+            "configuration_evidence": [
+              {
+                "field": "management.source_interface",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/source_interface",
+                "value": "",
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.allowed_source_cidrs",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/allowed_source_cidrs",
+                "value": [],
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "full",
+            "control_id": "JR0071-2-FW-031",
+            "control_title": "限制远程管理终端来源",
+            "explanation": "未配置管理来源接口或允许的管理来源地址范围。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-031:L3",
+            "limitations": [],
+            "result": "Failed",
+            "rule_id": "P0-MANAGEMENT-SOURCE",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 3,
+                "clause_id": "8.1.4.4 c",
+                "content_sha256": "bec4d3b9d5791c9db32ff11e7aad8088047673d5d973c022594af9ed2ada4cd0",
+                "pdf_page_indexes": [
+                  40
+                ],
+                "point_id": "57d8ce84-c318-5aa7-bf7b-058b925d8d60",
+                "printed_pages": [
+                  32
+                ],
+                "record_id": "JR0071-2-FW-031",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/30",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "8.1.4.4   入侵防范\nc)   应通过设定终端接入方式或网络地址范围对通过网络进行管理的管理终端进行限制。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "管理用户多因素认证",
+            "classified_protection_level": 3,
+            "configuration_evidence": [
+              {
+                "field": "management.mfa_enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/mfa_enabled",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "full",
+            "control_id": "JR0071-2-FW-027",
+            "control_title": "管理用户多因素身份鉴别",
+            "explanation": "当前配置字段为空，无法形成确定性结论。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-027:L3",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-MANAGEMENT-MFA",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 3,
+                "clause_id": "8.1.4.1 d",
+                "content_sha256": "ba4edd2ace4b21e96ba16ed0c60ecf43c7f22e41329b7962f2587b08259ca05a",
+                "pdf_page_indexes": [
+                  39
+                ],
+                "point_id": "7ad3aca3-11f6-59b8-bcb0-4812cbf4a414",
+                "printed_pages": [
+                  31
+                ],
+                "record_id": "JR0071-2-FW-027",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/26",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "8.1.4.1   身份鉴别\nd)   应采用口令、密码技术、生物技术等两种或两种以上组合的鉴别技术对用户进行身份鉴别，且其中一种鉴别技术至少应使用密码技术来实现。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "启用设备审计日志",
+            "classified_protection_level": 3,
+            "configuration_evidence": [
+              {
+                "field": "logging.audit_log_enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/logging/audit_log_enabled",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-036",
+            "control_title": "设备安全审计覆盖与记录字段",
+            "explanation": "当前配置字段为空，无法形成确定性结论。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-036:L3",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-AUDIT-LOGGING",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 3,
+                "clause_id": "8.1.4.3 a-b",
+                "content_sha256": "8edb188abc3d5d0a837e16523774132db4caf80e9f4906ef741e99b30e6ac86c",
+                "pdf_page_indexes": [
+                  39
+                ],
+                "point_id": "45af7b0d-4646-561e-8f24-e589c47e378b",
+                "printed_pages": [
+                  31
+                ],
+                "record_id": "JR0071-2-FW-036",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/35",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "8.1.4.3   安全审计\na)   应启用安全审计功能，审计应覆盖到每个用户，对重要的用户行为和重要安全事件进行审计。\nb)   审计记录应包括事件的日期和时间、用户、事件类型、事件是否成功及其他与审计相关的信息。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "验证日志六个月留存",
+            "classified_protection_level": 3,
+            "configuration_evidence": [
+              {
+                "field": "logging.local_retention_days",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/logging/local_retention_days",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              },
+              {
+                "field": "logging.remote_logging.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/logging/remote_logging/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-037",
+            "control_title": "设备审计保护、六个月留存和审计进程保护",
+            "explanation": "当前配置未提供本地日志留存天数。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-037:L3",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-LOG-RETENTION",
+            "severity": "medium",
+            "standard_references": [
+              {
+                "classified_protection_level": 3,
+                "clause_id": "8.1.4.3 c-d,f",
+                "content_sha256": "b827579f281a8a4a1e6606338c3623c113906d006372a6d8fc4110368e0729f3",
+                "pdf_page_indexes": [
+                  40
+                ],
+                "point_id": "46189459-0eb3-508d-a82c-e2b0f4e9ec28",
+                "printed_pages": [
+                  32
+                ],
+                "record_id": "JR0071-2-FW-037",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/36",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "8.1.4.3   安全审计\nc)   应对审计记录进行保护，定期备份，避免受到未预期的删除、修改或覆盖等，审计记录保存时间应不少于 6 个月 。（F3）\nd)   应对审计进程进行保护， 防止未经授权的中断。\nf)   审计记录产生时的时间应由系统范围内唯一确定的时钟产生 ， 以确保审计分析的一致性与正确性 。（F3）",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "远程集中日志发送",
+            "classified_protection_level": 3,
+            "configuration_evidence": [
+              {
+                "field": "logging.remote_logging.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/logging/remote_logging/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-047",
+            "control_title": "安全事件和审计数据集中收集分析与留存",
+            "explanation": "远程日志发送未启用。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-047:L3",
+            "limitations": [],
+            "result": "Failed",
+            "rule_id": "P0-REMOTE-LOGGING",
+            "severity": "medium",
+            "standard_references": [
+              {
+                "classified_protection_level": 3,
+                "clause_id": "8.1.5.4 d",
+                "content_sha256": "e4a710ad5d851be202f36ebe2f626fc0afa594f325a3054272f57d42229107c0",
+                "pdf_page_indexes": [
+                  42
+                ],
+                "point_id": "8897aaff-6266-5e09-bc8d-674061925c42",
+                "printed_pages": [
+                  34
+                ],
+                "record_id": "JR0071-2-FW-047",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/46",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "8.1.5.4   集中管控\nd)   应对分散在各个设备上的安全事件、审计数据进行收集汇总和集中分析，并保证审计记录的留存时间符合法律法规要求 。（F3）",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "启用统一时间同步",
+            "classified_protection_level": 3,
+            "configuration_evidence": [
+              {
+                "field": "time_sync.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/time_sync/enabled",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              },
+              {
+                "field": "time_sync.servers",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/time_sync/servers",
+                "value": [],
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "full",
+            "control_id": "JR0071-2-FW-023",
+            "control_title": "审计时间戳统一",
+            "explanation": "当前配置未提供时间同步启用状态。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-023:L3",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-TIME-SYNC",
+            "severity": "medium",
+            "standard_references": [
+              {
+                "classified_protection_level": 3,
+                "clause_id": "8.1.3.5 f",
+                "content_sha256": "c59a59e5f20be4593a1a847579705503a36cbc436d5e58dfe4d146183e9f65a3",
+                "pdf_page_indexes": [
+                  39
+                ],
+                "point_id": "02fb4bbb-7b21-57d8-a483-66b1a96fbbbe",
+                "printed_pages": [
+                  31
+                ],
+                "record_id": "JR0071-2-FW-023",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/22",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "8.1.3.5   安全审计\nf)   所有的审计手段需要具备统一的时间戳，保持审计的时间标记一致 。（F3）",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "启用 IPS 功能",
+            "classified_protection_level": 3,
+            "configuration_evidence": [
+              {
+                "field": "threat_prevention.ips_enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/threat_prevention/ips_enabled",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-014",
+            "control_title": "内外部网络攻击检测、防止或限制",
+            "explanation": "当前配置字段为空，无法形成确定性结论。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-014:L3",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-IPS",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 3,
+                "clause_id": "8.1.3.3 a-b",
+                "content_sha256": "e5152981862dfd6d45006c489a01c9e656275fa27b359cd165cd43bb7b8c41ca",
+                "pdf_page_indexes": [
+                  38
+                ],
+                "point_id": "22ae368a-8b31-51b8-9456-be0d5d7bc12e",
+                "printed_pages": [
+                  30
+                ],
+                "record_id": "JR0071-2-FW-014",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/13",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "8.1.3.3   入侵防范\na)   应在关键网络节点处检测、 防止或限制从外部发起的网络攻击行为。\nb)   应在关键网络节点处检测、 防止或限制从内部发起的网络攻击行为。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "启用恶意代码防护",
+            "classified_protection_level": 3,
+            "configuration_evidence": [
+              {
+                "field": "threat_prevention.antivirus_enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/threat_prevention/antivirus_enabled",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-017",
+            "control_title": "关键节点恶意代码和垃圾邮件防护",
+            "explanation": "当前配置字段为空，无法形成确定性结论。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-017:L3",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-ANTIVIRUS",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 3,
+                "clause_id": "8.1.3.4 a-b",
+                "content_sha256": "fa0fb2712b179780e93aff1004e40df4b6ec3d0906f0a8a05b315a6d636ce13a",
+                "pdf_page_indexes": [
+                  38
+                ],
+                "point_id": "2c0958f3-f226-504e-a8d1-b23ef6d3246f",
+                "printed_pages": [
+                  30
+                ],
+                "record_id": "JR0071-2-FW-017",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/16",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "8.1.3.4   恶意代码和垃圾邮件防范\na)   应在关键网络节点处对恶意代码进行检测和清除，并维护恶意代码防护机制的升级和更新。\nb)   应在关键网络节点处对垃圾邮件进行检测和防护，并维护垃圾邮件防护机制的升级和更新。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "高可用运行和配置同步",
+            "classified_protection_level": 3,
+            "configuration_evidence": [
+              {
+                "field": "high_availability.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/high_availability/enabled",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              },
+              {
+                "field": "high_availability.protocol",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/high_availability/protocol",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              },
+              {
+                "field": "high_availability.state",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/high_availability/state",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              },
+              {
+                "field": "high_availability.configuration_synchronized",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/high_availability/configuration_synchronized",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-002",
+            "control_title": "业务容量、带宽与关键设备冗余",
+            "explanation": "高可用启用状态、运行状态或配置同步状态存在缺失。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-002:L3",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-HIGH-AVAILABILITY",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 3,
+                "clause_id": "8.1.2.1 a-b,e",
+                "content_sha256": "345a7f221d4a3253400fde3423f83abd4a9cc564cca81e4126a87af2fe63412f",
+                "pdf_page_indexes": [
+                  37
+                ],
+                "point_id": "2397c0e0-a163-5614-be15-c2f71ecdbb8e",
+                "printed_pages": [
+                  29
+                ],
+                "record_id": "JR0071-2-FW-002",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/1",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "8.1.2.1   网络架构\na)   应保证网络设备的业务处理能力满足业务高峰期需要 ，如： 业务处理能力能满足业务高峰期需要的 50%以上 。（F3）\nb)   应保证网络各个部分的带宽满足业务高峰期需要。\ne)   应提供通信线路、关键网络设备和关键计算设备的硬件冗余，保证系统的可用性，双线路设计时，宜由不同的电信运营商提供 。（F3）",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "配置备份记录完整性",
+            "classified_protection_level": 3,
+            "configuration_evidence": [],
+            "control_conclusion_allowed": false,
+            "control_coverage": "full",
+            "control_id": "JR0071-2-FW-038",
+            "control_title": "设备配置文件每月及变更后备份",
+            "explanation": "当前配置快照没有配置备份时间、周期和备份成功状态字段。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-038:L3",
+            "limitations": [
+              "需要备份记录或配置管理平台证据。"
+            ],
+            "result": "NeedsReview",
+            "rule_id": "P0-CONFIGURATION-BACKUP",
+            "severity": "medium",
+            "standard_references": [
+              {
+                "classified_protection_level": 3,
+                "clause_id": "8.1.5.1 c",
+                "content_sha256": "2eb14162b2b2d67d0b7b42b298cfcc4d5baa87a9a3c4eb78381a80fcbf6d22ed",
+                "pdf_page_indexes": [
+                  42
+                ],
+                "point_id": "6bb36b57-9348-5a02-b075-ec5922d10402",
+                "printed_pages": [
+                  34
+                ],
+                "record_id": "JR0071-2-FW-038",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/37",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "8.1.5.1   系统管理\nc)   应每月对设备的配置文件进行备份，发生变动时应及时备份 。（F3）",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "边界访问控制默认拒绝",
+            "classified_protection_level": 3,
+            "configuration_evidence": [
+              {
+                "field": "access_control.default_action",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/default_action",
+                "value": "permit",
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "access_control.policies[default-permit-unsafe].action",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/policies/0/action",
+                "value": "permit",
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "GB22239-FW-002",
+            "control_title": "边界访问控制默认拒绝",
+            "explanation": "明确配置默认动作为 permit，且存在一条允许任意通信的策略，直接违反默认拒绝要求。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:MODEL:GB22239-FW-002:L3",
+            "limitations": [
+              "本条由大模型基于 RAG 原文与结构化配置辅助判断，不属于高置信度确定性规则结论。"
+            ],
+            "result": "Failed",
+            "rule_id": "MODEL-ASSISTED-RAG",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 3,
+                "clause_id": "8.1.3.2",
+                "content_sha256": "556949effdb182d4456983fc2d0baa2bc5fd185722b5a7efac8a84193cb79b29",
+                "pdf_page_indexes": [
+                  34
+                ],
+                "point_id": "f46674e5-c6be-5ccb-86ff-85c33a378bad",
+                "printed_pages": [
+                  28
+                ],
+                "record_id": "GB22239-FW-002",
+                "source_catalog_id": "gb-t-22239-2019-firewall-candidates",
+                "source_record_pointer": "/general_control_families/1",
+                "standard_code": "GB/T 22239—2019",
+                "standard_text": "8 . 1 . 3 . 2    访问控制\na)   应在网络边界或区域之间根据访问控制策略设置访问控制规则 , 默认情况下除允许通信外受控接口拒绝所有通信 ;",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              },
+              {
+                "classified_protection_level": 3,
+                "clause_id": "8.1.3.2 a",
+                "content_sha256": "556949effdb182d4456983fc2d0baa2bc5fd185722b5a7efac8a84193cb79b29",
+                "pdf_page_indexes": [
+                  34
+                ],
+                "point_id": "f46674e5-c6be-5ccb-86ff-85c33a378bad",
+                "printed_pages": [
+                  28
+                ],
+                "record_id": "GB22239-FW-002",
+                "source_catalog_id": "gb-t-22239-2019-firewall-candidates",
+                "source_record_pointer": "/general_control_families/1",
+                "standard_code": "GB/T 22239—2019",
+                "standard_text": "8 . 1 . 3 . 2    访问控制\na)   应在网络边界或区域之间根据访问控制策略设置访问控制规则 , 默认情况下除允许通信外受控接口拒绝所有通信 ;",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "L3-ABS1-05 测评单元",
+            "classified_protection_level": 3,
+            "configuration_evidence": [
+              {
+                "field": "access_control.default_action",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/default_action",
+                "value": "permit",
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "access_control.policies[default-permit-unsafe].action",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/policies/0/action",
+                "value": "permit",
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "L3|7.1.3.2|L3-ABS1-05|88",
+            "control_title": "L3-ABS1-05 测评单元",
+            "explanation": "明确配置默认动作为 permit，且最后一条策略为允许任意通信，直接违反测评单元要求。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:MODEL:L3|7.1.3.2|L3-ABS1-05|88:L3",
+            "limitations": [
+              "本条由大模型基于 RAG 原文与结构化配置辅助判断，不属于高置信度确定性规则结论。"
+            ],
+            "result": "Failed",
+            "rule_id": "MODEL-ASSISTED-RAG",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 3,
+                "clause_id": "7.1.3.2",
+                "content_sha256": "c441373c108373d19edc52578cb3ce83b2241c967f0a9403fec51ef062a3695b",
+                "pdf_page_indexes": [
+                  88
+                ],
+                "point_id": "02e2bc16-6128-57b7-8192-edef6b29e174",
+                "printed_pages": [
+                  82
+                ],
+                "record_id": "L3|7.1.3.2|L3-ABS1-05|88",
+                "source_catalog_id": "jr-t-0072-2020-firewall-test-methods",
+                "source_record_pointer": "/measurement_units/73",
+                "standard_code": "JR/T 0072—2020",
+                "standard_text": "测评单元（L3-ABS1-05）\n该测评单元包括以下要求：\na)   测评指标： 应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。\nb)   测评对象： 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。\nc)   测评实施包括以下内容：\n1)   应核查在网络边界或区域之间是否部署访问控制设备并启用访问控制策略。\n2)   应核查设备的最后一条访问控制策略是否为禁止所有网络通信。\nd)   单元判定：如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              },
+              {
+                "classified_protection_level": 3,
+                "clause_id": "L3-ABS1-05",
+                "content_sha256": "c441373c108373d19edc52578cb3ce83b2241c967f0a9403fec51ef062a3695b",
+                "pdf_page_indexes": [
+                  88
+                ],
+                "point_id": "02e2bc16-6128-57b7-8192-edef6b29e174",
+                "printed_pages": [
+                  82
+                ],
+                "record_id": "L3|7.1.3.2|L3-ABS1-05|88",
+                "source_catalog_id": "jr-t-0072-2020-firewall-test-methods",
+                "source_record_pointer": "/measurement_units/73",
+                "standard_code": "JR/T 0072—2020",
+                "standard_text": "测评单元（L3-ABS1-05）\n该测评单元包括以下要求：\na)   测评指标： 应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。\nb)   测评对象： 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。\nc)   测评实施包括以下内容：\n1)   应核查在网络边界或区域之间是否部署访问控制设备并启用访问控制策略。\n2)   应核查设备的最后一条访问控制策略是否为禁止所有网络通信。\nd)   单元判定：如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "L3-ABS2-02 测评单元",
+            "classified_protection_level": 3,
+            "configuration_evidence": [
+              {
+                "field": "access_control.policies[default-permit-unsafe].source_zones",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/policies/0/source_zones",
+                "value": [
+                  "any"
+                ],
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "access_control.policies[default-permit-unsafe].destination_zones",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/policies/0/destination_zones",
+                "value": [
+                  "any"
+                ],
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "access_control.policies[default-permit-unsafe].action",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/policies/0/action",
+                "value": "permit",
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "L3|7.2.3.1|L3-ABS2-02|157",
+            "control_title": "L3-ABS2-02 测评单元",
+            "explanation": "存在一条允许任意区域间通信的策略，但未提供不同等级网络区域边界部署和非法访问拒绝的测试证据，无法确认是否满足要求。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:MODEL:L3|7.2.3.1|L3-ABS2-02|157:L3",
+            "limitations": [
+              "本条由大模型基于 RAG 原文与结构化配置辅助判断，不属于高置信度确定性规则结论。",
+              "配置证据不足以证明标准要求，需要人工复核。"
+            ],
+            "result": "NeedsReview",
+            "rule_id": "MODEL-ASSISTED-RAG",
+            "severity": "medium",
+            "standard_references": [
+              {
+                "classified_protection_level": 3,
+                "clause_id": "7.2.3.1",
+                "content_sha256": "8e04c4c2f4e9dd340db3cc0822285631f58decd786d3d8574558959c3a8e3e63",
+                "pdf_page_indexes": [
+                  157
+                ],
+                "point_id": "28da1b34-63e9-5837-8813-f0feed87cbcd",
+                "printed_pages": [
+                  151
+                ],
+                "record_id": "L3|7.2.3.1|L3-ABS2-02|157",
+                "source_catalog_id": "jr-t-0072-2020-firewall-test-methods",
+                "source_record_pointer": "/measurement_units/137",
+                "standard_code": "JR/T 0072—2020",
+                "standard_text": "测评单元（L3-ABS2-02）\n该测评单元包括以下要求：\na)   测评指标： 应在不同等级的网络区域边界部署访问控制机制，设置访问控制规则。\nb)   测评对象： 网闸、 防火墙、 路由器和交换机等提供访问控制功能的设备。\nc)   测评实施包括以下内容：\n1)   应核查是否在不同等级的网络区域边界部署访问控制机制，设置访问控制规则。\n2)   应核查不同安全等级网络区域边界的访问控制规则和访问控制策略是否有效。\n3)   应测试验证不同安全等级的网络区域间进行非法访问时，是否可以正确拒绝该非法访问。\nd)   单元判定： 如果1） ～3）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              },
+              {
+                "classified_protection_level": 3,
+                "clause_id": "L3-ABS2-02",
+                "content_sha256": "8e04c4c2f4e9dd340db3cc0822285631f58decd786d3d8574558959c3a8e3e63",
+                "pdf_page_indexes": [
+                  157
+                ],
+                "point_id": "28da1b34-63e9-5837-8813-f0feed87cbcd",
+                "printed_pages": [
+                  151
+                ],
+                "record_id": "L3|7.2.3.1|L3-ABS2-02|157",
+                "source_catalog_id": "jr-t-0072-2020-firewall-test-methods",
+                "source_record_pointer": "/measurement_units/137",
+                "standard_code": "JR/T 0072—2020",
+                "standard_text": "测评单元（L3-ABS2-02）\n该测评单元包括以下要求：\na)   测评指标： 应在不同等级的网络区域边界部署访问控制机制，设置访问控制规则。\nb)   测评对象： 网闸、 防火墙、 路由器和交换机等提供访问控制功能的设备。\nc)   测评实施包括以下内容：\n1)   应核查是否在不同等级的网络区域边界部署访问控制机制，设置访问控制规则。\n2)   应核查不同安全等级网络区域边界的访问控制规则和访问控制策略是否有效。\n3)   应测试验证不同安全等级的网络区域间进行非法访问时，是否可以正确拒绝该非法访问。\nd)   单元判定： 如果1） ～3）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "classified_protection_level": 4,
+        "counts": {
+          "Failed": 5,
+          "NeedsReview": 8,
+          "NotApplicable": 0,
+          "Passed": 0
+        },
+        "findings": [
+          {
+            "check_title": "访问控制默认拒绝",
+            "classified_protection_level": 4,
+            "configuration_evidence": [
+              {
+                "field": "access_control.default_action",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/default_action",
+                "value": "permit",
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "full",
+            "control_id": "JR0071-2-FW-007",
+            "control_title": "边界访问控制默认拒绝",
+            "explanation": "访问控制默认动作不是 deny。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-007:L4",
+            "limitations": [],
+            "result": "Failed",
+            "rule_id": "P0-DEFAULT-DENY",
+            "severity": "critical",
+            "standard_references": [
+              {
+                "classified_protection_level": 4,
+                "clause_id": "9.1.3.2 a",
+                "content_sha256": "0799377b31efdf077d6b785ce40f085f8b5597ace73ce5644f729ddec6042937",
+                "pdf_page_indexes": [
+                  64
+                ],
+                "point_id": "3e96c074-bd4a-51dd-9e1e-850e4f9b7838",
+                "printed_pages": [
+                  56
+                ],
+                "record_id": "JR0071-2-FW-007",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/6",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "9.1.3.2   访问控制\na)   应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "禁用明文管理协议",
+            "classified_protection_level": 4,
+            "configuration_evidence": [
+              {
+                "field": "management.protocols.ssh.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/ssh/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.ssh.port",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/ssh/port",
+                "value": 22,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.https.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/https/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.https.port",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/https/port",
+                "value": 443,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.telnet.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/telnet/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.telnet.port",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/telnet/port",
+                "value": 23,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.http.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/http/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.protocols.http.port",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/protocols/http/port",
+                "value": 80,
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-032",
+            "control_title": "最小安装并关闭不需要的服务和高危端口",
+            "explanation": "明文管理协议已关闭，但 SSH 和 HTTPS 均未启用。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-032:L4",
+            "limitations": [],
+            "result": "Failed",
+            "rule_id": "P0-SECURE-MANAGEMENT-PROTOCOLS",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 4,
+                "clause_id": "9.1.4.4 a-b",
+                "content_sha256": "7c0f53021aecce393f992983e792241e1a912d7c2d78e7a0d7238fbbe1dd8503",
+                "pdf_page_indexes": [
+                  66
+                ],
+                "point_id": "ed33473a-9212-5dc9-b19c-7cd597f31612",
+                "printed_pages": [
+                  58
+                ],
+                "record_id": "JR0071-2-FW-032",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/31",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "9.1.4.4   入侵防范\na)   应遵循最小安装的原则，仅安装需要的组件和应用程序。\nb)   应关闭不需要的系统服务、 默认共享和高危端口。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "限制管理接口和来源地址",
+            "classified_protection_level": 4,
+            "configuration_evidence": [
+              {
+                "field": "management.source_interface",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/source_interface",
+                "value": "",
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "management.allowed_source_cidrs",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/allowed_source_cidrs",
+                "value": [],
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "full",
+            "control_id": "JR0071-2-FW-031",
+            "control_title": "限制远程管理终端来源",
+            "explanation": "未配置管理来源接口或允许的管理来源地址范围。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-031:L4",
+            "limitations": [],
+            "result": "Failed",
+            "rule_id": "P0-MANAGEMENT-SOURCE",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 4,
+                "clause_id": "9.1.4.4 c",
+                "content_sha256": "cefb7e5edcd323ca5132dfd2dfacbc9d9a789f27fb701c373ea5252d14ec98ec",
+                "pdf_page_indexes": [
+                  66
+                ],
+                "point_id": "79f7dc82-68c7-53be-96e5-6b96d13c15a3",
+                "printed_pages": [
+                  58
+                ],
+                "record_id": "JR0071-2-FW-031",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/30",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "9.1.4.4   入侵防范\nc)   应通过设定终端接入方式或网络地址范围对通过网络进行管理的管理终端进行限制。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "管理用户多因素认证",
+            "classified_protection_level": 4,
+            "configuration_evidence": [
+              {
+                "field": "management.mfa_enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/management/mfa_enabled",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "full",
+            "control_id": "JR0071-2-FW-027",
+            "control_title": "管理用户多因素身份鉴别",
+            "explanation": "当前配置字段为空，无法形成确定性结论。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-027:L4",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-MANAGEMENT-MFA",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 4,
+                "clause_id": "9.1.4.1 e",
+                "content_sha256": "6ece7613b841a7ceff002c13b8ac2d342ed02c438390e6283a2a42aa6a7024c0",
+                "pdf_page_indexes": [
+                  65
+                ],
+                "point_id": "4d10e60d-1a3e-5355-9ec2-c886139ced98",
+                "printed_pages": [
+                  57
+                ],
+                "record_id": "JR0071-2-FW-027",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/26",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "9.1.4.1   身份鉴别\ne)   应采用口令 、密码技术 、生物技术等两种或两种以上组合的鉴别技术对用户进行身份鉴别，且其中一种鉴别技术至少应使用密码技术来实现。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "启用设备审计日志",
+            "classified_protection_level": 4,
+            "configuration_evidence": [
+              {
+                "field": "logging.audit_log_enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/logging/audit_log_enabled",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-036",
+            "control_title": "设备安全审计覆盖与记录字段",
+            "explanation": "当前配置字段为空，无法形成确定性结论。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-036:L4",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-AUDIT-LOGGING",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 4,
+                "clause_id": "9.1.4.3 a-b",
+                "content_sha256": "ef29740d227155efc210dc25b9a6b2294f43ceb2d6c21b96e515e815ae6e8a8c",
+                "pdf_page_indexes": [
+                  66
+                ],
+                "point_id": "de85e279-c364-5c3e-a403-a3a64535ea46",
+                "printed_pages": [
+                  58
+                ],
+                "record_id": "JR0071-2-FW-036",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/35",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "9.1.4.3   安全审计\na)   应启用安全审计功能，审计应覆盖到每个用户，对重要的用户行为和重要安全事件进行审计。\nb)   审计记录应包括事件的日期和时间、事件类型、主体标识、 客体标识和结果等。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "验证日志六个月留存",
+            "classified_protection_level": 4,
+            "configuration_evidence": [
+              {
+                "field": "logging.local_retention_days",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/logging/local_retention_days",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              },
+              {
+                "field": "logging.remote_logging.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/logging/remote_logging/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-037",
+            "control_title": "设备审计保护、六个月留存和审计进程保护",
+            "explanation": "当前配置未提供本地日志留存天数。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-037:L4",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-LOG-RETENTION",
+            "severity": "medium",
+            "standard_references": [
+              {
+                "classified_protection_level": 4,
+                "clause_id": "9.1.4.3 c-d,f",
+                "content_sha256": "9c95664fc244581f4fbc360cd13c48da1bd498ca1dc0bcd970c085f45c6dd559",
+                "pdf_page_indexes": [
+                  66
+                ],
+                "point_id": "28af56a6-4f8a-5b4b-a3f2-f4efa1c04fb7",
+                "printed_pages": [
+                  58
+                ],
+                "record_id": "JR0071-2-FW-037",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/36",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "9.1.4.3   安全审计\nc)   应对审计记录进行保护，定期备份 ，避免受到未预期的删除 、修改或覆盖等 ，审计记录保存时间应不少于6个月 。（F4）\nd)   应对审计进程或程序进行保护， 防止未经授权的中断 。（F4）\nf)   审计记录产生时的时间应由系统范围内唯一确定的时钟产生 ， 以确保审计分析的一致性与正确性 。（F4）",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "远程集中日志发送",
+            "classified_protection_level": 4,
+            "configuration_evidence": [
+              {
+                "field": "logging.remote_logging.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/logging/remote_logging/enabled",
+                "value": false,
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-047",
+            "control_title": "安全事件和审计数据集中收集分析与留存",
+            "explanation": "远程日志发送未启用。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-047:L4",
+            "limitations": [],
+            "result": "Failed",
+            "rule_id": "P0-REMOTE-LOGGING",
+            "severity": "medium",
+            "standard_references": [
+              {
+                "classified_protection_level": 4,
+                "clause_id": "9.1.5.4 d",
+                "content_sha256": "83260abe1737dfde52b326003f5b25ff8e2fb6c6d03f1bbe4016ddd64b52d6d9",
+                "pdf_page_indexes": [
+                  69
+                ],
+                "point_id": "b67fffdc-9c94-5041-be3b-6d85d1918f1d",
+                "printed_pages": [
+                  61
+                ],
+                "record_id": "JR0071-2-FW-047",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/46",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "9.1.5.4   集中管控\nd)   应对分散在各个设备上的安全事件、审计数据进行收集汇总和集中分析，并保证审计记录的留存时间符合法律法规要求 。（F4）",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "启用统一时间同步",
+            "classified_protection_level": 4,
+            "configuration_evidence": [
+              {
+                "field": "time_sync.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/time_sync/enabled",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              },
+              {
+                "field": "time_sync.servers",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/time_sync/servers",
+                "value": [],
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "full",
+            "control_id": "JR0071-2-FW-023",
+            "control_title": "审计时间戳统一",
+            "explanation": "当前配置未提供时间同步启用状态。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-023:L4",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-TIME-SYNC",
+            "severity": "medium",
+            "standard_references": [
+              {
+                "classified_protection_level": 4,
+                "clause_id": "9.1.3.5 e",
+                "content_sha256": "f1a799fbd43e026dc4ee27fb2bb291049426e13a4dd1ab87b95313effe01ade9",
+                "pdf_page_indexes": [
+                  65
+                ],
+                "point_id": "d1029145-ac29-541e-b5bd-999c136e9d93",
+                "printed_pages": [
+                  57
+                ],
+                "record_id": "JR0071-2-FW-023",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/22",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "9.1.3.5   安全审计\ne)   所有的审计手段需要具备统一的时间戳，保持审计的时间标记一致 。（F4）",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "启用 IPS 功能",
+            "classified_protection_level": 4,
+            "configuration_evidence": [
+              {
+                "field": "threat_prevention.ips_enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/threat_prevention/ips_enabled",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-014",
+            "control_title": "内外部网络攻击检测、防止或限制",
+            "explanation": "当前配置字段为空，无法形成确定性结论。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-014:L4",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-IPS",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 4,
+                "clause_id": "9.1.3.3 a-b",
+                "content_sha256": "c763557a5a9302161b79aa5b1998d6080b2045f3855ae0656146269b36ae7e0c",
+                "pdf_page_indexes": [
+                  64
+                ],
+                "point_id": "b1629531-4a23-5784-a8be-0215300cb8a1",
+                "printed_pages": [
+                  56
+                ],
+                "record_id": "JR0071-2-FW-014",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/13",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "9.1.3.3   入侵防范\na)   应在关键网络节点处检测、 防止或限制从外部发起的网络攻击行为。\nb)   应在关键网络节点处检测、 防止或限制从内部发起的网络攻击行为。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "启用恶意代码防护",
+            "classified_protection_level": 4,
+            "configuration_evidence": [
+              {
+                "field": "threat_prevention.antivirus_enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/threat_prevention/antivirus_enabled",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-017",
+            "control_title": "关键节点恶意代码和垃圾邮件防护",
+            "explanation": "当前配置字段为空，无法形成确定性结论。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-017:L4",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-ANTIVIRUS",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 4,
+                "clause_id": "9.1.3.4 a-b",
+                "content_sha256": "221afbfa42ebd5d518478b44196044c45a41686bfbca82ffd80a25661a3d7edc",
+                "pdf_page_indexes": [
+                  65
+                ],
+                "point_id": "f33cd82b-fec6-5f27-a91a-3a1be8b54da3",
+                "printed_pages": [
+                  57
+                ],
+                "record_id": "JR0071-2-FW-017",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/16",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "9.1.3.4   恶意代码和垃圾邮件防范\na)   应在关键网络节点处对恶意代码进行检测和清除，并维护恶意代码防护机制的升级和更新。\nb)   应在关键网络节点处对垃圾邮件进行检测和防护，并维护垃圾邮件防护机制的升级和更新。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "高可用运行和配置同步",
+            "classified_protection_level": 4,
+            "configuration_evidence": [
+              {
+                "field": "high_availability.enabled",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/high_availability/enabled",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              },
+              {
+                "field": "high_availability.protocol",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/high_availability/protocol",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              },
+              {
+                "field": "high_availability.state",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/high_availability/state",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              },
+              {
+                "field": "high_availability.configuration_synchronized",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/high_availability/configuration_synchronized",
+                "value": null,
+                "verification_status": "InsufficientEvidence"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "JR0071-2-FW-002",
+            "control_title": "业务容量、带宽与关键设备冗余",
+            "explanation": "高可用启用状态、运行状态或配置同步状态存在缺失。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-002:L4",
+            "limitations": [],
+            "result": "NeedsReview",
+            "rule_id": "P0-HIGH-AVAILABILITY",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 4,
+                "clause_id": "9.1.2.1 a-b,e-f,i",
+                "content_sha256": "a9e3a9055bd29bea5c2058dc828700e46fc01d2cbd308352917d98ee02adbc1a",
+                "pdf_page_indexes": [
+                  63
+                ],
+                "point_id": "d1bb861f-e980-5c98-8194-c8b1c355d72e",
+                "printed_pages": [
+                  55
+                ],
+                "record_id": "JR0071-2-FW-002",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/1",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "9.1.2.1   网络架构\na)   应保证网络设备的业务处理能力满足业务高峰期需要 ，如： 业务处理能力能满足业务高峰期需要的 50%以上 。（F4）\nb)   应保证网络各个部分的带宽满足业务高峰期需要。\ne)   应提供通信线路、关键网络设备和关键计算设备的硬件冗余，保证系统的可用性，双线路设计时，宜由不同的电信运营商提供 。（F4）\nf)   应按照业务服务的重要程度分配带宽，优先保障重要业务。\ni)   机构应至少通过两条主干链路接入跨机构交易交换网络 ，并可根据实际情况选择使用专用的通信链路 。 两条主干链路应具有不同的路由 ， 当一条链路发生异常时 ，另一条链路应能承载全部的交易数据 。（F4）",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "配置备份记录完整性",
+            "classified_protection_level": 4,
+            "configuration_evidence": [],
+            "control_conclusion_allowed": false,
+            "control_coverage": "full",
+            "control_id": "JR0071-2-FW-038",
+            "control_title": "设备配置文件每月及变更后备份",
+            "explanation": "当前配置快照没有配置备份时间、周期和备份成功状态字段。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:JR0071-2-FW-038:L4",
+            "limitations": [
+              "需要备份记录或配置管理平台证据。"
+            ],
+            "result": "NeedsReview",
+            "rule_id": "P0-CONFIGURATION-BACKUP",
+            "severity": "medium",
+            "standard_references": [
+              {
+                "classified_protection_level": 4,
+                "clause_id": "9.1.5.1 c",
+                "content_sha256": "4999328a3ffa2e2ea5662d10ad0c2dd675e344fd56e3bcccf4db4b4cb27950c3",
+                "pdf_page_indexes": [
+                  68
+                ],
+                "point_id": "a9a65cb4-9372-53bb-a8e7-c83d7a500586",
+                "printed_pages": [
+                  60
+                ],
+                "record_id": "JR0071-2-FW-038",
+                "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+                "source_record_pointer": "/control_candidates/37",
+                "standard_code": "JR/T 0071.2—2020",
+                "standard_text": "9.1.5.1   系统管理\nc)   应每月对设备的配置文件进行备份，发生变动时应及时备份 。（F4）",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          },
+          {
+            "check_title": "L4-ABS1-07 测评单元",
+            "classified_protection_level": 4,
+            "configuration_evidence": [
+              {
+                "field": "access_control.default_action",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/default_action",
+                "value": "permit",
+                "verification_status": "ConfigurationVerified"
+              },
+              {
+                "field": "access_control.policies[default-permit-unsafe].action",
+                "parser_version": "mock-json-parser/1.0.0",
+                "raw_config_excerpt": null,
+                "raw_config_sha256": null,
+                "raw_line_end": null,
+                "raw_line_start": null,
+                "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+                "source_pointer": "/access_control/policies/0/action",
+                "value": "permit",
+                "verification_status": "ConfigurationVerified"
+              }
+            ],
+            "control_conclusion_allowed": false,
+            "control_coverage": "partial",
+            "control_id": "L4|8.1.3.2|L4-ABS1-07|202",
+            "control_title": "L4-ABS1-07 测评单元",
+            "explanation": "明确配置默认动作为 permit，且最后一条策略为允许任意通信，直接违反测评单元要求。",
+            "finding_id": "snp-698f2496356f4c08819b8373ac6ae07e:MODEL:L4|8.1.3.2|L4-ABS1-07|202:L4",
+            "limitations": [
+              "本条由大模型基于 RAG 原文与结构化配置辅助判断，不属于高置信度确定性规则结论。"
+            ],
+            "result": "Failed",
+            "rule_id": "MODEL-ASSISTED-RAG",
+            "severity": "high",
+            "standard_references": [
+              {
+                "classified_protection_level": 4,
+                "clause_id": "8.1.3.2",
+                "content_sha256": "9c2206e6089fc0b0c3f775ab8879b874f1f9fdc868f2c568804273985d1cf589",
+                "pdf_page_indexes": [
+                  202
+                ],
+                "point_id": "d476ad18-2831-569b-8615-f8e6fb08c495",
+                "printed_pages": [
+                  196
+                ],
+                "record_id": "L4|8.1.3.2|L4-ABS1-07|202",
+                "source_catalog_id": "jr-t-0072-2020-firewall-test-methods",
+                "source_record_pointer": "/measurement_units/182",
+                "standard_code": "JR/T 0072—2020",
+                "standard_text": "测评单元（L4-ABS1-07）\n该测评单元包括以下要求：\na)   测评指标： 应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。\nb)   测评对象： 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。\nc)   测评实施包括以下内容：\n1)   应核查在网络边界或区域之间是否部署访问控制设备并启用访问控制策略。\n2)   应核查设备的最后一条访问控制策略是否为禁止所有网络通信。\nd)   单元判定：如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              },
+              {
+                "classified_protection_level": 4,
+                "clause_id": "L4-ABS1-07",
+                "content_sha256": "9c2206e6089fc0b0c3f775ab8879b874f1f9fdc868f2c568804273985d1cf589",
+                "pdf_page_indexes": [
+                  202
+                ],
+                "point_id": "d476ad18-2831-569b-8615-f8e6fb08c495",
+                "printed_pages": [
+                  196
+                ],
+                "record_id": "L4|8.1.3.2|L4-ABS1-07|202",
+                "source_catalog_id": "jr-t-0072-2020-firewall-test-methods",
+                "source_record_pointer": "/measurement_units/182",
+                "standard_code": "JR/T 0072—2020",
+                "standard_text": "测评单元（L4-ABS1-07）\n该测评单元包括以下要求：\na)   测评指标： 应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。\nb)   测评对象： 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。\nc)   测评实施包括以下内容：\n1)   应核查在网络边界或区域之间是否部署访问控制设备并启用访问控制策略。\n2)   应核查设备的最后一条访问控制策略是否为禁止所有网络通信。\nd)   单元判定：如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+                "text_kind": "verbatim",
+                "validation_message": "标准原文已通过目录身份、内容哈希和审核状态校验。",
+                "validation_status": "Valid"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "report_id": "rpt:asm:snp-698f2496356f4c08819b8373ac6ae07e:p0-current-config/1.0.0",
+    "report_sha256": "b6e5fc3b955bdef7d80b854b5890ebb53c3bbce6cd47f4f2292cc796b92adebf",
+    "rule_pack_sha256": "b30c9ab346289d65bf7490eb3f2a9af82f98eaf01b9f73140932586c35eef0e8",
+    "rule_pack_version": "p0-current-config/1.0.0+hybrid-react-rag/1.0.0",
+    "schema_version": "1.0.0",
+    "snapshot_id": "snp-698f2496356f4c08819b8373ac6ae07e",
+    "snapshot_sha256": "9a5e1999e1d3765c5db2db69554a96493e2b600467aa191b3d1ab7e40d6fec35",
+    "standard_sources": [
+      {
+        "file_name": "GB-T-20281-2020-防火墙安全技术要求和测试评价方法.pdf",
+        "file_size_bytes": 3826990,
+        "pdf_sha256": "619eec845ae2e7c34f522121f196f9c3015b8efb51ebf19a02ffdf691f9f718d",
+        "standard_code": "GB/T 20281—2020",
+        "title": "信息安全技术 防火墙安全技术要求和测试评价方法"
+      },
+      {
+        "file_name": "GB-T-22239-2019-网络安全等级保护基本要求.pdf",
+        "file_size_bytes": 8604147,
+        "pdf_sha256": "254ddd75cac3dec755fd1216f7ef4d3fb8552399b376a1590efd060c537298a4",
+        "standard_code": "GB/T 22239—2019",
+        "title": "信息安全技术 网络安全等级保护基本要求"
+      },
+      {
+        "file_name": "JR-T-0071.2-2020-基本要求.pdf",
+        "file_size_bytes": 2235828,
+        "pdf_sha256": "97396ae2a4848a19e994f29ec5a36e203a8b25e2ee3a92675f32f0a0816eff62",
+        "standard_code": "JR/T 0071.2—2020",
+        "title": "金融行业网络安全等级保护实施指引 第2部分：基本要求"
+      },
+      {
+        "file_name": "JR-T-0072-2020-测评指南.pdf",
+        "file_size_bytes": 1907504,
+        "pdf_sha256": "9e38522f63d2b0dbd595db42f73a960f4f542f13a041da48b173251f3dcf1f35",
+        "standard_code": "JR/T 0072—2020",
+        "title": "金融行业网络安全等级保护测评指南"
+      }
+    ],
+    "status": "Completed",
+    "target_id": "default-firewall-mock"
+  },
+  "retrieval": {
+    "calls": [
+      {
+        "limit": 12,
+        "query": "防火墙配置合规 访问控制 默认拒绝 访问控制策略 access_control.policies 已配置 access_control.default_action \"permit\"",
+        "results": [
+          {
+            "chunk": {
+              "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+              "catalog_version": "1.0.0",
+              "citation_eligible": true,
+              "classified_protection_levels": [
+                3
+              ],
+              "clause_ids": [
+                "8.1.3.2",
+                "8.1.3.2 a"
+              ],
+              "content_sha256": "556949effdb182d4456983fc2d0baa2bc5fd185722b5a7efac8a84193cb79b29",
+              "context": "general",
+              "pdf_page_indexes": [
+                34
+              ],
+              "point_id": "f46674e5-c6be-5ccb-86ff-85c33a378bad",
+              "printed_pages": [
+                28
+              ],
+              "record_id": "GB22239-FW-002",
+              "record_type": "requirement-control",
+              "review_status": "HumanReviewed",
+              "search_text": "GB/T 22239—2019\n边界访问控制默认拒绝\n8.1.3.2 8.1.3.2 a\nGB22239-FW-002 边界访问控制默认拒绝 边界或区域间访问控制规则应采用默认拒绝，仅放行明确允许的通信。 access-control general access_control.default_action access_control.policies[*]\n8 . 1 . 3 . 2    访问控制\na)   应在网络边界或区域之间根据访问控制策略设置访问控制规则 , 默认情况下除允许通信外受控接口拒绝所有通信 ;",
+              "source_catalog_id": "gb-t-22239-2019-firewall-candidates",
+              "source_catalog_sha256": "efda8adf5b9713abac43d344d4f252a5911ef857086d8f4c7484eae9cdb341ef",
+              "source_record_pointer": "/general_control_families/1",
+              "standard_code": "GB/T 22239—2019",
+              "text": "8 . 1 . 3 . 2    访问控制\na)   应在网络边界或区域之间根据访问控制策略设置访问控制规则 , 默认情况下除允许通信外受控接口拒绝所有通信 ;",
+              "text_kind": "verbatim",
+              "title": "边界访问控制默认拒绝",
+              "topic": "access-control"
+            },
+            "degradation_notices": [],
+            "retrieval_sources": [
+              "dense",
+              "sparse",
+              "rrf",
+              "rerank"
+            ],
+            "score": 0.866512770888461
+          },
+          {
+            "chunk": {
+              "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+              "catalog_version": "1.0.0",
+              "citation_eligible": true,
+              "classified_protection_levels": [
+                3
+              ],
+              "clause_ids": [
+                "8.1.3.2",
+                "8.1.3.2 a"
+              ],
+              "content_sha256": "2726a49dcf46d1854d848d07f1b8752fa9b4eff6c4c16ce14718d44087e41bd8",
+              "context": "general",
+              "pdf_page_indexes": [
+                38
+              ],
+              "point_id": "db0d7788-e828-5b8c-8b75-e9a34c1bd527",
+              "printed_pages": [
+                30
+              ],
+              "record_id": "JR0071-2-FW-007",
+              "record_type": "requirement-control",
+              "review_status": "HumanReviewed",
+              "search_text": "JR/T 0071.2—2020\n边界访问控制默认拒绝\n8.1.3.2 8.1.3.2 a\nJR0071-2-FW-007 边界访问控制默认拒绝 边界访问控制默认拒绝 access-control general access_control.default_action\n8.1.3.2   访问控制\na)   应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。",
+              "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+              "source_catalog_sha256": "5f92a63f5051fa8fd6c5d543388a3a67b8590beed89d1ebb95c35db221ada6c0",
+              "source_record_pointer": "/control_candidates/6",
+              "standard_code": "JR/T 0071.2—2020",
+              "text": "8.1.3.2   访问控制\na)   应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。",
+              "text_kind": "verbatim",
+              "title": "边界访问控制默认拒绝",
+              "topic": "access-control"
+            },
+            "degradation_notices": [],
+            "retrieval_sources": [
+              "dense",
+              "sparse",
+              "rrf",
+              "rerank"
+            ],
+            "score": 0.8410131956156577
+          },
+          {
+            "chunk": {
+              "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+              "catalog_version": "1.0.0",
+              "citation_eligible": true,
+              "classified_protection_levels": [
+                2
+              ],
+              "clause_ids": [
+                "6.1.3.2",
+                "L2-ABS1-02"
+              ],
+              "content_sha256": "45b60557c14e8842b5c316a47cd6189575e3f85c898e3dbd4e84bb6bf86d20ea",
+              "context": "general",
+              "pdf_page_indexes": [
+                17
+              ],
+              "point_id": "2e501726-7ff3-5abf-8f9d-a5c4f78cad5d",
+              "printed_pages": [
+                11
+              ],
+              "record_id": "L2|6.1.3.2|L2-ABS1-02|17",
+              "record_type": "measurement-unit",
+              "review_status": "HumanReviewed",
+              "search_text": "JR/T 0072—2020\nL2-ABS1-02 测评单元\n6.1.3.2 L2-ABS1-02\nL2-ABS1-02 L2-ABS1-02 6.1.3.2 应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。 应核查在网络边界或区域之间是否部署访问控制设备并启用访问控制策略。 应核查设备的最后一条访问控制策略是否为禁止所有网络通信。 如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。 JR0071-2-FW-007\n测评单元（L2-ABS1-02）\n该测评单元包括以下要求：\na)   测评指标： 应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。\nb)   测评对象： 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。\nc)   测评实施包括以下内容：\n1)   应核查在网络边界或区域之间是否部署访问控制设备并启用访问控制策略。\n2)   应核查设备的最后一条访问控制策略是否为禁止所有网络通信。\nd)   单元判定：如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+              "source_catalog_id": "jr-t-0072-2020-firewall-test-methods",
+              "source_catalog_sha256": "3ab12791a90673da106a8407a7f26ea0bf9474db626474665cdd6ca55034aa86",
+              "source_record_pointer": "/measurement_units/4",
+              "standard_code": "JR/T 0072—2020",
+              "text": "测评单元（L2-ABS1-02）\n该测评单元包括以下要求：\na)   测评指标： 应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。\nb)   测评对象： 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。\nc)   测评实施包括以下内容：\n1)   应核查在网络边界或区域之间是否部署访问控制设备并启用访问控制策略。\n2)   应核查设备的最后一条访问控制策略是否为禁止所有网络通信。\nd)   单元判定：如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+              "text_kind": "verbatim",
+              "title": "L2-ABS1-02 测评单元",
+              "topic": null
+            },
+            "degradation_notices": [],
+            "retrieval_sources": [
+              "dense",
+              "sparse",
+              "rrf",
+              "rerank"
+            ],
+            "score": 0.7792778555441464
+          },
+          {
+            "chunk": {
+              "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+              "catalog_version": "1.0.0",
+              "citation_eligible": true,
+              "classified_protection_levels": [
+                3
+              ],
+              "clause_ids": [
+                "7.1.3.2",
+                "L3-ABS1-05"
+              ],
+              "content_sha256": "c441373c108373d19edc52578cb3ce83b2241c967f0a9403fec51ef062a3695b",
+              "context": "general",
+              "pdf_page_indexes": [
+                88
+              ],
+              "point_id": "02e2bc16-6128-57b7-8192-edef6b29e174",
+              "printed_pages": [
+                82
+              ],
+              "record_id": "L3|7.1.3.2|L3-ABS1-05|88",
+              "record_type": "measurement-unit",
+              "review_status": "HumanReviewed",
+              "search_text": "JR/T 0072—2020\nL3-ABS1-05 测评单元\n7.1.3.2 L3-ABS1-05\nL3-ABS1-05 L3-ABS1-05 7.1.3.2 应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。 应核查在网络边界或区域之间是否部署访问控制设备并启用访问控制策略。 应核查设备的最后一条访问控制策略是否为禁止所有网络通信。 如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。 JR0071-2-FW-007\n测评单元（L3-ABS1-05）\n该测评单元包括以下要求：\na)   测评指标： 应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。\nb)   测评对象： 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。\nc)   测评实施包括以下内容：\n1)   应核查在网络边界或区域之间是否部署访问控制设备并启用访问控制策略。\n2)   应核查设备的最后一条访问控制策略是否为禁止所有网络通信。\nd)   单元判定：如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+              "source_catalog_id": "jr-t-0072-2020-firewall-test-methods",
+              "source_catalog_sha256": "3ab12791a90673da106a8407a7f26ea0bf9474db626474665cdd6ca55034aa86",
+              "source_record_pointer": "/measurement_units/73",
+              "standard_code": "JR/T 0072—2020",
+              "text": "测评单元（L3-ABS1-05）\n该测评单元包括以下要求：\na)   测评指标： 应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。\nb)   测评对象： 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。\nc)   测评实施包括以下内容：\n1)   应核查在网络边界或区域之间是否部署访问控制设备并启用访问控制策略。\n2)   应核查设备的最后一条访问控制策略是否为禁止所有网络通信。\nd)   单元判定：如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+              "text_kind": "verbatim",
+              "title": "L3-ABS1-05 测评单元",
+              "topic": null
+            },
+            "degradation_notices": [],
+            "retrieval_sources": [
+              "dense",
+              "sparse",
+              "rrf",
+              "rerank"
+            ],
+            "score": 0.7739549481308194
+          },
+          {
+            "chunk": {
+              "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+              "catalog_version": "1.0.0",
+              "citation_eligible": true,
+              "classified_protection_levels": [
+                4
+              ],
+              "clause_ids": [
+                "8.1.3.2",
+                "L4-ABS1-07"
+              ],
+              "content_sha256": "9c2206e6089fc0b0c3f775ab8879b874f1f9fdc868f2c568804273985d1cf589",
+              "context": "general",
+              "pdf_page_indexes": [
+                202
+              ],
+              "point_id": "d476ad18-2831-569b-8615-f8e6fb08c495",
+              "printed_pages": [
+                196
+              ],
+              "record_id": "L4|8.1.3.2|L4-ABS1-07|202",
+              "record_type": "measurement-unit",
+              "review_status": "HumanReviewed",
+              "search_text": "JR/T 0072—2020\nL4-ABS1-07 测评单元\n8.1.3.2 L4-ABS1-07\nL4-ABS1-07 L4-ABS1-07 8.1.3.2 应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。 应核查在网络边界或区域之间是否部署访问控制设备并启用访问控制策略。 应核查设备的最后一条访问控制策略是否为禁止所有网络通信。 如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。 JR0071-2-FW-007\n测评单元（L4-ABS1-07）\n该测评单元包括以下要求：\na)   测评指标： 应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。\nb)   测评对象： 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。\nc)   测评实施包括以下内容：\n1)   应核查在网络边界或区域之间是否部署访问控制设备并启用访问控制策略。\n2)   应核查设备的最后一条访问控制策略是否为禁止所有网络通信。\nd)   单元判定：如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+              "source_catalog_id": "jr-t-0072-2020-firewall-test-methods",
+              "source_catalog_sha256": "3ab12791a90673da106a8407a7f26ea0bf9474db626474665cdd6ca55034aa86",
+              "source_record_pointer": "/measurement_units/182",
+              "standard_code": "JR/T 0072—2020",
+              "text": "测评单元（L4-ABS1-07）\n该测评单元包括以下要求：\na)   测评指标： 应在网络边界或区域之间根据访问控制策略设置访问控制规则，默认情况下除允许通信外受控接口拒绝所有通信。\nb)   测评对象： 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。\nc)   测评实施包括以下内容：\n1)   应核查在网络边界或区域之间是否部署访问控制设备并启用访问控制策略。\n2)   应核查设备的最后一条访问控制策略是否为禁止所有网络通信。\nd)   单元判定：如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+              "text_kind": "verbatim",
+              "title": "L4-ABS1-07 测评单元",
+              "topic": null
+            },
+            "degradation_notices": [],
+            "retrieval_sources": [
+              "dense",
+              "sparse",
+              "rrf",
+              "rerank"
+            ],
+            "score": 0.7708077772815064
+          },
+          {
+            "chunk": {
+              "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+              "catalog_version": "1.0.0",
+              "citation_eligible": true,
+              "classified_protection_levels": [
+                2
+              ],
+              "clause_ids": [
+                "7.1.3.2",
+                "7.1.3.2 c"
+              ],
+              "content_sha256": "b2ee06847f9bc128f609777f006bb3c28f1d47cce9aa72c19f20d94b8ae04b3c",
+              "context": "general",
+              "pdf_page_indexes": [
+                20
+              ],
+              "point_id": "0a3a2e98-8ab5-538a-bb7a-b643e0f0bf5f",
+              "printed_pages": [
+                12
+              ],
+              "record_id": "JR0071-2-FW-009",
+              "record_type": "requirement-control",
+              "review_status": "HumanReviewed",
+              "search_text": "JR/T 0071.2—2020\n基于五元组检查数据包\n7.1.3.2 7.1.3.2 c\nJR0071-2-FW-009 基于五元组检查数据包 基于五元组检查数据包 packet-filtering general access_control.policies[*].source access_control.policies[*].destination access_control.policies[*].service access_control.policies[*].protocol\n7.1.3.2   访问控制\nc)   应对源地址、 目的地址、源端口、 目的端口和协议等进行检查， 以允许/拒绝数据包进出。",
+              "source_catalog_id": "jr-t-0071-2-2020-firewall-candidates",
+              "source_catalog_sha256": "5f92a63f5051fa8fd6c5d543388a3a67b8590beed89d1ebb95c35db221ada6c0",
+              "source_record_pointer": "/control_candidates/8",
+              "standard_code": "JR/T 0071.2—2020",
+              "text": "7.1.3.2   访问控制\nc)   应对源地址、 目的地址、源端口、 目的端口和协议等进行检查， 以允许/拒绝数据包进出。",
+              "text_kind": "verbatim",
+              "title": "基于五元组检查数据包",
+              "topic": "packet-filtering"
+            },
+            "degradation_notices": [],
+            "retrieval_sources": [
+              "dense",
+              "sparse",
+              "rrf",
+              "rerank"
+            ],
+            "score": 0.7238476962560604
+          },
+          {
+            "chunk": {
+              "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+              "catalog_version": "1.0.0",
+              "citation_eligible": true,
+              "classified_protection_levels": [],
+              "clause_ids": [
+                "7.2.2.1.1"
+              ],
+              "content_sha256": "3b68487c45444e41eef2f7df7337f9836c609092ccdf2f4006f0feec09611d0c",
+              "context": "general",
+              "pdf_page_indexes": [
+                8
+              ],
+              "point_id": "7df0c92d-debd-5650-9b80-c4225a47bf2f",
+              "printed_pages": [
+                5
+              ],
+              "record_id": "GB20281-FW-009",
+              "record_type": "product-control",
+              "review_status": "HumanReviewed",
+              "search_text": "GB/T 20281—2020\n包过滤默认禁止\n7.2.2.1.1\nGB20281-FW-009 包过滤默认禁止 安全策略采用最小安全原则，除非明确允许否则禁止。 packet-filtering access_control.default_action\n7.2.2.1.1     包过滤\n包过滤的测评方法如下：\na)  测评方法：\n1)   初始化产品的包过滤策略，在各区域主机之间进行互访操作，检查产品的缺省安全策略是否为禁止；\n2)   设置基于源 IP 地址、目 的 IP 地址的访问控制策略，产生相应的网络会话，验证策略是否生效；\n3)   设置基于源端口、目 的端口的访问控制策略，产生相应的网络会话，验证策略是否生效；\n4)   设置基于协议类型的访问控制策略，产生相应的网络会话，验证策略是否生效；\n5)   设置基于 MAC地址的访问控制策略，产生相应的网络会话，验证策略是否生效；\n6)   设置基于时间的访问控制策略，产生相应的网络会话，验证策略是否生效；\n7)   尝试设置一条基于 MAC 地址、IP 地址、端口、协议类型和时间的组合策略，产生相应的网络会话，验证策略是否生效。\nb)   预期结果：\n1)   产品的缺省安全策略是禁止；\n2)   基于源 IP 地址、目 的 IP 地址的访问控制策略生效；\n3)   基于源端口、目 的端口的访问控制策略生效；\n4)   基于协议类型的访问控制策略生效；\n5)   基于 MAC地址的访问控制策略生效；\n6)   基于时间的访问控制策略生效；\n7)   基于 MAC 地址、IP 地址、端口、协议类型和时间的组合策略生效。\nc)  结果判定：\n实际测评结果与相关预期结果一致则判定为符合，其他情况判定为不符合。",
+              "source_catalog_id": "gb-t-20281-2020-firewall-candidates",
+              "source_catalog_sha256": "e07efddb98880538551c0a5aca7935b4b178e783fdb5b0aabdd15141fa28caab",
+              "source_record_pointer": "/control_candidates/8",
+              "standard_code": "GB/T 20281—2020",
+              "text": "7.2.2.1.1     包过滤\n包过滤的测评方法如下：\na)  测评方法：\n1)   初始化产品的包过滤策略，在各区域主机之间进行互访操作，检查产品的缺省安全策略是否为禁止；\n2)   设置基于源 IP 地址、目 的 IP 地址的访问控制策略，产生相应的网络会话，验证策略是否生效；\n3)   设置基于源端口、目 的端口的访问控制策略，产生相应的网络会话，验证策略是否生效；\n4)   设置基于协议类型的访问控制策略，产生相应的网络会话，验证策略是否生效；\n5)   设置基于 MAC地址的访问控制策略，产生相应的网络会话，验证策略是否生效；\n6)   设置基于时间的访问控制策略，产生相应的网络会话，验证策略是否生效；\n7)   尝试设置一条基于 MAC 地址、IP 地址、端口、协议类型和时间的组合策略，产生相应的网络会话，验证策略是否生效。\nb)   预期结果：\n1)   产品的缺省安全策略是禁止；\n2)   基于源 IP 地址、目 的 IP 地址的访问控制策略生效；\n3)   基于源端口、目 的端口的访问控制策略生效；\n4)   基于协议类型的访问控制策略生效；\n5)   基于 MAC地址的访问控制策略生效；\n6)   基于时间的访问控制策略生效；\n7)   基于 MAC 地址、IP 地址、端口、协议类型和时间的组合策略生效。\nc)  结果判定：\n实际测评结果与相关预期结果一致则判定为符合，其他情况判定为不符合。",
+              "text_kind": "verbatim",
+              "title": "包过滤默认禁止",
+              "topic": "packet-filtering"
+            },
+            "degradation_notices": [],
+            "retrieval_sources": [
+              "dense",
+              "sparse",
+              "rrf",
+              "rerank"
+            ],
+            "score": 0.7146743387875868
+          },
+          {
+            "chunk": {
+              "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+              "catalog_version": "1.0.0",
+              "citation_eligible": true,
+              "classified_protection_levels": [
+                3
+              ],
+              "clause_ids": [
+                "7.2.3.1",
+                "L3-ABS2-02"
+              ],
+              "content_sha256": "8e04c4c2f4e9dd340db3cc0822285631f58decd786d3d8574558959c3a8e3e63",
+              "context": "cloud",
+              "pdf_page_indexes": [
+                157
+              ],
+              "point_id": "28da1b34-63e9-5837-8813-f0feed87cbcd",
+              "printed_pages": [
+                151
+              ],
+              "record_id": "L3|7.2.3.1|L3-ABS2-02|157",
+              "record_type": "measurement-unit",
+              "review_status": "HumanReviewed",
+              "search_text": "JR/T 0072—2020\nL3-ABS2-02 测评单元\n7.2.3.1 L3-ABS2-02\nL3-ABS2-02 L3-ABS2-02 7.2.3.1 应在不同等级的网络区域边界部署访问控制机制，设置访问控制规则。 网闸、 防火墙、 路由器和交换机等提供访问控制功能的设备。 应核查是否在不同等级的网络区域边界部署访问控制机制，设置访问控制规则。 应核查不同安全等级网络区域边界的访问控制规则和访问控制策略是否有效。 应测试验证不同安全等级的网络区域间进行非法访问时，是否可以正确拒绝该非法访问。 如果1） ～3）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。 JR0071-2-FW-CLOUD-002 JR0071-2-FW-CLOUD-003\n测评单元（L3-ABS2-02）\n该测评单元包括以下要求：\na)   测评指标： 应在不同等级的网络区域边界部署访问控制机制，设置访问控制规则。\nb)   测评对象： 网闸、 防火墙、 路由器和交换机等提供访问控制功能的设备。\nc)   测评实施包括以下内容：\n1)   应核查是否在不同等级的网络区域边界部署访问控制机制，设置访问控制规则。\n2)   应核查不同安全等级网络区域边界的访问控制规则和访问控制策略是否有效。\n3)   应测试验证不同安全等级的网络区域间进行非法访问时，是否可以正确拒绝该非法访问。\nd)   单元判定： 如果1） ～3）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+              "source_catalog_id": "jr-t-0072-2020-firewall-test-methods",
+              "source_catalog_sha256": "3ab12791a90673da106a8407a7f26ea0bf9474db626474665cdd6ca55034aa86",
+              "source_record_pointer": "/measurement_units/137",
+              "standard_code": "JR/T 0072—2020",
+              "text": "测评单元（L3-ABS2-02）\n该测评单元包括以下要求：\na)   测评指标： 应在不同等级的网络区域边界部署访问控制机制，设置访问控制规则。\nb)   测评对象： 网闸、 防火墙、 路由器和交换机等提供访问控制功能的设备。\nc)   测评实施包括以下内容：\n1)   应核查是否在不同等级的网络区域边界部署访问控制机制，设置访问控制规则。\n2)   应核查不同安全等级网络区域边界的访问控制规则和访问控制策略是否有效。\n3)   应测试验证不同安全等级的网络区域间进行非法访问时，是否可以正确拒绝该非法访问。\nd)   单元判定： 如果1） ～3）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+              "text_kind": "verbatim",
+              "title": "L3-ABS2-02 测评单元",
+              "topic": null
+            },
+            "degradation_notices": [],
+            "retrieval_sources": [
+              "dense",
+              "sparse",
+              "rrf",
+              "rerank"
+            ],
+            "score": 0.7078535058729273
+          },
+          {
+            "chunk": {
+              "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+              "catalog_version": "1.0.0",
+              "citation_eligible": true,
+              "classified_protection_levels": [
+                1
+              ],
+              "clause_ids": [
+                "6.1.3.2",
+                "6.1.3.2 c"
+              ],
+              "content_sha256": "58e7c3eb83ac3919e1df8d0498384287c5967dc1c78d1c93a978ee9aa7cc37c8",
+              "context": "general",
+              "pdf_page_indexes": [
+                11
+              ],
+              "point_id": "4e46d708-403f-5149-be7d-9533d9b2babc",
+              "printed_pages": [
+                5
+              ],
+              "record_id": "GB22239-FW-004",
+              "record_type": "requirement-control",
+              "review_status": "HumanReviewed",
+              "search_text": "GB/T 22239—2019\n基于五元组检查数据包\n6.1.3.2 6.1.3.2 c\nGB22239-FW-004 基于五元组检查数据包 访问控制应检查源地址、目的地址、源端口、目的端口和协议。 packet-filtering general access_control.policies[*].source_cidrs access_control.policies[*].destination_cidrs access_control.policies[*].services\n6 . 1 . 3 . 2    访问控制\nc)    应对源地址、目的地址、源端口、目的端口和协议等进行检查 , 以允许/拒绝数据包进出。",
+              "source_catalog_id": "gb-t-22239-2019-firewall-candidates",
+              "source_catalog_sha256": "efda8adf5b9713abac43d344d4f252a5911ef857086d8f4c7484eae9cdb341ef",
+              "source_record_pointer": "/general_control_families/3",
+              "standard_code": "GB/T 22239—2019",
+              "text": "6 . 1 . 3 . 2    访问控制\nc)    应对源地址、目的地址、源端口、目的端口和协议等进行检查 , 以允许/拒绝数据包进出。",
+              "text_kind": "verbatim",
+              "title": "基于五元组检查数据包",
+              "topic": "packet-filtering"
+            },
+            "degradation_notices": [],
+            "retrieval_sources": [
+              "dense",
+              "sparse",
+              "rrf",
+              "rerank"
+            ],
+            "score": 0.6969499092867899
+          },
+          {
+            "chunk": {
+              "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+              "catalog_version": "1.0.0",
+              "citation_eligible": true,
+              "classified_protection_levels": [
+                4
+              ],
+              "clause_ids": [
+                "8.2.3.1",
+                "L4-ABS2-02"
+              ],
+              "content_sha256": "71ab9c81be4d7b2b513b30eec6c3a6d91d1aaf8f8dcada1fd8652d427a1d99b3",
+              "context": "cloud",
+              "pdf_page_indexes": [
+                277
+              ],
+              "point_id": "f4833f06-2453-538c-b96b-12f66e843da2",
+              "printed_pages": [
+                271
+              ],
+              "record_id": "L4|8.2.3.1|L4-ABS2-02|277",
+              "record_type": "measurement-unit",
+              "review_status": "HumanReviewed",
+              "search_text": "JR/T 0072—2020\nL4-ABS2-02 测评单元\n8.2.3.1 L4-ABS2-02\nL4-ABS2-02 L4-ABS2-02 8.2.3.1 应在不同等级的网络区域边界部署访问控制机制，设置访问控制规则。 网闸、 防火墙、 路由器和交换机等提供访问控制功能的设备。 应核查是否在不同等级的网络区域边界部署访问控制机制，设置访问控制规则。 应核查不同安全等级网络区域边界的访问控制规则和访问控制策略是否有效。 应测试验证不同安全等级的网络区域间进行非法访问时，是否可以正确拒绝该非法访问。 如果1） ～3）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。 JR0071-2-FW-CLOUD-002\n测评单元（L4-ABS2-02）\n该测评单元包括以下要求：\na)   测评指标： 应在不同等级的网络区域边界部署访问控制机制，设置访问控制规则。\nb)   测评对象： 网闸、 防火墙、 路由器和交换机等提供访问控制功能的设备。\nc)   测评实施包括以下内容：\n1)   应核查是否在不同等级的网络区域边界部署访问控制机制，设置访问控制规则。\n2)   应核查不同安全等级网络区域边界的访问控制规则和访问控制策略是否有效。\n3)   应测试验证不同安全等级的网络区域间进行非法访问时，是否可以正确拒绝该非法访问。\nd)   单元判定： 如果1） ～3）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+              "source_catalog_id": "jr-t-0072-2020-firewall-test-methods",
+              "source_catalog_sha256": "3ab12791a90673da106a8407a7f26ea0bf9474db626474665cdd6ca55034aa86",
+              "source_record_pointer": "/measurement_units/252",
+              "standard_code": "JR/T 0072—2020",
+              "text": "测评单元（L4-ABS2-02）\n该测评单元包括以下要求：\na)   测评指标： 应在不同等级的网络区域边界部署访问控制机制，设置访问控制规则。\nb)   测评对象： 网闸、 防火墙、 路由器和交换机等提供访问控制功能的设备。\nc)   测评实施包括以下内容：\n1)   应核查是否在不同等级的网络区域边界部署访问控制机制，设置访问控制规则。\n2)   应核查不同安全等级网络区域边界的访问控制规则和访问控制策略是否有效。\n3)   应测试验证不同安全等级的网络区域间进行非法访问时，是否可以正确拒绝该非法访问。\nd)   单元判定： 如果1） ～3）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+              "text_kind": "verbatim",
+              "title": "L4-ABS2-02 测评单元",
+              "topic": null
+            },
+            "degradation_notices": [],
+            "retrieval_sources": [
+              "dense",
+              "sparse",
+              "rrf",
+              "rerank"
+            ],
+            "score": 0.6849113057132912
+          },
+          {
+            "chunk": {
+              "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+              "catalog_version": "1.0.0",
+              "citation_eligible": true,
+              "classified_protection_levels": [
+                4
+              ],
+              "clause_ids": [
+                "8.1.3.2",
+                "L4-ABS1-09"
+              ],
+              "content_sha256": "93acdcca93c607200aee600d3b297032f9c9e44ec88ba0ec35f843061a05511e",
+              "context": "general",
+              "pdf_page_indexes": [
+                202
+              ],
+              "point_id": "78944eb8-0334-5283-8e7f-39a99b886dd7",
+              "printed_pages": [
+                196
+              ],
+              "record_id": "L4|8.1.3.2|L4-ABS1-09|202",
+              "record_type": "measurement-unit",
+              "review_status": "HumanReviewed",
+              "search_text": "JR/T 0072—2020\nL4-ABS1-09 测评单元\n8.1.3.2 L4-ABS1-09\nL4-ABS1-09 L4-ABS1-09 8.1.3.2 应对源地址、 目的地址、源端口、 目的端口和协议等进行检查， 以允许/拒绝数据包进出。 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。 应核查设备的访问控制策略中是否设定了源地址、 目的地址、源端口、 目的端口和协议等相关配置参数。 应测试验证访问控制策略中设定的相关配置参数是否有效。 如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。 JR0071-2-FW-009\n测评单元（L4-ABS1-09）\n该测评单元包括以下要求：\na)   测评指标：应对源地址、 目的地址、源端口、 目的端口和协议等进行检查， 以允许/拒绝数据包进出。\nb)   测评对象： 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。\nc)   测评实施包括以下内容：\n1)   应核查设备的访问控制策略中是否设定了源地址、 目的地址、源端口、 目的端口和协议等相关配置参数。\n2)   应测试验证访问控制策略中设定的相关配置参数是否有效。\nd)   单元判定：如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+              "source_catalog_id": "jr-t-0072-2020-firewall-test-methods",
+              "source_catalog_sha256": "3ab12791a90673da106a8407a7f26ea0bf9474db626474665cdd6ca55034aa86",
+              "source_record_pointer": "/measurement_units/184",
+              "standard_code": "JR/T 0072—2020",
+              "text": "测评单元（L4-ABS1-09）\n该测评单元包括以下要求：\na)   测评指标：应对源地址、 目的地址、源端口、 目的端口和协议等进行检查， 以允许/拒绝数据包进出。\nb)   测评对象： 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。\nc)   测评实施包括以下内容：\n1)   应核查设备的访问控制策略中是否设定了源地址、 目的地址、源端口、 目的端口和协议等相关配置参数。\n2)   应测试验证访问控制策略中设定的相关配置参数是否有效。\nd)   单元判定：如果 1）和 2）均为肯定，则符合本测评单元指标要求，否则不符合或部分符合本测评单元指标要求。",
+              "text_kind": "verbatim",
+              "title": "L4-ABS1-09 测评单元",
+              "topic": null
+            },
+            "degradation_notices": [],
+            "retrieval_sources": [
+              "dense",
+              "sparse",
+              "rrf",
+              "rerank"
+            ],
+            "score": 0.6719607550786281
+          },
+          {
+            "chunk": {
+              "catalog_id": "bank-firewall-reviewed-verbatim-v1",
+              "catalog_version": "1.0.0",
+              "citation_eligible": true,
+              "classified_protection_levels": [
+                2
+              ],
+              "clause_ids": [
+                "6.1.3.2",
+                "L2-ABS1-04"
+              ],
+              "content_sha256": "b278a7c29c0af761d88a6a1be63bd3df8264a02021cbe2c6a1d2496d552a59fb",
+              "context": "general",
+              "pdf_page_indexes": [
+                18
+              ],
+              "point_id": "e03c64a6-b797-5607-bca7-f4925e964be4",
+              "printed_pages": [
+                12
+              ],
+              "record_id": "L2|6.1.3.2|L2-ABS1-04|18",
+              "record_type": "measurement-unit",
+              "review_status": "HumanReviewed",
+              "search_text": "JR/T 0072—2020\nL2-ABS1-04 测评单元\n6.1.3.2 L2-ABS1-04\nL2-ABS1-04 L2-ABS1-04 6.1.3.2 应对源地址、 目的地址、源端口、 目的端口和协议等进行检查， 以允许/拒绝数据包进出。 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。 应核查设备的访问控制策略中是否设定了源地址、 目的地址、源端口、 目的端口和协议等相关配置参数。 如果以上测评实施内容为肯定，则符合本测评单元指标要求，否则不符合本测评单元指标要求。 JR0071-2-FW-009\n测评单元（L2-ABS1-04）\n该测评单元包括以下要求：\na)   测评指标：应对源地址、 目的地址、源端口、 目的端口和协议等进行检查， 以允许/拒绝数据包进出。\nb)   测评对象： 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。\nc)   测评实施： 应核查设备的访问控制策略中是否设定了源地址、 目的地址、源端口、 目的端口和协议等相关配置参数。\nd)   单元判定： 如果以上测评实施内容为肯定，则符合本测评单元指标要求，否则不符合本测评单元指标要求。",
+              "source_catalog_id": "jr-t-0072-2020-firewall-test-methods",
+              "source_catalog_sha256": "3ab12791a90673da106a8407a7f26ea0bf9474db626474665cdd6ca55034aa86",
+              "source_record_pointer": "/measurement_units/6",
+              "standard_code": "JR/T 0072—2020",
+              "text": "测评单元（L2-ABS1-04）\n该测评单元包括以下要求：\na)   测评指标：应对源地址、 目的地址、源端口、 目的端口和协议等进行检查， 以允许/拒绝数据包进出。\nb)   测评对象： 网闸、 防火墙、 路由器、 交换机和无线接入网关设备等提供访问控制功能的设备或相关组件。\nc)   测评实施： 应核查设备的访问控制策略中是否设定了源地址、 目的地址、源端口、 目的端口和协议等相关配置参数。\nd)   单元判定： 如果以上测评实施内容为肯定，则符合本测评单元指标要求，否则不符合本测评单元指标要求。",
+              "text_kind": "verbatim",
+              "title": "L2-ABS1-04 测评单元",
+              "topic": null
+            },
+            "degradation_notices": [],
+            "retrieval_sources": [
+              "dense",
+              "sparse",
+              "rrf",
+              "rerank"
+            ],
+            "score": 0.6706249345631226
+          }
+        ]
+      }
+    ],
+    "retrieved_record_ids": [
+      "GB22239-FW-002",
+      "JR0071-2-FW-007",
+      "L2|6.1.3.2|L2-ABS1-02|17",
+      "L3|7.1.3.2|L3-ABS1-05|88",
+      "L4|8.1.3.2|L4-ABS1-07|202",
+      "JR0071-2-FW-009",
+      "GB20281-FW-009",
+      "L3|7.2.3.1|L3-ABS2-02|157",
+      "GB22239-FW-004",
+      "L4|8.2.3.1|L4-ABS2-02|277",
+      "L4|8.1.3.2|L4-ABS1-09|202",
+      "L2|6.1.3.2|L2-ABS1-04|18"
+    ]
+  },
+  "scenario_id": "02-default-permit-noncompliant",
+  "schema_version": "1.0.0",
+  "started_at": "2026-08-23T18:26:58+00:00",
+  "user_request": "开始检测当前防火墙配置"
+}

@@ -10,8 +10,10 @@ from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
 from app.main import app
-from app.models.contracts import ParseWarningCode, VerificationStatus
+from app.models.contracts import FirewallSnapshot, ParseWarningCode, VerificationStatus
+from app.models.agent import ReActAction, ReActTool
 from app.api.routes.configuration import get_configuration_service
+from app.agent.react_agent import BoundedComplianceReActAgent
 from app.providers.mock_config import (
     MockConfigProvider,
     build_snapshot,
@@ -31,6 +33,17 @@ FIXTURE_PATH = (
 def load_fixture() -> dict[str, Any]:
     with FIXTURE_PATH.open(encoding="utf-8") as fixture_file:
         return json.load(fixture_file)
+
+
+class InlineHuaweiProvider:
+    def __init__(self, cli_content: str) -> None:
+        self.cli_content = cli_content
+
+    async def get_original_config(self) -> str:
+        return self.cli_content
+
+    async def get_current_snapshot(self) -> FirewallSnapshot:
+        return build_snapshot(HuaweiCliParser().parse_complete(self.cli_content))
 
 
 def test_provider_creates_unique_immutable_snapshots_with_stable_hash() -> None:
@@ -162,3 +175,29 @@ def test_current_config_api_returns_vendor_cli_instead_of_structured_json(
     ).hexdigest()
     assert repository.get(first["snapshot_id"]) is not None
     assert repository.get(second["snapshot_id"]) is not None
+
+
+def test_agent_receives_only_explicit_cli_facts_and_builds_targeted_query(
+    tmp_path: Path,
+) -> None:
+    service = ConfigurationService(
+        provider=InlineHuaweiProvider("telnet server enable\n"),
+        repository=SQLiteSnapshotRepository(tmp_path / "observed-facts.db"),
+    )
+
+    configuration = asyncio.run(service.get_current_config())
+    facts = {item.field: item.value for item in configuration.observed_facts}
+    query = BoundedComplianceReActAgent._retrieval_query(
+        configuration,
+        ReActAction(
+            thought_summary="检索明确配置对应的标准。",
+            action=ReActTool.RETRIEVE_STANDARDS,
+        ),
+    )
+
+    assert facts == {"management.protocols.telnet.enabled": True}
+    assert "Telnet" in query
+    assert "明文传输" in query
+    assert "高危服务和端口" in query
+    assert "IPS" not in query
+    assert "VPN" not in query

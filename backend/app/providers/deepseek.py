@@ -175,8 +175,9 @@ JSON 示例：
 你是银行防火墙合规 ReAct Agent 的受控规划器。只输出 JSON，不输出思维过程。
 action 必须从 allowed_tools 中选择，不得创造工具。
 thought_summary 只写一句可审计的决策摘要，不得包含隐藏思维链。
-action_input 只允许 retrieve_standards 提供 query；query 应从已观察到的可选配置领域中选择本次检查范围。
-可在需要时进行第二次不同范围的检索；其他工具的 action_input 应为空对象。
+action_input 只允许 retrieve_standards 提供 query；query 必须基于 observation 中的
+明确配置事实和候选检查主题，不得只使用 access_control、management 等宽泛领域名。
+第二次检索应覆盖第一次尚未覆盖的明确配置事实；其他工具的 action_input 应为空对象。
 不得输出 SQL、shell、URL、标准原文或配置内容。
 """.strip()
         payload = {
@@ -213,19 +214,45 @@ action_input 只允许 retrieve_standards 提供 query；query 应从已观察�
                 "智能模型 API 未配置，已跳过 RAG 候选的模型初步判断。"
             )
             return ()
+        observed_fields = {item.field for item in configuration.observed_facts}
+        container_fields = (
+            "access_control.policies",
+            "management.accounts",
+            "logging.remote_logging.servers",
+            "interfaces",
+        )
+
+        def explicitly_observed(field: str) -> bool:
+            return field in observed_fields or any(
+                container in observed_fields and field.startswith(f"{container}[")
+                for container in container_fields
+            )
+
         system_prompt = """
 你是防火墙配置合规候选分析器。只评估输入中的候选标准，只输出 JSON 对象。
 根对象键 assessments 是数组。每项只允许 record_id、suggested_result、configuration_fields、explanation。
 对输入的每个候选恰好输出一项，不得遗漏、重复或输出未提供的 record_id。
 suggested_result 只能是 Passed、Failed、NeedsReview、NotApplicable。
 configuration_fields 只能引用 available_evidence_fields 中的完整字段名。
-标准要求无法仅由配置证明、字段缺失、只能证明功能存在而不能证明运行效果时，必须输出 NeedsReview。
+explicit_observed_facts 是 CLI 明确出现的事实；mock_configuration 中未列入该集合的
+默认值只是 Schema 占位，不得作为判断证据。
+判定顺序：明确配置直接违反候选要求时输出 Failed；明确配置覆盖候选要求的全部配置条件时
+输出 Passed；没有直接反证但缺少必要配置或运行效果证据时输出 NeedsReview；只有明确不适用
+条件时才输出 NotApplicable。不要因为存在与当前候选无关的缺失字段而把直接正证或反证降为
+NeedsReview。标准要求无法仅由配置证明、只能证明功能存在而不能证明运行效果时，必须输出 NeedsReview。
 不得编造标准、配置字段或证据。未被确定性规则覆盖的建议可在证据门控后进入正式报告；
 你的输出不得声称是高置信度或确定性规则结论。
 """.strip()
         payload = {
             "mock_configuration": configuration.configuration.model_dump(mode="json"),
-            "available_evidence_fields": [item.field for item in configuration.evidence],
+            "explicit_observed_facts": [
+                item.model_dump(mode="json") for item in configuration.observed_facts
+            ],
+            "available_evidence_fields": [
+                item.field
+                for item in configuration.evidence
+                if explicitly_observed(item.field)
+            ],
             "candidates": [
                 {
                     "record_id": item.chunk.record_id,

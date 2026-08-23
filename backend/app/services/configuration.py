@@ -2,7 +2,8 @@ import asyncio
 import hashlib
 
 from app.core.config import get_settings
-from app.models.contracts import CurrentConfigResponse
+from app.models.contracts import CurrentConfigResponse, ObservedConfigurationFact
+from app.parsers.huawei_cli import HuaweiCliParser
 from app.providers.interfaces import ConfigProvider
 from app.providers.mock_config import MockConfigProvider
 from app.repositories.interfaces import SnapshotRepository
@@ -31,6 +32,20 @@ class ConfigurationService:
         snapshot = await self._provider.get_current_snapshot()
         original_config = await self._provider.get_original_config()
         parsed = self._parser.parse(snapshot)
+        observed_facts: tuple[ObservedConfigurationFact, ...] = ()
+        if parsed.normalized_config.target.vendor.casefold() == "huawei":
+            try:
+                observed_facts = tuple(
+                    ObservedConfigurationFact(field=field, value=value)
+                    for field, value in HuaweiCliParser().parse_observed_fields(
+                        original_config
+                    )
+                )
+            except ValueError:
+                # A future provider may return a Huawei format outside the current
+                # controlled grammar. Its normalized data remains usable, but no
+                # schema default is promoted to an explicitly observed fact.
+                observed_facts = ()
         await asyncio.to_thread(self._repository.save, snapshot, parsed)
         return CurrentConfigResponse(
             snapshot_id=snapshot.snapshot_id,
@@ -48,4 +63,5 @@ class ConfigurationService:
             warnings=parsed.warnings,
             configuration=parsed.normalized_config,
             evidence=parsed.evidence,
+            observed_facts=observed_facts,
         )

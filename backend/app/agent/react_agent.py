@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 
 from app.models.agent import (
@@ -28,6 +29,72 @@ from app.services.reports import ReportService
 
 MAX_REACT_STEPS = 6
 MAX_STANDARD_RETRIEVALS = 2
+
+
+def _fact_topics(field: str) -> tuple[str, ...]:
+    if field.startswith("access_control."):
+        return ("访问控制", "默认拒绝", "访问控制策略")
+    if field.startswith("management.protocols.telnet"):
+        return ("远程管理", "Telnet明文传输", "鉴别信息防窃听", "高危服务和端口")
+    if field.startswith("management.protocols.http"):
+        return ("远程管理", "HTTP明文传输", "鉴别信息防窃听", "高危服务和端口")
+    if field.startswith("management.protocols.ssh"):
+        return ("远程管理", "SSH加密传输", "管理终端身份鉴别")
+    if field.startswith("management.protocols.https"):
+        return ("远程管理", "HTTPS加密传输", "管理终端身份鉴别")
+    if field.startswith(
+        ("management.source_interface", "management.allowed_source_cidrs")
+    ):
+        return ("限制远程管理终端来源", "管理地址范围", "管理访问控制列表")
+    if field.startswith(("management.mfa_enabled", "management.accounts")):
+        return ("管理用户身份鉴别", "多因素认证")
+    if field.startswith(
+        (
+            "logging.audit_log_enabled",
+            "logging.policy_log_enabled",
+            "logging.threat_log_enabled",
+        )
+    ):
+        return ("安全审计", "审计日志记录")
+    if field.startswith("logging.local_retention_days"):
+        return ("审计日志留存", "六个月留存期限")
+    if field.startswith("logging.remote_logging"):
+        return ("审计数据集中收集", "远程日志服务器", "日志留存")
+    if field.startswith("time_sync."):
+        return ("时间同步", "NTP时间服务器")
+    if field.startswith("threat_prevention.ips_enabled"):
+        return ("入侵防范", "IPS入侵检测")
+    if field.startswith("threat_prevention.antivirus_enabled"):
+        return ("恶意代码防护", "防病毒")
+    if field.startswith("threat_prevention.dos_protection_enabled"):
+        return ("拒绝服务攻击防护", "异常流量防护")
+    if field.startswith("high_availability."):
+        return ("高可用", "冗余", "配置同步", "业务连续性")
+    if field.startswith("network_stack.ipv6"):
+        return ("IPv6支持", "IPv6协议一致性", "IPv6协议健壮性")
+    if field.startswith("network_stack.ipv4"):
+        return ("IPv4网络支持", "默认路由")
+    if field.startswith("vpn."):
+        return ("VPN", "通信传输保护")
+    if field.startswith("interfaces"):
+        return ("网络边界", "安全区域划分", "接口管理")
+    return ()
+
+
+def _fact_value_label(value: object) -> str:
+    if value is True:
+        return "已启用"
+    if value is False:
+        return "已禁用"
+    if value is None:
+        return "未知"
+    if isinstance(value, (list, tuple)):
+        if not value:
+            return "空"
+        if len(value) > 3 or any(isinstance(item, (dict, list)) for item in value):
+            return "已配置"
+    encoded = json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+    return encoded[:120]
 
 
 @dataclass(frozen=True)
@@ -86,17 +153,25 @@ class BoundedComplianceReActAgent:
 
             if action.action is ReActTool.GET_CURRENT_CONFIG:
                 configuration = await self._configuration_service.get_current_config()
-                scopes = sorted(
+                explicit_scopes = sorted(
                     {
                         item.field.split(".", maxsplit=1)[0]
-                        for item in configuration.evidence
+                        for item in configuration.observed_facts
+                        if item.field.split(".", maxsplit=1)[0] != "target"
                     }
+                )
+                topics = self._configuration_topics(configuration)
+                fact_summary = "；".join(
+                    f"{item.field}={_fact_value_label(item.value)}"
+                    for item in configuration.observed_facts[:10]
                 )
                 summary = (
                     f"已获取并解析 {configuration.configuration.target.vendor} Mock CLI；"
                     f"配置完整度 {configuration.completeness:.2f}，"
-                    f"可用证据 {len(configuration.evidence)} 项；"
-                    f"可选检查范围：{', '.join(scopes)}。"
+                    f"明确配置事实 {len(configuration.observed_facts)} 项；"
+                    f"事实：{fact_summary or '无可识别业务配置'}；"
+                    f"候选检查主题：{', '.join(topics)}；"
+                    f"明确范围：{', '.join(explicit_scopes) or '配置证据缺失复核'}。"
                 )
             elif action.action is ReActTool.RETRIEVE_STANDARDS:
                 assert configuration is not None
@@ -113,8 +188,10 @@ class BoundedComplianceReActAgent:
                 # Multiple reviewed verbatim excerpts may share one catalog record.
                 # The model contract judges records, so keep the highest-ranked first
                 # excerpt per record instead of sending ambiguous duplicate IDs.
-                by_record_id = {item.chunk.record_id: item for item in knowledge}
-                for item in retrieved:
+                # A second query is an Agent refinement. Put its ranked controls
+                # first, then retain previously found controls as coverage backup.
+                by_record_id = {item.chunk.record_id: item for item in retrieved}
+                for item in knowledge:
                     by_record_id.setdefault(item.chunk.record_id, item)
                 knowledge = tuple(by_record_id.values())[:20]
                 notices.extend(
@@ -282,21 +359,39 @@ class BoundedComplianceReActAgent:
             model_query = model_query.strip()[:500]
         else:
             model_query = ""
-        groups = {item.field.split(".", maxsplit=1)[0] for item in configuration.evidence}
-        labels = {
-            "access_control": "访问控制 默认拒绝",
-            "management": "远程管理 来源限制 多因素认证",
-            "logging": "审计日志 集中收集 留存",
-            "time_sync": "时间同步",
-            "threat_prevention": "入侵防范 恶意代码",
-            "high_availability": "高可用 冗余",
-            "network_stack": "IPv4 IPv6",
-            "vpn": "VPN 安全通信",
-        }
+        fact_query = BoundedComplianceReActAgent._configuration_fact_query(
+            configuration
+        )
         if model_query:
-            return f"防火墙配置合规 {model_query}".strip()
-        local_topics = " ".join(labels[group] for group in sorted(groups) if group in labels)
-        return f"防火墙配置合规 {local_topics}".strip()
+            return (
+                f"防火墙配置合规 {fact_query} 补充检查 {model_query}"
+            ).strip()[:500]
+        return f"防火墙配置合规 {fact_query}".strip()[:500]
+
+    @staticmethod
+    def _configuration_topics(
+        configuration: CurrentConfigResponse,
+    ) -> tuple[str, ...]:
+        topics = tuple(
+            dict.fromkeys(
+                topic
+                for fact in configuration.observed_facts
+                for topic in _fact_topics(fact.field)
+            )
+        )
+        if topics:
+            return topics
+        return ("配置备份与恢复", "配置证据缺失人工复核")
+
+    @staticmethod
+    def _configuration_fact_query(configuration: CurrentConfigResponse) -> str:
+        topics = BoundedComplianceReActAgent._configuration_topics(configuration)
+        facts = " ".join(
+            f"{fact.field} {_fact_value_label(fact.value)}"
+            for fact in configuration.observed_facts
+            if _fact_topics(fact.field)
+        )
+        return " ".join((*topics, facts)).strip()
 
     async def _evaluate_candidates(
         self,
@@ -316,6 +411,7 @@ class BoundedComplianceReActAgent:
             return ()
         chunks = {item.chunk.record_id: item.chunk for item in knowledge}
         evidence = {item.field: item for item in configuration.evidence}
+        observed_fields = {item.field for item in configuration.observed_facts}
         results: list[AgentCandidateFinding] = []
         seen: set[str] = set()
         for item in model_items:
@@ -326,6 +422,7 @@ class BoundedComplianceReActAgent:
             verified = bool(bound) and all(
                 value is not None
                 and value.verification_status is VerificationStatus.CONFIGURATION_VERIFIED
+                and self._evidence_field_is_observed(value.field, observed_fields)
                 for value in bound
             )
             if item.suggested_result in (FindingResult.PASSED, FindingResult.FAILED):
@@ -363,6 +460,25 @@ class BoundedComplianceReActAgent:
                 )
             )
         return tuple(results)
+
+    @staticmethod
+    def _evidence_field_is_observed(
+        evidence_field: str,
+        observed_fields: set[str],
+    ) -> bool:
+        if evidence_field in observed_fields:
+            return True
+        container_fields = (
+            "access_control.policies",
+            "management.accounts",
+            "logging.remote_logging.servers",
+            "interfaces",
+        )
+        return any(
+            container in observed_fields
+            and evidence_field.startswith(f"{container}[")
+            for container in container_fields
+        )
 
     def _consume_notices(self) -> tuple[str, ...]:
         consume = getattr(self._deepseek_agent, "consume_notices", None)

@@ -17,6 +17,23 @@ def _deep_merge(target: dict[str, Any], patch: dict[str, Any]) -> None:
             target[key] = copy.deepcopy(value)
 
 
+def _flatten_explicit_values(
+    value: Any,
+    *,
+    prefix: str = "",
+) -> tuple[tuple[str, Any], ...]:
+    facts: list[tuple[str, Any]] = []
+    if isinstance(value, dict):
+        for key, child in value.items():
+            field = f"{prefix}.{key}" if prefix else key
+            facts.extend(_flatten_explicit_values(child, prefix=field))
+    elif prefix:
+        # Lists are kept as one semantic fact. Expanding list indexes would expose
+        # unstable policy/server identifiers to retrieval planning.
+        facts.append((prefix, copy.deepcopy(value)))
+    return tuple(facts)
+
+
 def _cidr(address: str, mask: str) -> str:
     return str(ipaddress.ip_network((address, mask), strict=False))
 
@@ -394,3 +411,8 @@ class HuaweiCliParser:
         configuration = _neutral_huawei_mock()
         _deep_merge(configuration, self.parse_patch(cli_content))
         return configuration
+
+    def parse_observed_fields(self, cli_content: str) -> tuple[tuple[str, Any], ...]:
+        """Return only values explicitly recognized from the CLI, never defaults."""
+
+        return _flatten_explicit_values(self.parse_patch(cli_content))

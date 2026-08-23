@@ -82,6 +82,14 @@ class FrozenConfigModel(BaseModel):
     )
 
 
+class ObservedConfigurationFact(FrozenConfigModel):
+    """A value explicitly present in the vendor CLI, excluding schema defaults."""
+
+    field: str = Field(min_length=1, max_length=256)
+    value: Any
+    source: Literal["vendor_cli_explicit"] = "vendor_cli_explicit"
+
+
 class MockMetadata(FrozenConfigModel):
     is_mock: Literal[True]
     contains_real_customer_data: Literal[False]
@@ -284,6 +292,7 @@ class CurrentConfigResponse(FrozenConfigModel):
     warnings: tuple[ConfigurationParseWarning, ...]
     configuration: NormalizedFirewallConfig
     evidence: tuple[ConfigurationEvidence, ...]
+    observed_facts: tuple[ObservedConfigurationFact, ...] = ()
 
 
 class AssessmentClauseReference(FrozenConfigModel):

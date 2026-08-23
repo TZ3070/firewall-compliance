@@ -183,6 +183,29 @@ pnpm build
 
 单元测试使用确定性嵌入器，不访问公网或下载模型。真实 Qdrant 冒烟测试使用上面的两个脚本。
 
+### 20 组端到端 Agent 评测
+
+评测脚本会逐个注入 20 份原子化 Huawei CFG，真实运行
+`CLI 解析 → ReAct 选择检查范围 → RAG/RRF/Rerank → DeepSeek 判断 → 证据门控 → 报告`：
+
+```bash
+cd backend
+.venv/bin/python -m scripts.evaluate_huawei_agent_scenarios
+```
+
+本次保留的唯一正式结果见
+[Agent 评测对比表](outputs/huawei-agent-evaluation/agent-evaluation-comparison.md)，
+完整机器可读结果见
+[agent-evaluation-results.json](outputs/huawei-agent-evaluation/agent-evaluation-results.json)。当前结果为：
+
+- 目标控制项召回 `20/20`；
+- 目标控制项送入模型 `20/20`；
+- 模型与现有场景标签一致 `17/20`；
+- 3 个差异均是审计启用、180 天留存和 NTP 启用被场景标签记为 `Passed`，但完整复合条款还需要配置覆盖范围或运行效果证据，因此模型按项目的失败关闭约束输出 `NeedsReview`，不为追求测试满分强行改为 `Passed`。
+
+结果目录只保留这一代评测；`details/` 中保存每个场景的显式配置事实、
+Agent 轨迹、检索排名、模型输入/输出、Finding 和报告哈希，便于复核。
+
 ## 7. 安全和审计边界
 
 - 确定性规则覆盖范围内的 Passed/Failed 始终由本地规则产生且优先；规则未覆盖的 RAG 条款可由 DeepSeek 判断并进入报告，但明确标记为 `MODEL-ASSISTED-RAG`，不属于高置信度确定性结论；

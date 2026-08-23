@@ -202,6 +202,44 @@ def test_hybrid_rrf_candidates_are_reranked_after_fusion(tmp_path: Path) -> None
     assert results[0].score == 1.0
 
 
+def test_search_deduplicates_excerpts_before_control_top_k(tmp_path: Path) -> None:
+    first_logging = _chunk("logging", "日志 日志 日志", "A")
+    second_logging = first_logging.model_copy(
+        update={
+            "point_id": knowledge_point_id(
+                catalog_id="test-catalog",
+                catalog_version="1.0.0",
+                record_id="logging:excerpt:2",
+            ),
+            "text": "日志的另一个原文分块",
+            "search_text": "日志 日志的另一个原文分块",
+            "content_sha256": sha256(
+                "日志的另一个原文分块".encode()
+            ).hexdigest(),
+        }
+    )
+    chunks = (
+        first_logging,
+        second_logging,
+        _chunk("management", "管理日志", "A"),
+    )
+    store = QdrantKnowledgeStore(
+        path=tmp_path / "qdrant-control-dedup",
+        collection_name="knowledge",
+        embedder=DeterministicEmbedder(),
+        prefetch_limit=3,
+    )
+    try:
+        store.rebuild(manifest=_manifest("knowledge", len(chunks)), chunks=chunks)
+        results = asyncio.run(store.search(query="日志", limit=2))
+    finally:
+        store.close()
+
+    assert len(results) == 2
+    assert len({item.chunk.record_id for item in results}) == 2
+    assert {item.chunk.record_id for item in results} == {"logging", "management"}
+
+
 def test_dense_api_failure_falls_back_to_sparse_with_notice(tmp_path: Path) -> None:
     chunks = (
         _chunk("logging", "远程日志审计", "A"),

@@ -94,6 +94,16 @@ def test_complete_default_cli_can_enter_existing_json_pipeline() -> None:
     assert parsed["logging"]["remote_logging"]["servers"][0]["reachable"] is None
 
 
+def test_observed_fields_exclude_neutral_schema_defaults() -> None:
+    observed = dict(
+        HuaweiCliParser().parse_observed_fields("undo profile type ips name TEST\n")
+    )
+
+    assert observed == {"threat_prevention.ips_enabled": False}
+    assert "management.protocols.telnet.enabled" not in observed
+    assert "logging.remote_logging.enabled" not in observed
+
+
 def test_all_scenario_standard_references_are_exact_reviewed_catalog_content() -> None:
     catalog = json.loads(REVIEWED_CATALOG_PATH.read_text(encoding="utf-8"))
     records = {record["record_id"]: record for record in catalog["records"]}
