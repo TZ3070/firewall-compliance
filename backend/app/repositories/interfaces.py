@@ -3,9 +3,9 @@ from typing import Protocol
 from app.models.contracts import (
     FirewallSnapshot,
     ParsedFirewallConfiguration,
+    RawConfigurationSnapshot,
     StoredSnapshot,
 )
-from app.models.reports import AuditReport, ReportFilter
 
 
 class SnapshotRepository(Protocol):
@@ -18,9 +18,7 @@ class SnapshotRepository(Protocol):
     def get(self, snapshot_id: str) -> StoredSnapshot | None: ...
 
 
-class ReportRepository(Protocol):
-    def save(self, report: AuditReport) -> None: ...
+class AcquisitionRepository(Protocol):
+    def save(self, acquisition: RawConfigurationSnapshot) -> None: ...
 
-    def get(self, report_id: str) -> AuditReport | None: ...
-
-    def query(self, report_filter: ReportFilter) -> tuple[AuditReport, ...]: ...
+    def get(self, acquisition_id: str) -> RawConfigurationSnapshot | None: ...

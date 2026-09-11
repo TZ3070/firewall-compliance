@@ -1,30 +1,56 @@
-import copy
+import hashlib
 import json
 import sqlite3
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
 
 import pytest
 
 from app.core.errors import ConfigurationErrorCode, ConfigurationPipelineError
-from app.providers.mock_config import build_snapshot
+from app.models.contracts import FirewallSnapshot
+from app.parsers.huawei_cli import HuaweiCliParser
 from app.repositories.sqlite_snapshot import SQLiteSnapshotRepository
-from app.services.config_parser import FirewallConfigParser
 
 
 FIXTURE_PATH = (
-    Path(__file__).resolve().parents[1] / "data" / "mock" / "default-firewall.json"
+    Path(__file__).resolve().parents[1] / "data" / "mock" / "default-firewall.cfg"
 )
 
 
-def load_fixture() -> dict[str, Any]:
-    with FIXTURE_PATH.open(encoding="utf-8") as fixture_file:
-        return json.load(fixture_file)
-
-
-def build_record(snapshot_id: str, raw_content: dict[str, Any] | None = None):
-    snapshot = build_snapshot(raw_content or load_fixture(), snapshot_id=snapshot_id)
-    parsed = FirewallConfigParser().parse(snapshot)
+def build_record(
+    snapshot_id: str,
+    cli_content: str | None = None,
+    *,
+    target_id: str = "default-firewall-mock",
+):
+    original = cli_content or FIXTURE_PATH.read_text(encoding="utf-8")
+    original_sha256 = hashlib.sha256(original.encode("utf-8")).hexdigest()
+    parsed, _ = HuaweiCliParser().parse_configuration(
+        original,
+        snapshot_id=snapshot_id,
+        target_id=target_id,
+        raw_config_sha256=original_sha256,
+    )
+    normalized_content = json.dumps(
+        parsed.normalized_config.model_dump(mode="json"),
+        ensure_ascii=False,
+        allow_nan=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    snapshot = FirewallSnapshot(
+        snapshot_id=snapshot_id,
+        target_id=target_id,
+        provider_version="snapshot-test/2.0.0",
+        collected_at=datetime.now(timezone.utc),
+        raw_content=normalized_content,
+        content_sha256=hashlib.sha256(normalized_content.encode("utf-8")).hexdigest(),
+        original_format="vendor_cli_mock",
+        original_content=original,
+        original_content_sha256=original_sha256,
+        detected_vendor="Huawei",
+        vendor_detection_confidence=1.0,
+    )
     return snapshot, parsed
 
 
@@ -61,8 +87,10 @@ def test_duplicate_snapshot_id_is_rejected_without_overwrite(tmp_path: Path) -> 
     original_snapshot, original_parsed = build_record("snp-duplicate")
     repository.save(original_snapshot, original_parsed)
 
-    changed_content = copy.deepcopy(load_fixture())
-    changed_content["target"]["hostname"] = "CHANGED-MOCK-HOST"
+    changed_content = FIXTURE_PATH.read_text(encoding="utf-8").replace(
+        "sysname FW-MOCK-01",
+        "sysname CHANGED-MOCK-HOST",
+    )
     changed_snapshot, changed_parsed = build_record("snp-duplicate", changed_content)
 
     with pytest.raises(ConfigurationPipelineError) as error:
@@ -118,10 +146,8 @@ def test_read_detects_persisted_content_corruption(tmp_path: Path) -> None:
 
 def test_parameterized_insert_handles_sql_metacharacters(tmp_path: Path) -> None:
     repository = SQLiteSnapshotRepository(tmp_path / "snapshots.db")
-    raw_content = load_fixture()
     target_id = "mock'; DROP TABLE snapshots;--"
-    raw_content["target"]["target_id"] = target_id
-    snapshot, parsed = build_record("snp-sql-characters", raw_content)
+    snapshot, parsed = build_record("snp-sql-characters", target_id=target_id)
 
     repository.save(snapshot, parsed)
     loaded = repository.get(snapshot.snapshot_id)

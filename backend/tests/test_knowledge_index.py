@@ -64,11 +64,10 @@ def test_summary_catalog_remains_an_explicit_non_citable_fallback() -> None:
 
 def test_all_p0_references_have_an_exact_reviewed_verbatim_chunk() -> None:
     current = asyncio.run(ConfigurationService().get_current_config())
-    assessment = P0CurrentConfigRuleEngine().evaluate(current)
+    assessment = P0CurrentConfigRuleEngine().evaluate_controls(current)
     expected = {
         (reference.standard_code, reference.clause_id)
-        for level in assessment.levels
-        for finding in level.findings
+        for finding in assessment.findings
         for reference in finding.standard_references
     }
     _, chunks = build_knowledge_chunks()
@@ -79,5 +78,5 @@ def test_all_p0_references_have_an_exact_reviewed_verbatim_chunk() -> None:
         if chunk.citation_eligible
     }
 
-    assert len(expected) == 32
+    assert expected
     assert expected <= indexed

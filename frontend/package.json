@@ -1,25 +1,26 @@
 {
   "name": "bank-firewall-compliance-chatbot-frontend",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "packageManager": "pnpm@10.15.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
-    "typecheck": "tsc -b --pretty false",
+    "build": "vue-tsc -b && vite build",
+    "typecheck": "vue-tsc -b --pretty false",
     "test": "vitest run"
   },
   "dependencies": {
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "element-plus": "^2.11.4",
+    "pinia": "^3.0.3",
+    "vue": "^3.5.22",
+    "vue-router": "^4.6.3"
   },
   "devDependencies": {
-    "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.1.0",
-    "@vitejs/plugin-react": "^5.0.0",
+    "@vitejs/plugin-vue": "^6.0.1",
     "typescript": "^5.9.0",
     "vite": "^7.1.0",
+    "vue-tsc": "^3.1.4",
     "vitest": "^3.2.0"
   }
 }

@@ -1,144 +1,57 @@
 import asyncio
-import copy
 import hashlib
-import json
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from uuid import uuid4
 
 import pytest
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
 from app.main import app
-from app.models.contracts import FirewallSnapshot, ParseWarningCode, VerificationStatus
-from app.models.agent import ReActAction, ReActTool
 from app.api.routes.configuration import get_configuration_service
-from app.agent.react_agent import BoundedComplianceReActAgent
-from app.providers.mock_config import (
-    MockConfigProvider,
-    build_snapshot,
-    canonicalize_json,
+from app.models.contracts import (
+    RawConfigurationSnapshot,
 )
-from app.parsers.huawei_cli import HuaweiCliParser
+from app.providers.mock_config import MockConfigProvider
 from app.repositories.sqlite_snapshot import SQLiteSnapshotRepository
-from app.services.config_parser import FirewallConfigParser, resolve_json_pointer
 from app.services.configuration import ConfigurationService
 
 
 FIXTURE_PATH = (
-    Path(__file__).resolve().parents[1] / "data" / "mock" / "default-firewall.json"
+    Path(__file__).resolve().parents[1] / "data" / "mock" / "default-firewall.cfg"
 )
-
-
-def load_fixture() -> dict[str, Any]:
-    with FIXTURE_PATH.open(encoding="utf-8") as fixture_file:
-        return json.load(fixture_file)
 
 
 class InlineHuaweiProvider:
     def __init__(self, cli_content: str) -> None:
         self.cli_content = cli_content
 
-    async def get_original_config(self) -> str:
-        return self.cli_content
+    async def fetch_raw_configuration(self) -> RawConfigurationSnapshot:
+        return RawConfigurationSnapshot(
+            acquisition_id=f"acq-{uuid4().hex}",
+            target_id="inline-huawei",
+            provider_version="inline-test/2.0.0",
+            collected_at=datetime.now(timezone.utc),
+            content=self.cli_content,
+            content_sha256=hashlib.sha256(self.cli_content.encode()).hexdigest(),
+            vendor_hint="Huawei",
+        )
 
-    async def get_current_snapshot(self) -> FirewallSnapshot:
-        return build_snapshot(HuaweiCliParser().parse_complete(self.cli_content))
 
-
-def test_provider_creates_unique_immutable_snapshots_with_stable_hash() -> None:
+def test_provider_creates_unique_immutable_acquisitions_with_stable_hash() -> None:
     provider = MockConfigProvider()
-    first = asyncio.run(provider.get_current_snapshot())
-    second = asyncio.run(provider.get_current_snapshot())
-    cli_path = FIXTURE_PATH.with_suffix(".cfg")
-    raw_content = HuaweiCliParser().parse_complete(
-        cli_path.read_text(encoding="utf-8")
-    )
-    expected_canonical = canonicalize_json(raw_content)
-    expected_hash = hashlib.sha256(expected_canonical.encode("utf-8")).hexdigest()
+    first = asyncio.run(provider.fetch_raw_configuration())
+    second = asyncio.run(provider.fetch_raw_configuration())
+    expected_content = FIXTURE_PATH.read_text(encoding="utf-8")
+    expected_hash = hashlib.sha256(expected_content.encode("utf-8")).hexdigest()
 
-    assert first.snapshot_id != second.snapshot_id
+    assert first.acquisition_id != second.acquisition_id
     assert first.content_sha256 == second.content_sha256 == expected_hash
-    assert first.raw_content == second.raw_content == expected_canonical
+    assert first.content == second.content == expected_content
 
     with pytest.raises(ValidationError):
         first.target_id = "changed-target"  # type: ignore[misc]
-
-
-def test_every_configuration_evidence_pointer_resolves_to_snapshot_value() -> None:
-    snapshot = build_snapshot(load_fixture(), snapshot_id="snp-evidence-test")
-    parsed = FirewallConfigParser().parse(snapshot)
-    raw_content = json.loads(snapshot.raw_content)
-
-    assert parsed.evidence
-    for evidence in parsed.evidence:
-        assert evidence.snapshot_id == snapshot.snapshot_id
-        assert resolve_json_pointer(raw_content, evidence.source_pointer) == evidence.value
-
-
-def test_null_and_missing_values_never_become_configuration_verified() -> None:
-    parser = FirewallConfigParser()
-    default_snapshot = build_snapshot(load_fixture(), snapshot_id="snp-null-test")
-    default_parsed = parser.parse(default_snapshot)
-
-    dos_evidence = next(
-        evidence
-        for evidence in default_parsed.evidence
-        if evidence.source_pointer == "/threat_prevention/dos_protection_enabled"
-    )
-    assert dos_evidence.verification_status is VerificationStatus.INSUFFICIENT_EVIDENCE
-    assert any(
-        warning.code is ParseWarningCode.NULL_VALUE
-        and warning.source_pointer == "/threat_prevention/dos_protection_enabled"
-        for warning in default_parsed.warnings
-    )
-
-    expiry_evidence = next(
-        evidence
-        for evidence in default_parsed.evidence
-        if evidence.source_pointer == "/access_control/policies/1/expires_at"
-    )
-    assert expiry_evidence.value is None
-    assert expiry_evidence.verification_status is VerificationStatus.CONFIGURATION_VERIFIED
-
-    missing_content = load_fixture()
-    del missing_content["threat_prevention"]["dos_protection_enabled"]
-    missing_snapshot = build_snapshot(missing_content, snapshot_id="snp-missing-test")
-    missing_parsed = parser.parse(missing_snapshot)
-
-    assert any(
-        warning.code is ParseWarningCode.MISSING_FIELD
-        and warning.source_pointer == "/threat_prevention/dos_protection_enabled"
-        for warning in missing_parsed.warnings
-    )
-    assert all(
-        evidence.source_pointer != "/threat_prevention/dos_protection_enabled"
-        for evidence in missing_parsed.evidence
-    )
-    assert missing_parsed.normalized_config.threat_prevention.dos_protection_enabled is None
-    assert missing_parsed.completeness == default_parsed.completeness
-
-
-def test_policy_id_changes_content_hash_but_not_policy_semantic_facts() -> None:
-    original_content = load_fixture()
-    renamed_content = copy.deepcopy(original_content)
-    renamed_content["access_control"]["policies"][0]["policy_id"] = "renamed-policy"
-
-    original_snapshot = build_snapshot(original_content, snapshot_id="snp-policy-original")
-    renamed_snapshot = build_snapshot(renamed_content, snapshot_id="snp-policy-renamed")
-    parser = FirewallConfigParser()
-    original = parser.parse(original_snapshot).normalized_config
-    renamed = parser.parse(renamed_snapshot).normalized_config
-
-    def semantic_policy_facts(configuration: Any) -> tuple[dict[str, Any], ...]:
-        return tuple(
-            policy.model_dump(exclude={"policy_id", "name"})
-            for policy in configuration.access_control.policies
-        )
-
-    assert original_snapshot.content_sha256 != renamed_snapshot.content_sha256
-    assert semantic_policy_facts(original) == semantic_policy_facts(renamed)
-
 
 def test_current_config_api_returns_vendor_cli_instead_of_structured_json(
     tmp_path: Path,
@@ -177,27 +90,20 @@ def test_current_config_api_returns_vendor_cli_instead_of_structured_json(
     assert repository.get(second["snapshot_id"]) is not None
 
 
-def test_agent_receives_only_explicit_cli_facts_and_builds_targeted_query(
+def test_current_pipeline_exposes_only_explicit_cli_facts(
     tmp_path: Path,
 ) -> None:
     service = ConfigurationService(
-        provider=InlineHuaweiProvider("telnet server enable\n"),
+        provider=InlineHuaweiProvider("sysname INLINE-HUAWEI\ntelnet server enable\n"),
         repository=SQLiteSnapshotRepository(tmp_path / "observed-facts.db"),
     )
 
     configuration = asyncio.run(service.get_current_config())
     facts = {item.field: item.value for item in configuration.observed_facts}
-    query = BoundedComplianceReActAgent._retrieval_query(
-        configuration,
-        ReActAction(
-            thought_summary="检索明确配置对应的标准。",
-            action=ReActTool.RETRIEVE_STANDARDS,
-        ),
-    )
 
-    assert facts == {"management.protocols.telnet.enabled": True}
-    assert "Telnet" in query
-    assert "明文传输" in query
-    assert "高危服务和端口" in query
-    assert "IPS" not in query
-    assert "VPN" not in query
+    assert facts == {
+        "target.hostname": "INLINE-HUAWEI",
+        "management.protocols.telnet.enabled": True,
+    }
+    assert configuration.vendor_detection is not None
+    assert configuration.vendor_detection.vendor == "Huawei"

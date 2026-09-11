@@ -34,6 +34,11 @@ CREATE TABLE IF NOT EXISTS snapshots (
     completeness REAL NOT NULL CHECK (completeness >= 0.0 AND completeness <= 1.0),
     warnings_json TEXT NOT NULL,
     evidence_json TEXT NOT NULL,
+    original_format TEXT,
+    original_content TEXT,
+    original_content_sha256 TEXT,
+    detected_vendor TEXT,
+    vendor_detection_confidence REAL,
     persisted_at TEXT NOT NULL
 );
 
@@ -114,6 +119,14 @@ class SQLiteSnapshotRepository:
                 ConfigurationErrorCode.SNAPSHOT_INTEGRITY_FAILED,
                 "Snapshot 原始内容与 SHA-256 不一致",
             )
+        if snapshot.original_content is not None and (
+            _calculate_sha256(snapshot.original_content)
+            != snapshot.original_content_sha256
+        ):
+            raise ConfigurationPipelineError(
+                ConfigurationErrorCode.SNAPSHOT_INTEGRITY_FAILED,
+                "Snapshot 原始厂商配置与 SHA-256 不一致",
+            )
         if parsed_configuration.normalized_config.target.target_id != snapshot.target_id:
             raise ConfigurationPipelineError(
                 ConfigurationErrorCode.SNAPSHOT_INTEGRITY_FAILED,
@@ -155,6 +168,11 @@ class SQLiteSnapshotRepository:
             _canonicalize_json(
                 [evidence.model_dump(mode="json") for evidence in parsed_configuration.evidence]
             ),
+            snapshot.original_format,
+            snapshot.original_content,
+            snapshot.original_content_sha256,
+            snapshot.detected_vendor,
+            snapshot.vendor_detection_confidence,
             persisted_at.isoformat(),
         )
 
@@ -176,8 +194,13 @@ class SQLiteSnapshotRepository:
                             completeness,
                             warnings_json,
                             evidence_json,
+                            original_format,
+                            original_content,
+                            original_content_sha256,
+                            detected_vendor,
+                            vendor_detection_confidence,
                             persisted_at
-                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                         """,
                         parameters,
                     )
@@ -217,6 +240,11 @@ class SQLiteSnapshotRepository:
                         completeness,
                         warnings_json,
                         evidence_json,
+                        original_format,
+                        original_content,
+                        original_content_sha256,
+                        detected_vendor,
+                        vendor_detection_confidence,
                         persisted_at
                     FROM snapshots
                     WHERE snapshot_id = ?
@@ -241,6 +269,11 @@ class SQLiteSnapshotRepository:
                 collected_at=row["collected_at"],
                 raw_content=row["raw_content_json"],
                 content_sha256=row["content_sha256"],
+                original_format=row["original_format"],
+                original_content=row["original_content"],
+                original_content_sha256=row["original_content_sha256"],
+                detected_vendor=row["detected_vendor"],
+                vendor_detection_confidence=row["vendor_detection_confidence"],
             )
             parsed_configuration = ParsedFirewallConfiguration(
                 parser_version=row["parser_version"],

@@ -3,9 +3,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
-from fastapi.testclient import TestClient
 
-from app.main import app
 from app.parsers.huawei_cli import HuaweiCliParser
 
 
@@ -53,33 +51,6 @@ def test_twenty_atomic_huawei_configs_match_expected_json(cfg_path: Path) -> Non
     }
     assert standard_case["primary_standard"]["review_status"] == "HumanReviewed"
     assert standard_case["primary_standard"]["citation_eligible"] is True
-
-
-def test_parse_api_returns_structured_huawei_patch() -> None:
-    client = TestClient(app)
-    response = client.post(
-        "/api/v1/config/parse",
-        json={
-            "vendor": "Huawei",
-            "cli_content": "profile type ips name IPS-TEST\n action block\n",
-        },
-    )
-
-    assert response.status_code == 200
-    assert response.json()["parser_version"] == "huawei-vrp-cli/1.0.0"
-    assert response.json()["structured_patch"] == {
-        "threat_prevention": {"ips_enabled": True}
-    }
-
-
-def test_parse_api_rejects_unrecognized_text() -> None:
-    response = TestClient(app).post(
-        "/api/v1/config/parse",
-        json={"vendor": "Huawei", "cli_content": "this is not Huawei CLI"},
-    )
-
-    assert response.status_code == 422
-    assert response.json()["detail"]["code"] == "HUAWEI_CLI_PARSE_FAILED"
 
 
 def test_complete_default_cli_can_enter_existing_json_pipeline() -> None:

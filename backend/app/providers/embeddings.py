@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import time
 from dataclasses import dataclass
 from pathlib import Path
 from threading import Lock
@@ -180,15 +181,31 @@ class BailianKnowledgeEmbedder:
             "dimensions": self.dense_dimension,
             "encoding_format": "float",
         }
-        with httpx.Client(
-            base_url=self._base_url,
-            headers={"Authorization": f"Bearer {self._api_key}"},
-            timeout=self._timeout_seconds,
-            transport=self._transport,
-        ) as client:
-            response = client.post("/embeddings", json=body)
-            response.raise_for_status()
-            payload = response.json()
+        payload: dict[str, Any] | None = None
+        for attempt in range(3):
+            try:
+                with httpx.Client(
+                    base_url=self._base_url,
+                    headers={"Authorization": f"Bearer {self._api_key}"},
+                    timeout=self._timeout_seconds,
+                    transport=self._transport,
+                    trust_env=False,
+                ) as client:
+                    response = client.post("/embeddings", json=body)
+                    response.raise_for_status()
+                    payload = response.json()
+                break
+            except httpx.HTTPStatusError as exc:
+                retryable = exc.response.status_code in {408, 429} or exc.response.status_code >= 500
+                if not retryable or attempt == 2:
+                    raise
+                time.sleep(0.5 * (2**attempt))
+            except httpx.TransportError:
+                if attempt == 2:
+                    raise
+                time.sleep(0.5 * (2**attempt))
+        if payload is None:
+            raise RuntimeError("Bailian embedding request did not return a payload")
         records = sorted(payload["data"], key=lambda item: int(item["index"]))
         if len(records) != len(texts):
             raise ValueError("Bailian embedding response count does not match input")

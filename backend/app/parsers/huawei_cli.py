@@ -5,6 +5,19 @@ import ipaddress
 import re
 from typing import Any
 
+from pydantic import ValidationError
+
+from app.core.errors import ConfigurationErrorCode, ConfigurationPipelineError
+from app.models.contracts import (
+    ConfigurationEvidence,
+    ConfigurationParseWarning,
+    NormalizedFirewallConfig,
+    ObservedConfigurationFact,
+    ParsedFirewallConfiguration,
+    ParseWarningCode,
+    VerificationStatus,
+)
+
 
 PARSER_VERSION = "huawei-vrp-cli/1.0.0"
 
@@ -40,13 +53,6 @@ def _cidr(address: str, mask: str) -> str:
 
 def _neutral_huawei_mock() -> dict[str, Any]:
     return {
-        "_mock_metadata": {
-            "is_mock": True,
-            "contains_real_customer_data": False,
-            "source_profile": "Huawei HiSecEngine/USG VRP-style",
-            "fixture_version": "cli-derived-1.0.0",
-            "notice": "人工构造的公开演示配置；JSON 由确定性 Huawei CLI 解析器生成。",
-        },
         "target": {
             "target_id": "default-firewall-mock",
             "display_name": "Default Firewall Mock",
@@ -416,3 +422,205 @@ class HuaweiCliParser:
         """Return only values explicitly recognized from the CLI, never defaults."""
 
         return _flatten_explicit_values(self.parse_patch(cli_content))
+
+    def parse_configuration(
+        self,
+        cli_content: str,
+        *,
+        snapshot_id: str,
+        target_id: str,
+        raw_config_sha256: str,
+    ) -> tuple[ParsedFirewallConfiguration, tuple[ObservedConfigurationFact, ...]]:
+        """Produce the normalized configuration and evidence directly from Huawei CLI."""
+
+        complete = self.parse_complete(cli_content)
+        complete["target"]["target_id"] = target_id
+        try:
+            normalized = NormalizedFirewallConfig.model_validate(complete)
+        except ValidationError as exc:
+            raise ConfigurationPipelineError(
+                ConfigurationErrorCode.CONFIG_PARSE_FAILED,
+                "Huawei CLI 解析结果不符合规范化配置契约",
+            ) from exc
+
+        observed = tuple(
+            ObservedConfigurationFact(field=field, value=value)
+            for field, value in self.parse_observed_fields(cli_content)
+        )
+        evidence, warnings, completeness = _build_cli_evidence(
+            normalized=normalized,
+            observed=observed,
+            cli_content=cli_content,
+            snapshot_id=snapshot_id,
+            raw_config_sha256=raw_config_sha256,
+            parser_version=self.version,
+        )
+        return (
+            ParsedFirewallConfiguration(
+                parser_version=self.version,
+                normalized_config=normalized,
+                completeness=completeness,
+                warnings=warnings,
+                evidence=evidence,
+            ),
+            observed,
+        )
+
+
+_CLI_LINE_PATTERNS = {
+    "target.hostname": r"^\s*sysname\s+",
+    "management.protocols.ssh": r"^\s*(?:undo\s+)?stelnet server enable",
+    "management.protocols.telnet": r"^\s*(?:undo\s+)?telnet server enable",
+    "management.protocols.https": r"^\s*(?:undo\s+)?http secure-server enable",
+    "management.protocols.http": r"^\s*(?:undo\s+)?http server enable",
+    "management.source_interface": r"^\s*ssh server-source\s+",
+    "management.allowed_source_cidrs": r"^\s*rule\s+.+\spermit source\s+",
+    "management.mfa_enabled": r"^\s*(?:undo\s+)?administrator multi-factor-authentication enable",
+    "management.accounts": r"^\s*local-user\s+",
+    "access_control.default_action": r"^\s*action\s+(?:deny|permit)\s*$",
+    "access_control.policies": r"^\s*(?:rule name|action|log enable)\b",
+    "logging.policy_log_enabled": r"^\s*log type policy enable",
+    "logging.threat_log_enabled": r"^\s*log type threat enable",
+    "logging.audit_log_enabled": r"^\s*(?:undo\s+)?info-center (?:enable|source)\b",
+    "logging.local_retention_days": r"^\s*info-center logfile retention-days\s+",
+    "logging.remote_logging": r"^\s*info-center loghost\s+",
+    "time_sync.enabled": r"^\s*(?:undo\s+)?ntp-service enable",
+    "time_sync.servers": r"^\s*ntp-service unicast-server\s+",
+    "threat_prevention.ips_enabled": r"^\s*(?:undo\s+)?profile type ips\s+",
+    "threat_prevention.antivirus_enabled": r"^\s*(?:undo\s+)?profile type av\s+",
+    "threat_prevention.dos_protection_enabled": r"^\s*(?:undo\s+)?anti-ddos baseline enable",
+    "high_availability": r"^\s*(?:(?:undo\s+)?hrp\b|! MOCK operational output:)",
+    "network_stack.ipv4": r"^\s*(?:ip address|ip route-static)\s+",
+    "network_stack.ipv6": r"^\s*(?:ipv6 enable|ipv6 address|ipv6 route-static)\b",
+    "vpn.enabled": r"^\s*(?:undo\s+)?ipsec enable",
+    "interfaces": r"^\s*(?:interface|ip address|ipv6 address|service-manage)\b",
+}
+
+
+def _evidence_values(
+    value: Any,
+    *,
+    field: str = "",
+    pointer: str = "",
+):
+    if isinstance(value, dict):
+        for key, child in value.items():
+            child_field = f"{field}.{key}" if field else key
+            escaped = key.replace("~", "~0").replace("/", "~1")
+            yield from _evidence_values(
+                child,
+                field=child_field,
+                pointer=f"{pointer}/{escaped}",
+            )
+        return
+    if isinstance(value, list) and value and all(isinstance(item, dict) for item in value):
+        for index, child in enumerate(value):
+            identity = (
+                child.get("account_id")
+                or child.get("policy_id")
+                or child.get("name")
+                or str(index)
+            )
+            yield from _evidence_values(
+                child,
+                field=f"{field}[{identity}]",
+                pointer=f"{pointer}/{index}",
+            )
+        return
+    yield field, pointer, value
+
+
+def _matching_cli_line(
+    field: str,
+    lines: list[str],
+) -> tuple[int, str] | None:
+    candidates = [
+        (prefix, pattern)
+        for prefix, pattern in _CLI_LINE_PATTERNS.items()
+        if field.startswith(prefix)
+    ]
+    if not candidates:
+        return None
+    _, pattern = max(candidates, key=lambda item: len(item[0]))
+    matches = [
+        (index, line)
+        for index, line in enumerate(lines, start=1)
+        if re.search(pattern, line, flags=re.IGNORECASE)
+    ]
+    if not matches:
+        return None
+    return matches[-1] if field == "access_control.default_action" else matches[0]
+
+
+def _build_cli_evidence(
+    *,
+    normalized: NormalizedFirewallConfig,
+    observed: tuple[ObservedConfigurationFact, ...],
+    cli_content: str,
+    snapshot_id: str,
+    raw_config_sha256: str,
+    parser_version: str,
+) -> tuple[
+    tuple[ConfigurationEvidence, ...],
+    tuple[ConfigurationParseWarning, ...],
+    float,
+]:
+    explicit_fields = {item.field for item in observed}
+    grouped_fields = {
+        "access_control.policies",
+        "management.accounts",
+        "interfaces",
+        "logging.remote_logging.servers",
+    }
+    lines = cli_content.splitlines()
+    evidence: list[ConfigurationEvidence] = []
+    warnings: list[ConfigurationParseWarning] = []
+    verified = 0
+    values = list(_evidence_values(normalized.model_dump(mode="json")))
+
+    for field, pointer, value in values:
+        explicit = field in explicit_fields or any(
+            group in explicit_fields and field.startswith(f"{group}[")
+            for group in grouped_fields
+        )
+        match = _matching_cli_line(field, lines) if explicit else None
+        status = (
+            VerificationStatus.CONFIGURATION_VERIFIED
+            if value is not None and match is not None
+            else VerificationStatus.INSUFFICIENT_EVIDENCE
+        )
+        if status is VerificationStatus.CONFIGURATION_VERIFIED:
+            verified += 1
+        elif value is None:
+            warnings.append(
+                ConfigurationParseWarning(
+                    code=ParseWarningCode.NULL_VALUE,
+                    field=field,
+                    source_pointer=pointer,
+                    message="配置字段值未知，需要人工复核",
+                )
+            )
+
+        binding = {}
+        if match is not None:
+            line_number, excerpt = match
+            binding = {
+                "raw_config_excerpt": excerpt.strip(),
+                "raw_line_start": line_number,
+                "raw_line_end": line_number,
+                "raw_config_sha256": raw_config_sha256,
+            }
+        evidence.append(
+            ConfigurationEvidence(
+                snapshot_id=snapshot_id,
+                field=field,
+                value=value,
+                source_pointer=pointer,
+                parser_version=parser_version,
+                verification_status=status,
+                **binding,
+            )
+        )
+
+    completeness = round(verified / len(values), 4) if values else 0.0
+    return tuple(evidence), tuple(warnings), completeness

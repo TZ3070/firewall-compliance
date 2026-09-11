@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import logging
 
-from app.models.contracts import AssessmentClauseReference
-from app.models.reports import (
+from app.models.compliance import (
     CitationValidationStatus,
     ValidatedStandardReference,
 )
+from app.models.contracts import AssessmentClauseReference
 from app.models.retrieval import KnowledgeChunk, KnowledgeLookup
 from app.providers.interfaces import KnowledgeRetriever
 from app.services.knowledge_index import build_knowledge_chunks
