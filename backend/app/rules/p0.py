@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 from hashlib import sha256
-from collections import Counter
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, Literal
@@ -10,12 +9,13 @@ from typing import Callable, Literal
 from app.models.contracts import (
     AssessmentClauseReference,
     ConfigurationEvidence,
-    CurrentAssessmentResponse,
     CurrentConfigResponse,
     FindingResult,
-    LevelAssessmentFinding,
-    LevelAssessmentSummary,
     NormalizedFirewallConfig,
+)
+from app.models.compliance import (
+    ControlAssessmentDraft,
+    ControlAssessmentFindingDraft,
 )
 
 
@@ -407,82 +407,73 @@ class P0CurrentConfigRuleEngine:
             )
         )
 
-    @staticmethod
-    def _references_for_level(
-        control: dict[str, object], level: int
-    ) -> tuple[AssessmentClauseReference, ...]:
-        refs = []
-        for source_ref in control["source_refs"]:  # type: ignore[index]
-            if source_ref["level"] != level:
-                continue
-            refs.append(
-                AssessmentClauseReference(
-                    record_id=str(control["control_id"]),
-                    standard_code="JR/T 0071.2—2020",
-                    clause_id=source_ref["clause_id"],
-                    classified_protection_level=level,
-                    printed_pages=tuple(source_ref["printed_pages"]),
-                    pdf_page_indexes=tuple(source_ref["pdf_page_indexes"]),
+    def evaluate_controls(self, current: CurrentConfigResponse) -> ControlAssessmentDraft:
+        """Evaluate each control once; protection levels are metadata, not input."""
+
+        findings: list[ControlAssessmentFindingDraft] = []
+        for rule in P0_RULES:
+            control = self._controls[rule.control_id]
+            levels = tuple(
+                sorted(
+                    {
+                        int(source_ref["level"])
+                        for source_ref in control["source_refs"]
+                        if int(source_ref["level"]) in (2, 3, 4)
+                    }
                 )
             )
-        return tuple(refs)
-
-    def evaluate(self, current: CurrentConfigResponse) -> CurrentAssessmentResponse:
-        level_summaries: list[LevelAssessmentSummary] = []
-        for level in (2, 3, 4):
-            findings: list[LevelAssessmentFinding] = []
-            for rule in P0_RULES:
-                control = self._controls[rule.control_id]
-                references = self._references_for_level(control, level)
-                evidence = self._select_evidence(
-                    current.evidence, rule.evidence_selectors
-                )
-                if not references:
-                    evaluation = RuleEvaluation(
-                        FindingResult.NOT_APPLICABLE,
-                        f"该控制项未在 JR/T 0071.2—2020 第 {level} 级中出现。",
-                    )
-                    evidence = ()
-                else:
-                    evaluation = rule.evaluator(current.configuration)
-                findings.append(
-                    LevelAssessmentFinding(
-                        finding_id=(
-                            f"{current.snapshot_id}:{rule.control_id}:L{level}"
-                        ),
+            references: list[AssessmentClauseReference] = []
+            seen_references: set[tuple[str, int]] = set()
+            for source_ref in control["source_refs"]:
+                level = int(source_ref["level"])
+                identity = (str(source_ref["clause_id"]), level)
+                if level not in (2, 3, 4) or identity in seen_references:
+                    continue
+                seen_references.add(identity)
+                references.append(
+                    AssessmentClauseReference(
+                        record_id=str(control["control_id"]),
+                        standard_code="JR/T 0071.2—2020",
+                        clause_id=str(source_ref["clause_id"]),
                         classified_protection_level=level,
-                        control_id=rule.control_id,
-                        control_title=str(control["title"]),
-                        check_title=rule.check_title,
-                        rule_id=rule.rule_id,
-                        result=evaluation.result,
-                        severity=rule.severity,
-                        explanation=evaluation.explanation,
-                        standard_references=references,
-                        configuration_evidence=evidence,
-                        limitations=evaluation.limitations,
-                        control_coverage=rule.control_coverage,
+                        printed_pages=tuple(source_ref["printed_pages"]),
+                        pdf_page_indexes=tuple(source_ref["pdf_page_indexes"]),
                     )
                 )
-            counts = Counter(item.result for item in findings)
-            level_summaries.append(
-                LevelAssessmentSummary(
-                    classified_protection_level=level,
-                    counts={result: counts[result] for result in FindingResult},
-                    findings=tuple(findings),
+            evaluation = rule.evaluator(current.configuration)
+            findings.append(
+                ControlAssessmentFindingDraft(
+                    finding_id=f"{current.snapshot_id}:{rule.control_id}",
+                    control_key=rule.control_id,
+                    control_title=str(control["title"]),
+                    check_title=rule.check_title,
+                    rule_id=rule.rule_id,
+                    result=evaluation.result,
+                    severity=rule.severity,
+                    explanation=evaluation.explanation,
+                    applicable_protection_levels=levels,
+                    standard_references=tuple(references),
+                    configuration_evidence=self._select_evidence(
+                        current.evidence,
+                        rule.evidence_selectors,
+                    ),
+                    limitations=evaluation.limitations,
+                    coverage=rule.control_coverage,
                 )
             )
 
-        return CurrentAssessmentResponse(
-            assessment_id=f"asm:{current.snapshot_id}:{RULE_PACK_VERSION}",
+        return ControlAssessmentDraft(
+            assessment_id=f"asm2:{current.snapshot_id}:{RULE_PACK_VERSION}",
             snapshot_id=current.snapshot_id,
+            snapshot_sha256=current.content_sha256,
+            original_config_sha256=current.original_config_sha256,
             target_id=current.target_id,
-            status="Completed",
+            vendor=current.configuration.target.vendor,
+            parser_version=current.parser_version,
             rule_pack_version=RULE_PACK_VERSION,
-            catalog_id=self._catalog_id,
-            catalog_version=self._catalog_version,
-            levels=tuple(level_summaries),
+            findings=tuple(findings),
             disclaimer=(
-                "结果仅表示当前防火墙配置对本规则集控制项的匹配状态，不是信息系统最终等级保护测评结论。"
+                "本报告以被检测系统输出的防火墙配置快照为证据，"
+                "不以等保级别作为扫描入口，也不等同于最终等级保护测评结论。"
             ),
         )

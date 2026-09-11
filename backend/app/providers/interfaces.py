@@ -1,6 +1,6 @@
 from typing import Protocol
 
-from app.models.contracts import FirewallSnapshot
+from app.models.contracts import RawConfigurationSnapshot
 from app.models.retrieval import (
     KnowledgeLookup,
     KnowledgeSearchFilters,
@@ -9,9 +9,7 @@ from app.models.retrieval import (
 
 
 class ConfigProvider(Protocol):
-    async def get_current_snapshot(self) -> FirewallSnapshot: ...
-
-    async def get_original_config(self) -> str: ...
+    async def fetch_raw_configuration(self) -> RawConfigurationSnapshot: ...
 
 
 class KnowledgeRetriever(Protocol):

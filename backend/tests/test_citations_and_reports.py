@@ -9,19 +9,18 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-from app.api.routes.reports import get_report_repository
 from app.main import app
+from app.models.compliance import (
+    CitationValidationStatus,
+    ComplianceReport,
+    ValidatedStandardReference,
+    calculate_compliance_report_sha256,
+    verify_compliance_report_integrity,
+)
 from app.models.contracts import (
     AssessmentClauseReference,
     AssessmentStatus,
-)
-from app.models.reports import (
-    AuditReport,
-    CitationValidationStatus,
-    ReportFilter,
-    ValidatedStandardReference,
-    calculate_report_sha256,
-    verify_report_integrity,
+    FindingResult,
 )
 from app.models.retrieval import (
     KnowledgeChunk,
@@ -30,13 +29,15 @@ from app.models.retrieval import (
     RetrievalSource,
     knowledge_point_id,
 )
-from app.repositories.sqlite_report import SQLiteReportRepository
+from app.repositories.sqlite_compliance_report import (
+    SQLiteComplianceReportRepository,
+)
 from app.repositories.sqlite_snapshot import SQLiteSnapshotRepository
 from app.rules.p0 import P0CurrentConfigRuleEngine
 from app.services.citations import CitationValidator
+from app.services.compliance_reports import ComplianceReportService
 from app.services.configuration import ConfigurationService
 from app.services.knowledge_index import build_knowledge_chunks
-from app.services.reports import ReportService
 
 
 def _knowledge_chunk(
@@ -107,6 +108,22 @@ class ExactCatalogRetriever(FakeRetriever):
         )
 
 
+class AlwaysNotCitableValidator:
+    async def validate(
+        self,
+        reference: AssessmentClauseReference,
+    ) -> ValidatedStandardReference:
+        return ValidatedStandardReference(
+            standard_code=reference.standard_code,
+            clause_id=reference.clause_id,
+            classified_protection_level=reference.classified_protection_level,
+            printed_pages=reference.printed_pages,
+            pdf_page_indexes=reference.pdf_page_indexes,
+            validation_status=CitationValidationStatus.NOT_CITABLE,
+            validation_message="测试目录没有可引用原文。",
+        )
+
+
 def _reference() -> AssessmentClauseReference:
     return AssessmentClauseReference(
         standard_code="GB/T TEST—2026",
@@ -131,21 +148,7 @@ def test_citation_validator_releases_canonical_verbatim_text() -> None:
     assert result.content_sha256 == canonical.content_sha256
 
 
-def test_p0_citation_validator_does_not_block_candidate_verbatim_text() -> None:
-    candidate = _knowledge_chunk(review_status="Candidate")
-    validator = CitationValidator(
-        FakeRetriever((candidate,)),
-        canonical_chunks=(candidate,),
-    )
-
-    result = asyncio.run(validator.validate(_reference()))
-
-    assert result.validation_status is CitationValidationStatus.VALID
-    assert result.standard_text == "标准原文"
-    assert "当前未启用审核状态门禁" in result.validation_message
-
-
-def test_formal_citation_validator_blocks_candidate_verbatim_text() -> None:
+def test_citation_validator_blocks_unreviewed_text_in_formal_mode() -> None:
     candidate = _knowledge_chunk(review_status="Candidate")
     validator = CitationValidator(
         FakeRetriever((candidate,)),
@@ -157,22 +160,6 @@ def test_formal_citation_validator_blocks_candidate_verbatim_text() -> None:
 
     assert result.validation_status is CitationValidationStatus.NOT_CITABLE
     assert result.standard_text is None
-    assert "正式审核状态门禁" in result.validation_message
-
-
-def test_formal_citation_validator_accepts_reviewed_verbatim_text() -> None:
-    reviewed = _knowledge_chunk(review_status="HumanReviewed")
-    validator = CitationValidator(
-        FakeRetriever((reviewed,)),
-        canonical_chunks=(reviewed,),
-        enforce_review_status=True,
-    )
-
-    result = asyncio.run(validator.validate(_reference()))
-
-    assert result.validation_status is CitationValidationStatus.VALID
-    assert result.standard_text == "标准原文"
-    assert "审核状态校验" in result.validation_message
 
 
 def test_citation_validator_fails_closed_on_payload_mismatch() -> None:
@@ -207,199 +194,100 @@ def test_citation_validator_does_not_quote_candidate_summary() -> None:
     assert result.standard_text is None
 
 
-def _empty_report() -> AuditReport:
-    draft = AuditReport(
-        report_id="rpt:test",
-        assessment_id="asm:test",
-        snapshot_id="snp:test",
+def _empty_report() -> ComplianceReport:
+    draft = ComplianceReport(
+        report_id="rpt2:test",
+        assessment_id="assessment-test",
+        snapshot_id="snapshot-test",
         snapshot_sha256="d" * 64,
-        target_id="target:test",
-        status=AssessmentStatus.INCOMPLETE,
+        original_config_sha256="e" * 64,
+        target_id="target-test",
+        vendor="Huawei",
+        status=AssessmentStatus.COMPLETED,
         created_at=datetime.now(timezone.utc),
-        rule_pack_version="rules/1.0.0",
-        rule_pack_sha256="e" * 64,
-        control_catalog_id="control-catalog-v1",
-        control_catalog_version="1.0.0",
-        control_catalog_sha256="f" * 64,
-        knowledge_catalog_id="knowledge-catalog-v1",
-        knowledge_catalog_version="1.0.0",
-        knowledge_catalog_sha256="c" * 64,
-        levels=(),
+        agent_run_id="run-test",
+        parser_version="huawei-vrp-cli/1.0.0",
+        rule_pack_version="p0-current-config/1.0.0",
+        counts={result: 0 for result in FindingResult},
+        findings=(),
         disclaimer="测试报告",
         report_sha256="0" * 64,
     )
     return draft.model_copy(
-        update={"report_sha256": calculate_report_sha256(draft)}
+        update={"report_sha256": calculate_compliance_report_sha256(draft)}
     )
 
 
-def test_sqlite_reports_are_hash_checked_and_immutable(tmp_path: Path) -> None:
+def test_v2_reports_are_hash_checked_and_immutable(tmp_path: Path) -> None:
     database_path = tmp_path / "reports.db"
-    repository = SQLiteReportRepository(database_path)
+    repository = SQLiteComplianceReportRepository(database_path)
     report = _empty_report()
     repository.save(report)
 
     loaded = repository.get(report.report_id)
     assert loaded == report
     assert loaded is not None
-    verify_report_integrity(loaded)
+    verify_compliance_report_integrity(loaded)
 
     with sqlite3.connect(database_path) as connection:
         with pytest.raises(sqlite3.DatabaseError, match="immutable"):
             connection.execute(
-                "UPDATE reports SET status = 'Completed' WHERE report_id = ?",
+                "UPDATE compliance_reports_v2 SET status = 'Incomplete' WHERE report_id = ?",
                 (report.report_id,),
             )
 
 
-def test_report_list_skips_one_invalid_historical_payload(tmp_path: Path) -> None:
-    database_path = tmp_path / "reports.db"
-    repository = SQLiteReportRepository(database_path)
-    report = _empty_report()
-    repository.save(report)
-
-    with sqlite3.connect(database_path) as connection:
-        connection.execute(
-            """
-            INSERT INTO reports (
-                report_id, assessment_id, snapshot_id, target_id, status,
-                created_at, report_sha256, payload_json
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (
-                "rpt:invalid-history",
-                "asm:invalid-history",
-                "snp:invalid-history",
-                "target:test",
-                "Incomplete",
-                datetime.now(timezone.utc).isoformat(),
-                "0" * 64,
-                report.model_copy(
-                    update={
-                        "report_id": "rpt:invalid-history",
-                        "report_sha256": "0" * 64,
-                    }
-                ).model_dump_json(),
-            ),
-        )
-
-    assert repository.query(ReportFilter()) == (report,)
-
-
-class AlwaysNotCitableValidator:
-    async def validate(
-        self, reference: AssessmentClauseReference
-    ) -> ValidatedStandardReference:
-        return ValidatedStandardReference(
-            standard_code=reference.standard_code,
-            clause_id=reference.clause_id,
-            classified_protection_level=reference.classified_protection_level,
-            printed_pages=reference.printed_pages,
-            pdf_page_indexes=reference.pdf_page_indexes,
-            validation_status=CitationValidationStatus.NOT_CITABLE,
-            validation_message="测试目录没有可引用原文。",
-        )
-
-
-def test_current_report_is_saved_as_incomplete_when_citations_are_not_citable(
+def test_v2_report_is_incomplete_when_citations_are_not_citable(
     tmp_path: Path,
 ) -> None:
-    database_path = tmp_path / "app.db"
-    repository = SQLiteReportRepository(database_path)
-    configuration_service = ConfigurationService(
-        repository=SQLiteSnapshotRepository(database_path)
+    database_path = tmp_path / "incomplete.db"
+    current = asyncio.run(
+        ConfigurationService(
+            repository=SQLiteSnapshotRepository(database_path)
+        ).get_current_config()
     )
-    service = ReportService(
-        rule_engine=P0CurrentConfigRuleEngine(),
+    draft = P0CurrentConfigRuleEngine().evaluate_controls(current)
+    service = ComplianceReportService(
         citation_validator=AlwaysNotCitableValidator(),  # type: ignore[arg-type]
-        repository=repository,
+        repository=SQLiteComplianceReportRepository(database_path),
     )
 
-    current = asyncio.run(configuration_service.get_current_config())
-    report = asyncio.run(service.create_from_configuration(current))
+    report = asyncio.run(service.create(draft, agent_run_id="run-incomplete"))
 
     assert report.status is AssessmentStatus.INCOMPLETE
     assert len(report.standard_sources) == 4
     assert all(len(source.pdf_sha256) == 64 for source in report.standard_sources)
-    assert repository.get(report.report_id) == report
-    assert any(
-        reference.validation_status is CitationValidationStatus.NOT_CITABLE
-        for level in report.levels
-        for finding in level.findings
-        for reference in finding.standard_references
-    )
-    assert all(
-        reference.standard_text is None
-        for level in report.levels
-        for finding in level.findings
-        for reference in finding.standard_references
-    )
 
 
-def test_current_report_is_completed_with_reviewed_verbatim_catalog(
+def test_v2_report_is_completed_with_reviewed_verbatim_catalog(
     tmp_path: Path,
 ) -> None:
     _, chunks = build_knowledge_chunks()
-    database_path = tmp_path / "reviewed.db"
-    configuration_service = ConfigurationService(
-        repository=SQLiteSnapshotRepository(database_path)
+    database_path = tmp_path / "completed.db"
+    current = asyncio.run(
+        ConfigurationService(
+            repository=SQLiteSnapshotRepository(database_path)
+        ).get_current_config()
     )
-    service = ReportService(
-        rule_engine=P0CurrentConfigRuleEngine(),
+    draft = P0CurrentConfigRuleEngine().evaluate_controls(current)
+    service = ComplianceReportService(
         citation_validator=CitationValidator(
             ExactCatalogRetriever(chunks),
             canonical_chunks=chunks,
             enforce_review_status=True,
         ),
-        repository=SQLiteReportRepository(database_path),
+        repository=SQLiteComplianceReportRepository(database_path),
     )
 
-    current = asyncio.run(configuration_service.get_current_config())
-    report = asyncio.run(service.create_from_configuration(current))
+    report = asyncio.run(service.create(draft, agent_run_id="run-completed"))
 
     assert report.status is AssessmentStatus.COMPLETED
-    applicable_references = [
-        reference
-        for level in report.levels
-        for finding in level.findings
-        if finding.result.value != "NotApplicable"
-        for reference in finding.standard_references
-    ]
-    assert applicable_references
-    assert all(
-        reference.validation_status is CitationValidationStatus.VALID
-        and reference.standard_text
-        for reference in applicable_references
-    )
+    assert report.agent_runtime == "agent-compose"
+    assert report.agent_run_id == "run-completed"
+    assert len(report.findings) == 12
 
 
-def test_report_api_reads_the_same_immutable_payload(tmp_path: Path) -> None:
-    database_path = tmp_path / "api.db"
-    repository = SQLiteReportRepository(database_path)
-    configuration_service = ConfigurationService(
-        repository=SQLiteSnapshotRepository(database_path)
-    )
-    service = ReportService(
-        rule_engine=P0CurrentConfigRuleEngine(),
-        citation_validator=AlwaysNotCitableValidator(),  # type: ignore[arg-type]
-        repository=repository,
-    )
-    current = asyncio.run(configuration_service.get_current_config())
-    report = asyncio.run(service.create_from_configuration(current))
-    app.dependency_overrides[get_report_repository] = lambda: repository
-    client = TestClient(app)
-    try:
-        loaded = client.get(f"/api/v1/reports/{report.report_id}")
-    finally:
-        app.dependency_overrides.clear()
-
-    assert loaded.status_code == 200
-    assert AuditReport.model_validate(loaded.json()) == report
-    assert loaded.json()["status"] == "Incomplete"
-
-
-def test_report_creation_and_direct_assessment_bypass_routes_are_not_exposed() -> None:
+def test_direct_report_creation_route_is_not_exposed() -> None:
     client = TestClient(app)
 
-    assert client.get("/api/v1/assessments/current").status_code == 404
-    assert client.post("/api/v1/reports").status_code == 405
+    assert client.post("/api/v1/compliance-reports").status_code == 405

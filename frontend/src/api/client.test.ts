@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import { getReport } from './client'
+import { getComplianceReport } from './client'
 
-describe('getReport', () => {
+describe('getComplianceReport', () => {
   afterEach(() => {
     vi.unstubAllGlobals()
   })
@@ -14,10 +14,10 @@ describe('getReport', () => {
     })
     vi.stubGlobal('fetch', fetchMock)
 
-    const report = await getReport('rpt:assessment/report-pack/1.0.0')
+    const report = await getComplianceReport('rpt:assessment/report-pack/1.0.0')
 
     expect(fetchMock).toHaveBeenCalledWith(
-      '/api/v1/reports/rpt%3Aassessment/report-pack/1.0.0',
+      '/api/v1/compliance-reports/rpt%3Aassessment/report-pack/1.0.0',
     )
     expect(report.report_id).toBe('rpt:assessment/report-pack/1.0.0')
   })

@@ -67,7 +67,7 @@ PDF 物理页序号 = 正文印刷页码 + 6
 
 ## 5. 当前 Mock 可以直接覆盖的内容
 
-当前 `default-firewall.json` 已经有以下可用事实：
+当前 Mock API 返回的 `default-firewall.cfg` 可由 Huawei Parser 提取以下配置事实：
 
 - 默认访问控制动作和安全策略列表；
 - 策略源区域、目的区域、地址、服务、动作和日志开关；

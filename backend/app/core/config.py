@@ -1,6 +1,5 @@
 from functools import lru_cache
 from pathlib import Path
-from typing import Literal
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -10,20 +9,15 @@ BACKEND_ROOT = PROJECT_ROOT / "backend"
 
 
 class Settings(BaseSettings):
-    app_env: str = "development"
     app_name: str = "bank-firewall-compliance-chatbot"
-    app_version: str = "0.1.0"
-    api_prefix: str = "/api/v1"
+    app_version: str = "0.2.0"
     database_path: str = "./data/app-v2.db"
-    demo_fixture_mode: bool = True
 
-    rag_backend: Literal["qdrant_local"] = "qdrant_local"
     qdrant_path: str = "./data/qdrant"
     qdrant_collection: str = "firewall-standard-knowledge-v1"
     rag_model_cache_path: str = "./data/model-cache"
     rag_dense_model: str = "BAAI/bge-small-zh-v1.5"
     rag_sparse_model: str = "Qdrant/bm25"
-    rag_top_k: int = Field(default=8, ge=1, le=50)
     rag_prefetch_limit: int = Field(default=20, ge=1, le=100)
     rag_enforce_review_status: bool = True
 
@@ -41,10 +35,14 @@ class Settings(BaseSettings):
         "Given a compliance search query, retrieve relevant standard passages."
     )
 
-    deepseek_base_url: str = "https://api.deepseek.com"
-    deepseek_api_key: str = ""
-    deepseek_model: str = "deepseek-v4-pro"
-    deepseek_timeout_seconds: float = Field(default=45.0, ge=1.0, le=60.0)
+    agent_compose_enabled: bool = True
+    agent_compose_base_url: str = "http://127.0.0.1:7410"
+    agent_compose_auth_token: str = ""
+    agent_compose_project_id: str = ""
+    agent_compose_compliance_agent: str = "firewall-compliance-agent"
+    agent_compose_conversation_agent: str = "conversation-orchestrator"
+    agent_compose_timeout_seconds: float = Field(default=15.0, ge=1.0, le=60.0)
+    agent_tool_token: str = ""
 
     @property
     def resolved_database_path(self) -> Path:

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 from dataclasses import dataclass
 from typing import Any, Protocol, Sequence
 
@@ -60,15 +61,31 @@ class BailianKnowledgeReranker:
             "top_n": min(top_n, len(documents)),
             "instruct": self._instruct,
         }
-        async with httpx.AsyncClient(
-            base_url=self._base_url,
-            headers={"Authorization": f"Bearer {self._api_key}"},
-            timeout=self._timeout_seconds,
-            transport=self._transport,
-        ) as client:
-            response = await client.post("/reranks", json=body)
-            response.raise_for_status()
-            payload = response.json()
+        payload: dict[str, Any] | None = None
+        for attempt in range(3):
+            try:
+                async with httpx.AsyncClient(
+                    base_url=self._base_url,
+                    headers={"Authorization": f"Bearer {self._api_key}"},
+                    timeout=self._timeout_seconds,
+                    transport=self._transport,
+                    trust_env=False,
+                ) as client:
+                    response = await client.post("/reranks", json=body)
+                    response.raise_for_status()
+                    payload = response.json()
+                break
+            except httpx.HTTPStatusError as exc:
+                retryable = exc.response.status_code in {408, 429} or exc.response.status_code >= 500
+                if not retryable or attempt == 2:
+                    raise
+                await asyncio.sleep(0.5 * (2**attempt))
+            except httpx.TransportError:
+                if attempt == 2:
+                    raise
+                await asyncio.sleep(0.5 * (2**attempt))
+        if payload is None:
+            raise RuntimeError("Bailian rerank request did not return a payload")
         results = tuple(
             RerankResult(
                 index=int(item["index"]),

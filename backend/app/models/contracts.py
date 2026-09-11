@@ -41,6 +41,56 @@ class FirewallSnapshot(BaseModel):
     collected_at: datetime
     raw_content: str
     content_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    original_format: Literal["vendor_cli_mock"] | None = None
+    original_content: str | None = None
+    original_content_sha256: str | None = Field(
+        default=None,
+        pattern=r"^[0-9a-f]{64}$",
+    )
+    detected_vendor: str | None = None
+    vendor_detection_confidence: float | None = Field(
+        default=None,
+        ge=0.0,
+        le=1.0,
+    )
+
+    @model_validator(mode="after")
+    def validate_original_binding(self) -> "FirewallSnapshot":
+        values = (
+            self.original_format,
+            self.original_content,
+            self.original_content_sha256,
+        )
+        if all(value is None for value in values):
+            return self
+        if any(value is None for value in values):
+            raise ValueError("original configuration binding must be complete")
+        return self
+
+
+class RawConfigurationSnapshot(BaseModel):
+    """Configuration returned by a customer-facing acquisition API, before parsing."""
+
+    acquisition_id: str
+    target_id: str
+    source_type: Literal["mock_api"] = "mock_api"
+    provider_version: str
+    collected_at: datetime
+    content_format: Literal["vendor_cli"] = "vendor_cli"
+    content: str = Field(min_length=1, max_length=1_000_000)
+    content_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    vendor_hint: str | None = Field(default=None, max_length=64)
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+
+class VendorDetectionResult(BaseModel):
+    vendor: str
+    confidence: float = Field(ge=0.0, le=1.0)
+    matched_signatures: tuple[str, ...]
+    used_vendor_hint: bool = False
+
+    model_config = ConfigDict(frozen=True, extra="forbid")
 
 
 class ConfigurationEvidence(BaseModel):
@@ -88,14 +138,6 @@ class ObservedConfigurationFact(FrozenConfigModel):
     field: str = Field(min_length=1, max_length=256)
     value: Any
     source: Literal["vendor_cli_explicit"] = "vendor_cli_explicit"
-
-
-class MockMetadata(FrozenConfigModel):
-    is_mock: Literal[True]
-    contains_real_customer_data: Literal[False]
-    source_profile: str
-    fixture_version: str
-    notice: str
 
 
 class TargetConfig(FrozenConfigModel):
@@ -213,20 +255,6 @@ class VpnConfig(FrozenConfigModel):
     enabled: bool | None = None
 
 
-class DefaultFirewallConfig(FrozenConfigModel):
-    mock_metadata: MockMetadata = Field(alias="_mock_metadata")
-    target: TargetConfig
-    management: ManagementConfig
-    interfaces: tuple[InterfaceConfig, ...]
-    access_control: AccessControlConfig
-    logging: LoggingConfig
-    time_sync: TimeSyncConfig
-    network_stack: NetworkStackConfig
-    threat_prevention: ThreatPreventionConfig
-    high_availability: HighAvailabilityConfig
-    vpn: VpnConfig
-
-
 class NormalizedFirewallConfig(FrozenConfigModel):
     target: TargetConfig
     management: ManagementConfig
@@ -240,19 +268,7 @@ class NormalizedFirewallConfig(FrozenConfigModel):
     vpn: VpnConfig
 
 
-class HuaweiCliParseRequest(FrozenConfigModel):
-    vendor: Literal["Huawei"] = "Huawei"
-    cli_content: str = Field(min_length=1, max_length=100_000)
-
-
-class HuaweiCliParseResponse(FrozenConfigModel):
-    vendor: Literal["Huawei"] = "Huawei"
-    parser_version: str
-    structured_patch: dict[str, Any]
-
-
 class ParseWarningCode(StrEnum):
-    MISSING_FIELD = "MISSING_FIELD"
     NULL_VALUE = "NULL_VALUE"
 
 
@@ -293,6 +309,8 @@ class CurrentConfigResponse(FrozenConfigModel):
     configuration: NormalizedFirewallConfig
     evidence: tuple[ConfigurationEvidence, ...]
     observed_facts: tuple[ObservedConfigurationFact, ...] = ()
+    acquisition_id: str | None = None
+    vendor_detection: VendorDetectionResult | None = None
 
 
 class AssessmentClauseReference(FrozenConfigModel):
@@ -302,38 +320,3 @@ class AssessmentClauseReference(FrozenConfigModel):
     classified_protection_level: int = Field(ge=2, le=4)
     printed_pages: tuple[int, ...] = ()
     pdf_page_indexes: tuple[int, ...] = ()
-
-
-class LevelAssessmentFinding(FrozenConfigModel):
-    finding_id: str
-    classified_protection_level: int = Field(ge=2, le=4)
-    control_id: str
-    control_title: str
-    check_title: str
-    rule_id: str
-    result: FindingResult
-    severity: str
-    explanation: str
-    standard_references: tuple[AssessmentClauseReference, ...] = ()
-    configuration_evidence: tuple[ConfigurationEvidence, ...] = ()
-    limitations: tuple[str, ...] = ()
-    control_coverage: Literal["full", "partial"]
-    control_conclusion_allowed: Literal[False] = False
-
-
-class LevelAssessmentSummary(FrozenConfigModel):
-    classified_protection_level: int = Field(ge=2, le=4)
-    counts: dict[FindingResult, int]
-    findings: tuple[LevelAssessmentFinding, ...]
-
-
-class CurrentAssessmentResponse(FrozenConfigModel):
-    assessment_id: str
-    snapshot_id: str
-    target_id: str
-    status: AssessmentStatus
-    rule_pack_version: str
-    catalog_id: str
-    catalog_version: str
-    levels: tuple[LevelAssessmentSummary, ...]
-    disclaimer: str

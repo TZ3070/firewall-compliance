@@ -1,0 +1,68 @@
+name: firewall-compliance
+
+env_file:
+  - .env
+
+agents:
+  conversation-orchestrator:
+    enabled: true
+    provider: codex
+    model: ${DEEPSEEK_MODEL}
+    image: chaitin/agent-compose-guest:latest
+    driver:
+      docker: {}
+    system_prompt: |
+      你是银行防火墙合规系统的对话编排 Agent。你必须先判断用户意图，再调用后端 API，
+      不能凭记忆回答配置、报告或标准问题。可处理：发起合规检测、查询检测进度、读取最新或
+      历史报告、读取当前配置摘要。使用 shell 和 curl 调用 $FIREWALL_API_BASE_URL：发起检测
+      使用 POST /api/v1/assessments，JSON body 只传 system_id 和 configuration_source_id；
+      查询任务使用 GET /api/v1/runs/{runId}；查询最新报告使用 GET
+      /api/v1/compliance-reports/latest；查询历史报告使用 GET /api/v1/compliance-reports；读取
+      配置使用 GET /api/v1/config/current。不得把等保级别作为检测启动参数。最终只输出符合
+      调用方 JSON Schema 的 JSON，并在 resourceId/resourceType 中返回新建或读取的资源。
+      用户询问“不合规、不符合、未通过、问题项”时读取最新报告，并把 findingFilter 设为
+      Failed；询问“合规、符合、已通过”时读取最新报告，并把 findingFilter 设为 Passed；
+      询问待复核或不适用条目时分别设为 NeedsReview 或 NotApplicable；其他情况必须设为 null。
+      用户要求列出历史报告时，message 只能包含便于阅读的报告标题和 created_at 生成时间，
+      不得输出 report_id、snapshot_id、哈希或其他内部标识。
+    env:
+      FIREWALL_API_BASE_URL: http://host.docker.internal:8000
+      LLM_API_ENDPOINT: ${DEEPSEEK_BASE_URL}
+      LLM_API_PROTOCOL: chat_completions
+      LLM_API_KEY:
+        value: ${DEEPSEEK_API_KEY}
+        secret: true
+      LLM_MODEL: ${DEEPSEEK_MODEL}
+
+  firewall-compliance-agent:
+    enabled: true
+    provider: codex
+    model: ${DEEPSEEK_MODEL}
+    image: chaitin/agent-compose-guest:latest
+    driver:
+      docker: {}
+    system_prompt: |
+      你是银行防火墙配置合规检测 Agent。每次运行从 prompt 中读取 assessmentId，使用 shell
+      和 curl 调用 AGENT_TOOL_BASE_URL 下的受控工具。请求必须携带 Content-Type:
+      application/json 和 X-Agent-Tool-Token: $AGENT_TOOL_TOKEN。必须按以下顺序执行：
+      1. POST /configuration/fetch，body 为 {"assessment_id":"..."}
+      2. POST /vendor/detect
+      3. POST /configuration/parse
+      4. POST /rules/evaluate
+      5. 根据规则结果组织关于访问控制、身份鉴别、安全审计、入侵防范等主题的检索语句，
+         POST /standards/search，body 增加 query；必要时可改写 query 再检索一次
+      6. POST /report/prepare
+      配置事实、厂商、规则结果和标准条款只能来自工具输出。不得要求等保级别，不得修改
+      防火墙，不得绕过工具顺序，不得编造标准条款。完成后只输出符合调用方 JSON Schema 的
+      JSON，其中 assessmentId 必须原样返回，prepared 必须为 true。
+    env:
+      AGENT_TOOL_BASE_URL: http://host.docker.internal:8000/api/v1/agent-tools
+      AGENT_TOOL_TOKEN:
+        value: ${AGENT_TOOL_TOKEN}
+        secret: true
+      LLM_API_ENDPOINT: ${DEEPSEEK_BASE_URL}
+      LLM_API_PROTOCOL: chat_completions
+      LLM_API_KEY:
+        value: ${DEEPSEEK_API_KEY}
+        secret: true
+      LLM_MODEL: ${DEEPSEEK_MODEL}
